@@ -81,8 +81,22 @@ We use a conjoint survey experiment to simultaneously study the effects of organ
 
 In our experiment, we presented respondents with four randomly selected international nonprofit organizations with four randomly assigned features.^[See the appendix for a copy of the survey.] We included organizations that are associated with a range of contentious and noncontentious issues: Amnesty International, Greenpeace, Oxfam, and the International Committee of the Red Cross. Because of their strong name recognition, these organizations (and others like World Vision, the World Wildlife Fund, and Médecins Sans Frontières) are commonly used in experimental surveys on philanthropy [@FaulknerTruongRomaniuk:2015].
 
-```{r child = "output/tables/tbl-organization-attributes-full.md"}
-```
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+Organization            Issue area           Organizational practices   Funding sources        Relationship with government  
+----------------------- -------------------- -------------------------- ---------------------- ------------------------------
+Amnesty International   Emergency response   Financial transparency     Small private donors   Friendly                      
+
+Greenpeace              Environment          Accountability             Wealthy donors         Criticized                    
+
+Oxfam                   Human rights                                    Government grants      Crackdown                     
+
+Red Cross               Refugee relief                                                                                       
+-----------------------------------------------------------------------------------------------------------------------------
+
+Table: Organization attributes varied in the experiment {#tbl:organization-attributes-full}
+
 
 We then displayed four hypothetical organizations based on random combinations of features , including one of four issue areas, one of two organizational practices, one of three funding sources, and one of three relationships with host governments (see @tbl:organization-attributes-full; see also Q3.1 in the survey text in the appendix). Respondents saw twelve sets of four hypothetical combinations of organizational features, and because our partial fractional factorial design resulted in 288 (4 × 4 × 2 × 3 × 3) possible combinations of organizations and features, no single respondent was offered every combination. Not every combination necessarily reflected reality—for instance, a respondent might have been asked to compare a fictional Amesty International that focuses on environmental issues and that is funded by private donations with a Greenpeace that focuses on human rights and that is funded by government grants. It is not important that these features align with true organizational characteristics, since the goal of these repeated hypothetical questions is to identify which attributes are the most salient for donors. 
 
@@ -90,8 +104,166 @@ In June 2019, we recruited survey respondents through Centiment, a commercial pr
 
 \newpage
 
-```{r child = "output/tables/tbl-sample-details.md"}
-```
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                                   Response                                          N      %   
+---------------------------------- ----------------------------------------------- ----------------------------------------------- ----- -------
+Demographics                       Gender                                          Male                                             517   50.9% 
+
+                                                                                   Female                                           485   47.7% 
+
+                                                                                   Transgender                                       8    0.8%  
+
+                                                                                   Prefer not to say                                 3    0.3%  
+
+                                                                                   Other                                             3    0.3%  
+
+                                   Age                                             Less than 2017 national median (36)              179   17.6% 
+
+                                                                                   More than median                                 837   82.4% 
+
+                                   Marital status                                  Married                                          403   39.7% 
+
+                                                                                   Widowed                                          21    2.1%  
+
+                                                                                   Divorced                                         104   10.2% 
+
+                                                                                   Separated                                        35    3.4%  
+
+                                                                                   Never married                                    453   44.6% 
+
+                                   Education                                       Less than high school                            25    2.5%  
+
+                                                                                   High school graduate                             270   26.6% 
+
+                                                                                   Some college                                     287   28.2% 
+
+                                                                                   2 year degree                                    138   13.6% 
+
+                                                                                   4 year degree                                    206   20.3% 
+
+                                                                                   Graduate or professional degree                  82    8.1%  
+
+                                                                                   Doctorate                                         8    0.8%  
+
+                                   Income                                          Less than 2017 national median ($61,372)         585   57.6% 
+
+                                                                                   More than median                                 431   42.4% 
+
+Attitudes toward charity           Frequency of donating to charity                More than once a month, less than once a year    566   55.7% 
+
+                                                                                   At least once a month                            450   44.3% 
+
+                                   Amount of donations to charity last year        $1-$49                                           337   33.2% 
+
+                                                                                   $50-$99                                          245   24.1% 
+
+                                                                                   $100-$499                                        233   22.9% 
+
+                                                                                   $500-$999                                        107   10.5% 
+
+                                                                                   $1000-$4,999                                     65    6.4%  
+
+                                                                                   $5000-$9,999                                     18    1.8%  
+
+                                                                                   $10,000+                                         11    1.1%  
+
+                                   Importance of trusting charities                1 (not important)                                 7    0.7%  
+
+                                                                                   2                                                 9    0.9%  
+
+                                                                                   3                                                21    2.1%  
+
+                                                                                   4                                                98    9.6%  
+
+                                                                                   5                                                168   16.5% 
+
+                                                                                   6                                                157   15.5% 
+
+                                                                                   7 (important)                                    556   54.7% 
+
+                                   Level of trust in charities                     1 (no trust)                                     14    1.4%  
+
+                                                                                   2                                                20    2.0%  
+
+                                                                                   3                                                68    6.7%  
+
+                                                                                   4                                                257   25.3% 
+
+                                                                                   5                                                328   32.3% 
+
+                                                                                   6                                                169   16.6% 
+
+                                                                                   7 (complete trust)                               160   15.7% 
+
+                                   Frequency of volunteering                       Haven't volunteered in past 12 months            423   41.6% 
+
+                                                                                   Rarely                                           20    2.0%  
+
+                                                                                   More than once a month, less than once a year    322   31.7% 
+
+                                                                                   At least once a month                            251   24.7% 
+
+Politics, ideology, and religion   Frequency of following national news            Rarely                                           88    8.7%  
+
+                                                                                   Once a week                                      216   21.3% 
+
+                                                                                   At least once a day                              712   70.1% 
+
+                                   Traveled to a developing country                Yes                                              250   24.6% 
+
+                                                                                   No                                               766   75.4% 
+
+                                   Voted in last election                          Yes                                              742   73.0% 
+
+                                                                                   No                                               274   27.0% 
+
+                                   Trust in political institutions and the state   1 (no trust)                                     123   12.1% 
+
+                                                                                   2                                                155   15.3% 
+
+                                                                                   3                                                207   20.4% 
+
+                                                                                   4                                                276   27.2% 
+
+                                                                                   5                                                151   14.9% 
+
+                                                                                   6                                                49    4.8%  
+
+                                                                                   7 (complete trust)                               55    5.4%  
+
+                                   Political ideology                              1 (extremely liberal)                            87    8.6%  
+
+                                                                                   2                                                87    8.6%  
+
+                                                                                   3                                                112   11.0% 
+
+                                                                                   4                                                363   35.7% 
+
+                                                                                   5                                                175   17.2% 
+
+                                                                                   6                                                80    7.9%  
+
+                                                                                   7 (extremely conservative)                       112   11.0% 
+
+                                   Involvement in activist causes                  Not involved                                     569   56.0% 
+
+                                                                                   Involved                                         447   44.0% 
+
+                                   Frequency of attending religious services       Not sure                                         11    1.1%  
+
+                                                                                   Rarely                                           600   59.1% 
+
+                                                                                   At least once a month                            405   39.9% 
+
+                                   Importance of religion                          Not important                                    338   33.3% 
+
+                                                                                   Important                                        678   66.7% 
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+Table: Summary of individual respondent characteristics {#tbl:sample-details}
+
 
 @tbl:sample-details provides a summary of the individual characteristics of survey respondents. Because we limited the sample to people who regularly make charitable contributions, most respondents have a favorable opinion of nonprofits and charities, with more than half reporting a 5 or greater level of trust in charities (on a 7-point scale). Moreover, nearly 90% indicated that it is important to trust charities. Additionally, the majority of respondents volunteer at least once a year, donate to charity at least once a year, and give between \$1–\$999 annually. Most rarely attend church, but feel that religion is important. Respondents are also civically engaged (three quarters voted in the last election) and follow national news closely (70% follow the news daily). Respondents are fairly balanced ideologically, with the majority reporting a 3, 4, or 5 on a 7-point scale of liberal–conservative political ideology.
 
@@ -101,16 +273,101 @@ We analyze the effect of different combinations of organizational features and i
 
 In this paper, we look at which kinds of donors are more or less likely to consider an NGO's issue area, funding sources, and relationships with host governments when deciding to donate. Disentangling the effect of every individual level-characteristics measured in the survey on every combination of organizational characteristics presented in the conjoint experiment is unwieldy and near impossible. Given the organizational attributes presented in our experiment, and the possible individual characteristics that respondents could select, there are billions of possible combinations and iterations of organizational and individual attributes—many of which rarely occur in the actual population of potential donors. To more fully explore the relationships between different organizational- and individual-level attributes, we turn to simulation methods that allow us to examine the impact of multiple covariates at simultaneously. To simplify the possible combinations of individual characteristics, we generate 32 distinct personas with attributes that vary along different dimensions of demographics, politics and public affairs experience, and social attitudes (see @tbl:persona-attributes). We also generate 24 simulated organizations that vary by issue area, relationship with host government, and source of funding (see @tbl:organization-attributes).
 
-```{r child = "output/tables/tbl-persona-attributes.md"}
-```
 
-```{r child = "output/tables/tbl-organization-attributes.md"}
-```
+
+-------------------------------------------------------------------------------------------------
+Demographics                    Politics and public affairs      Social views                    
+------------------------------- -------------------------------- --------------------------------
+High income ($100,000), male    Semi liberal (2), follows        High social trust: Trusts       
+                                national and international       political institutions, trusts  
+                                news often, has traveled         charities, thinks people        
+                                internationally                  should be more charitable,      
+                                                                 frequently volunteers, donates  
+                                                                 once a month, has a history of  
+                                                                 personal activism, is a member  
+                                                                 of an association               
+
+Medium income ($50,000), male   Semi conservative (5), follows   Low social trust: Does not      
+                                news, has traveled               trust political institutions    
+                                                                 or charities, thinks people     
+                                                                 should be less charitable,      
+                                                                 does not volunteer or donate    
+                                                                 often, has no history of        
+                                                                 personal activism, is not a     
+                                                                 member of an association        
+
+High income, female             Semi liberal, does not follow                                    
+                                news, has not traveled                                           
+
+Medium income, female           Semi conservative, does not                                      
+                                follow news, has not traveled                                    
+-------------------------------------------------------------------------------------------------
+
+Table: Individual attributes varied in the simulation, resulting in 32 persona profiles {#tbl:persona-attributes}
+
+
+
+
+--------------------------------------------------------------------------
+Issue area           Relationship with government   Funding               
+-------------------- ------------------------------ ----------------------
+Emergency response   Friendly                       Small private donors  
+
+Environment          Criticized                     Government grants     
+
+Human rights         Crackdown                                            
+
+Refugee relief                                                            
+--------------------------------------------------------------------------
+
+Table: Organization attributes varied in the simulation, resulting in 24 hypothetical organizations {#tbl:organization-attributes}
+
 
 We then combine these different scenarios of donor and organization attributes with the coefficients from a multinomial multilevel regression model to calculate the probability that each simulated persona has of giving to specific combinations of organizational attributes. Any individual characteristics that we do not explicitly vary in @tbl:persona-attributes are held at their means or modal values from the survey sample. @tbl:sim-output provides an example of the simulation output, showing how two different personas are predicted to allocate donations to organizations with various characteristics. The proportion of donations from each persona sums to 100%, as every persona is guaranteed to make a donation.
 
-```{r child = "output/tables/tbl-sim-output.md"}
-```
+
+
+--------------------------------------------------------------------------------------------
+Organization                      Persona 2: Lower Income Male,   Persona 31: Higher Income 
+                                     Liberal that Reads and       Female, Conservative that 
+                                   Travels, Trusts and Donates     Doesn't Read or Travel,  
+                                                                   Doesn't Trust or Donate  
+-------------------------------- ------------------------------- ---------------------------
+Org 1: Emergency Response,                    5.5%                          0.3%            
+Small Donors, Friendly                                                                      
+
+Org 2: Environment, Small                     2.3%                          0.1%            
+Donors, Friendly                                                                            
+
+Org 3: Human Rights, Small                    20.9%                         0.1%            
+Donors, Friendly                                                                            
+
+…                                               …                             …             
+
+Org 7: Human Rights, Grants,                  17.9%                         0.2%            
+Friendly                                                                                    
+
+Org 8: Refugee Relief, Grants,                6.2%                          0.6%            
+Friendly                                                                                    
+
+Org 9: Emergency Response,                    1.5%                          10.4%           
+Small Donors, Criticized                                                                    
+
+…                                               …                             …             
+
+Org 16: Refugee Relief,                       1.7%                          21.3%           
+Grants, Criticized                                                                          
+
+Org 17: Emergency Response,                   1.3%                          2.7%            
+Small Donors, Crackdown                                                                     
+
+…                                               …                             …             
+
+**Total**                                     100%                          100%            
+--------------------------------------------------------------------------------------------
+
+Table: Sample output from the simulation {#tbl:sim-output}
+
 
 Relying on simulation methods offers useful analytic benefits. Rather than interpret individual marginal effects from a regression model, we can explore multiple moving parts from the same model simultaneously to understand how individual characteristics interact with each other. This allows us to more fully explore our key research questions and see which kinds of donors are more or less likely to consider specific organizational attributes when deciding to donate, and which donor characteristics are associated with the propensity to donate. Importantly, each persona is an artificial construct. While some survey respondents might match an exact persona profile, most do not. This is acceptable in simulations, and each combination of persona characteristics is plausible in the real world. Our analysis uses the characteristics of our sample to model the effects of various salient attributes while holding others constant, and thus allows us to explore multiple attributes at once.
 
@@ -176,8 +433,415 @@ Surveys across a range of countries show that levels of giving are lowest for re
 
 # Appendix: Survey experiment
 
-```{r child = "experiment.md"}
-```
+
+## Consent 
+
+***Q1.1***: You have been invited to participate in an academic research survey about international nongovernmental organizations. This study is being conducted by Suparna Chaudhry from Christopher Newport University and Andrew Heiss and Marc Dotson from Brigham Young University. If you qualify to complete the survey, it should take about **10 minutes** to complete.
+
+Your participation in this study is entirely voluntary and you are free to skip any question or withdraw from the experiment at any time. You will not be asked to provide any personal information, and your answers will remain anonymous. There are no reasonably foreseeable risks or discomforts associated with participating in this study. **There will be questions designed to check that you're paying attention to the details of the experiment. If you answer these incorrectly, the survey will end early and you may not receive compensation.**
+
+You will receive no direct benefits from participating in this research study.
+ 
+If you have any questions at any time about the study or the procedures, you can contact Suparna Chaudhry (suparna.chaudhry@cnu.edu; Reiff Center for Human Rights and Conflict Resolution, Christopher Newport University, Newport News, VA 23606) or Andrew Heiss (andrew_heiss@byu.edu; Romney Institute of Public Management, Brigham Young University, Provo, UT 84602). This research has been reviewed by the Institutional Review Board (IRB) at Christopher Newport University (757-594-7461; IRB@cnu.edu) and the IRB administrator at Brigham Young University (801-422-1461; irb@byu.edu).
+ 
+By clicking "Yes" below you are indicating that you are at least 18 years old, have read and understood this consent form and agree to participate in this research study. Please print a copy of this page for your records.
+
+I have read the above information, and I consent to take part in the study.
+
+:   Single answer
+
+    - Yes
+    - No
+
+**Terminate if Q1.1 == "No"**
+
+---
+
+## First demographic section
+
+*Q2.1*: How often do you follow national news? 
+
+:   Single answer
+
+    - Multiple times a day
+    - Every day
+    - Once a week
+    - Hardly ever
+    - Never
+
+*Q2.2*: How often do you follow international news? 
+
+:   Single answer
+
+    - Always
+    - Sometimes
+    - Never
+    
+*Q2.3*: Which mediums do you use to follow news? (Select all that apply.)
+
+:   Multiple answers allowed
+
+    - TV
+    - Print 
+    - Online (excluding social media) 
+    - Social media
+    - Radio
+    - Email newsletters
+    - News app
+
+*Q2.4*: Some people seem to follow what's going on in government and public affairs most of the time, whether there's an election going on or not. Others aren't that interested. How often would you say you follow what's going on in government and public affairs?
+
+:   Single answer
+
+    - Most of the time
+    - Some of the time
+    - Only now and then
+    - Hardly at all
+
+*Q2.5*: How often do you donate to charity (with either cash or in-kind)?
+
+:   Single answer
+
+    - Once a week
+    - Once a month
+    - Once every three months
+    - Once every six months
+    - Once a year
+    - Once every few years
+    - Never
+
+**Terminate if Q2.5 == "Once every few years" OR Q2.5 == "Never"**
+
+*Q2.6*: How much did you donate to charity last year?
+
+:   Single answer
+
+    - \$1 to \$49
+    - \$50 to \$99
+    - \$100 to \$499
+    - \$500 to \$999
+    - \$1000 to \$4,999
+    - \$5000 to \$9,999
+    - \$10,000 or more
+
+*Q2.7*: On a scale of not at all important (1) to essential (7), how important is it for you to trust charities?
+
+:   Single answer
+
+    - 1 (Not at all important)
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7 (Essential)
+
+*Q2.8*: On a scale of no trust at all (1) to complete trust (7), how much do you trust charities?
+
+:   Single answer
+
+    - 1 (No trust at all)
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7 (Complete trust)
+
+*Q2.9*: Have you volunteered in the past 12 months?
+
+:   Single answer
+
+    - Yes
+    - No
+
+**Display Q2.10 if Q2.9 == "Yes"**
+
+*Q2.10*: How often do you volunteer?
+
+:   Single answer
+
+    - Once a week
+    - Once a month
+    - Once every three months
+    - Once every six months
+    - Once a year
+    - Once every few years
+
+*Q2.11*: Please select blue from the following list:
+
+:   Single answer
+
+    - Red
+    - Yellow
+    - Blue
+    - Green
+
+**Terminate if Q2.11 != "Blue"**
+
+---
+
+## Conjoint explanation
+
+*Q3.1*: In the following set of questions, we will ask you to select organizations you would donate to. The following terms will be important. Please read through this list carefully.
+   
+**Organizations:**
+
+- *Amnesty International*: A London-based non-governmental organization known for its focus on human rights.
+- *Greenpeace*: An independent, nonprofit, global campaigning organization known for using non-violent, creative confrontation to expose global environmental problems and their causes.
+- *Oxfam*: An international group known for providing help to poor countries and disaster areas, with a focus on helping create lasting solutions to the injustice of poverty. 
+- *Red Cross*: An international organization known for caring for the wounded, sick, and homeless in wartime and following natural disasters.
+ 
+**Issue areas:**
+
+- *Emergency response*: Respond to situations that pose an immediate risk to health, life, property, or the environment.
+- *Environment*: Protecting the natural world and the impact of human activity on its condition.
+- *Human rights*: Protect the inalienable fundamental rights to which a person is inherently entitled simply because he or she is a human being.
+- *Refugee relief*: Provide relief for those who have been forced to flee his or her country because of persecution, war or violence.  
+ 
+**Organizational practices:**
+
+- *Financial transparency*: Organization discloses information regarding its donations and financial allocations in a timely and reliable manner.
+- *Accountability*: Organization undergoes a regular third-party audit to ensure that it is meeting its program goals and obligations. 
+
+**Funding sources:**
+
+- *Funded primarily by many small private donations*: Funds by individuals who make small independent contributions.
+- *Funded primarily by a handful of wealthy private donors*: Funds by wealthy individuals or families, who receive tax deductions for donations.
+- *Funded primarily by government grants*: Non-repayable funds gifted by a government department.
+
+**Relationship with host government:**
+
+- *Friendly relationship with government*: Organization has a friendly relationship with its host government.
+- *Criticized by government*: Organization faces public condemnation from the government.
+- *Under government crackdown*: Host government has undertaken official action to limit or stop the organization. 
+
+*Q3.2*: For each of the next 12 questions, imagine you are selecting an organization you will donate to and that each of the listed organizations exists.
+
+---
+
+## Conjoint questions
+
+*Q4.1–12*: Which of the following organizations would you donate to?
+
+:   Single option or "none" selected
+
+    |                                   | Option 1 | Option 2 | Option 3 | None |
+    | --------------------------------- | :------: | :------: | :------: | :--: |
+    | Organization                      |  Random  |  Random  |  Random  |  —   |
+    | Issue area                        |  Random  |  Random  |  Random  |  —   |
+    | Financial transparency            |  Random  |  Random  |  Random  |  —   |
+    | Accountability                    |  Random  |  Random  |  Random  |  —   |
+    | Funding sources                   |  Random  |  Random  |  Random  |  —   |
+    | Relationship with host government |  Random  |  Random  |  Random  |  —   |
+
+---
+
+## Additional demographic questions
+
+*Q5.1*: Did you vote in the last election?
+
+:   Single answer
+
+    - Yes
+    - No
+
+*Q5.2*: On a scale of extremely liberal (1) to extremely conservative (7), how would you describe your political views?
+
+:   Single answer
+
+    - 1 (Extremely liberal)
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7 (Extremely conservative)
+
+*Q5.3*: Here is a list of different types of voluntary organizations. For each organization, indicate whether you are an active member, an inactive member, or not a member of that type of organization:
+
+:   Matrix table
+
+    |                                         | Active member | Inactive member | Don't belong |
+    | --------------------------------------- | :-----------: | :-------------: | :----------: |
+    | Church or religious organization        |       •       |        •        |      •       |
+    | Sport or recreational organization      |       •       |        •        |      •       |
+    | Art, music, or educational organization |       •       |        •        |      •       |
+    | Labor union                             |       •       |        •        |      •       |
+    | Political party                         |       •       |        •        |      •       |
+    | Environmental organization              |       •       |        •        |      •       |
+    | Professional association                |       •       |        •        |      •       |
+    | Humanitarian or charitable organization |       •       |        •        |      •       |
+    | Consumer organization                   |       •       |        •        |      •       |
+    | Other organization                      |       •       |        •        |      •       |
+
+*Q5.4*: Historically, how involved have you been in activist causes?
+
+:   Single answer
+
+    - Extremely involved
+    - Very involved
+    - Moderately involved
+    - Slightly involved
+    - Never involved
+
+*Q5.5*: Historically, how involved has your family been in activist causes?
+
+:   Single answer
+
+    - Extremely involved
+    - Very involved
+    - Moderately involved
+    - Slightly involved
+    - Never involved
+
+*Q5.6*: On a scale of no trust (1) to complete trust (7), how much do you trust political institutions and the state?
+
+:   Single answer
+
+    - 1 (No trust)
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7 (Complete trust)
+ 
+*Q5.7*: Have you ever traveled to a developing country? 
+
+:   Single answer
+
+    - Yes
+    - No
+
+*Q5.8*: How often do you attend religious or worship services, not including weddings and funerals?
+
+:   Single answer
+
+    - More than once a week
+    - Once a week
+    - Once or twice a month
+    - A few times a year
+    - Seldom
+    - Never
+    - Don't know
+
+*Q5.9*: How important is religion in your life?
+
+:   Single answer
+
+    - Extremely important
+    - Very important
+    - Moderately important
+    - Slightly important
+    - Not at all important
+
+*Q5.10*: What is your current religion, if any?
+
+:   Single answer
+
+    - Catholic (including Roman Catholic and Orthodox)
+    - Protestant (United Church of Canada, Anglican, Orthodox, Baptist, Lutheran)
+    - Christian Orthodox
+    - Jewish
+    - Muslim
+    - Sikh
+    - Hindu
+    - Buddhist
+    - Atheist (do not believe in God)
+    - Other: _________
+
+*Q5.11*: On a scale of strongly agree (1) to strongly disagree (7), rate your response to the following statement: People should be more charitable towards others in society.
+
+:   Single answer
+
+    - 1 (Strongly agree)
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7 (Strongly disagree)
+
+*Q5.12*: What is your gender?
+
+:   Single answer
+
+    - Male
+    - Female
+    - Transgender
+    - Prefer not to say
+    - Other: _________
+
+*Q5.13*: Are you now married, widowed, divorced, separated, or never married?
+
+:   Single answer
+
+    - Married
+    - Widowed
+    - Divorced
+    - Separated
+    - Never married
+
+*Q5.14*: What is the highest degree or level of school you have completed?
+
+:   Single answer
+
+    - Less than high school
+    - High school graduate
+    - Some college
+    - 2 year degree
+    - 4 year degree 
+    - Graduate or professional degree
+    - Doctorate
+
+*Q5.15*: What is your annual household income before taxes?
+
+:   Single answer
+
+    - Less than \$10,000
+    - \$10,000 to \$19,999
+    - \$20,000 to \$29,999
+    - \$30,000 to \$39,999
+    - \$40,000 to \$49,999
+    - \$50,000 to \$59,999
+    - \$60,000 to \$69,999
+    - \$70,000 to \$79,999
+    - \$80,000 to \$89,999
+    - \$90,000 to \$99,999
+    - \$100,000 to \$149,999
+    - \$150,000 to \$199,999
+    - \$200,000 to \$299,999
+    - \$300,000 or more
+
+*Q5.16*: Choose one or more races that you consider yourself to be:
+
+:   Multiple answers allowed
+
+    - White
+    - Black or African American
+    - American Indian or Alaska Native
+    - Asian
+    - Native Hawaiian or Pacific Islander
+    - Other: _________
+
+*Q5.17*: How old are you?
+
+:   Single answer
+
+    - Under 18
+    - 18 - 24
+    - 25 - 34
+    - 35 - 44
+    - 45 - 54
+    - 55 - 64
+    - 65 - 74
+    - 75 - 84
+    - 85 or older
+
+*Q5.18*: What is your ZIP code?
+
+:   Text field
 
 \newpage
 
