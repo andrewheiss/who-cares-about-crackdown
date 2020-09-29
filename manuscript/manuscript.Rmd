@@ -180,7 +180,7 @@ To be clear, research on international giving by individuals, especially in the 
 
 # Appendix: Survey experiment
 
-```{r child = "experiment.md"}
+```{r child = "text/experiment.md"}
 ```
 
 \newpage

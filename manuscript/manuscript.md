@@ -108,161 +108,173 @@ In June 2019, we recruited survey respondents through Centiment, a commercial pr
 
 
 
-------------------------------------------------------------------------------------------------------------------------------------------------
-                                                                                   Response                                          N      %   
----------------------------------- ----------------------------------------------- ----------------------------------------------- ----- -------
-Demographics                       Gender                                          Male                                             517   50.9% 
+-----------------------------------------------------------------------------------------------------------
+Category                   Question                         Response                           N      %    
+-------------------------- -------------------------------- -------------------------------- ----- --------
+Demographics               Gender                           Male                              517   50.89% 
 
-                                                                                   Female                                           485   47.7% 
+                                                            Female                            485   47.74% 
 
-                                                                                   Transgender                                       8    0.8%  
+                                                            Transgender                        8    0.79%  
 
-                                                                                   Prefer not to say                                 3    0.3%  
+                                                            Prefer not to say                  3    0.30%  
 
-                                                                                   Other                                             3    0.3%  
+                                                            Other                              3    0.30%  
 
-                                   Age                                             Less than 2017 national median (36)              179   17.6% 
+                           Age                              Less than 2017 national median    179    18%   
+                                                            (36)                                           
 
-                                                                                   More than median                                 837   82.4% 
+                                                            More than median                  837    82%   
 
-                                   Marital status                                  Married                                          403   39.7% 
+                           Marital status                   Married                           403   39.7%  
 
-                                                                                   Widowed                                          21    2.1%  
+                                                            Widowed                           21     2.1%  
 
-                                                                                   Divorced                                         104   10.2% 
+                                                            Divorced                          104   10.2%  
 
-                                                                                   Separated                                        35    3.4%  
+                                                            Separated                         35     3.4%  
 
-                                                                                   Never married                                    453   44.6% 
+                                                            Never married                     453   44.6%  
 
-                                   Education                                       Less than high school                            25    2.5%  
+                           Education                        Less than high school             25     2.5%  
 
-                                                                                   High school graduate                             270   26.6% 
+                                                            High school graduate              270   26.6%  
 
-                                                                                   Some college                                     287   28.2% 
+                                                            Some college                      287   28.2%  
 
-                                                                                   2 year degree                                    138   13.6% 
+                                                            2 year degree                     138   13.6%  
 
-                                                                                   4 year degree                                    206   20.3% 
+                                                            4 year degree                     206   20.3%  
 
-                                                                                   Graduate or professional degree                  82    8.1%  
+                                                            Graduate or professional          82     8.1%  
+                                                            degree                                         
 
-                                                                                   Doctorate                                         8    0.8%  
+                                                            Doctorate                          8     0.8%  
 
-                                   Income                                          Less than 2017 national median ($61,372)         585   57.6% 
+                           Income                           Less than 2017 national median    585    58%   
+                                                            ($61,372)                                      
 
-                                                                                   More than median                                 431   42.4% 
+                                                            More than median                  431    42%   
 
-Attitudes toward charity           Frequency of donating to charity                More than once a month, less than once a year    566   55.7% 
+Attitudes toward charity   Frequency of donating to         More than once a month, less      566    56%   
+                           charity                          than once a year                               
 
-                                                                                   At least once a month                            450   44.3% 
+                                                            At least once a month             450    44%   
 
-                                   Amount of donations to charity last year        $1-$49                                           337   33.2% 
+                           Amount of donations to charity   $1-$49                            337   33.17% 
+                           last year                                                                       
 
-                                                                                   $50-$99                                          245   24.1% 
+                                                            $50-$99                           245   24.11% 
 
-                                                                                   $100-$499                                        233   22.9% 
+                                                            $100-$499                         233   22.93% 
 
-                                                                                   $500-$999                                        107   10.5% 
+                                                            $500-$999                         107   10.53% 
 
-                                                                                   $1000-$4,999                                     65    6.4%  
+                                                            $1000-$4,999                      65    6.40%  
 
-                                                                                   $5000-$9,999                                     18    1.8%  
+                                                            $5000-$9,999                      18    1.77%  
 
-                                                                                   $10,000+                                         11    1.1%  
+                                                            $10,000+                          11    1.08%  
 
-                                   Importance of trusting charities                1 (not important)                                 7    0.7%  
+                           Importance of trusting           1 (not important)                  7    0.69%  
+                           charities                                                                       
 
-                                                                                   2                                                 9    0.9%  
+                                                            2                                  9    0.89%  
 
-                                                                                   3                                                21    2.1%  
+                                                            3                                 21    2.07%  
 
-                                                                                   4                                                98    9.6%  
+                                                            4                                 98    9.65%  
 
-                                                                                   5                                                168   16.5% 
+                                                            5                                 168   16.54% 
 
-                                                                                   6                                                157   15.5% 
+                                                            6                                 157   15.45% 
 
-                                                                                   7 (important)                                    556   54.7% 
+                                                            7 (important)                     556   54.72% 
 
-                                   Level of trust in charities                     1 (no trust)                                     14    1.4%  
+                           Level of trust in charities      1 (no trust)                      14    1.38%  
 
-                                                                                   2                                                20    2.0%  
+                                                            2                                 20    1.97%  
 
-                                                                                   3                                                68    6.7%  
+                                                            3                                 68    6.69%  
 
-                                                                                   4                                                257   25.3% 
+                                                            4                                 257   25.30% 
 
-                                                                                   5                                                328   32.3% 
+                                                            5                                 328   32.28% 
 
-                                                                                   6                                                169   16.6% 
+                                                            6                                 169   16.63% 
 
-                                                                                   7 (complete trust)                               160   15.7% 
+                                                            7 (complete trust)                160   15.75% 
 
-                                   Frequency of volunteering                       Haven't volunteered in past 12 months            423   41.6% 
+                           Frequency of volunteering        Haven't volunteered in past 12    423   41.6%  
+                                                            months                                         
 
-                                                                                   Rarely                                           20    2.0%  
+                                                            Rarely                            20     2.0%  
 
-                                                                                   More than once a month, less than once a year    322   31.7% 
+                                                            More than once a month, less      322   31.7%  
+                                                            than once a year                               
 
-                                                                                   At least once a month                            251   24.7% 
+                                                            At least once a month             251   24.7%  
 
-Politics, ideology, and religion   Frequency of following national news            Rarely                                           88    8.7%  
+Politics, ideology, and    Frequency of following           Rarely                            88      9%   
+religion                   national news                                                                   
 
-                                                                                   Once a week                                      216   21.3% 
+                                                            Once a week                       216    21%   
 
-                                                                                   At least once a day                              712   70.1% 
+                                                            At least once a day               712    70%   
 
-                                   Traveled to a developing country                Yes                                              250   24.6% 
+                           Traveled to a developing         Yes                               250    25%   
+                           country                                                                         
 
-                                                                                   No                                               766   75.4% 
+                                                            No                                766    75%   
 
-                                   Voted in last election                          Yes                                              742   73.0% 
+                           Voted in last election           Yes                               742    73%   
 
-                                                                                   No                                               274   27.0% 
+                                                            No                                274    27%   
 
-                                   Trust in political institutions and the state   1 (no trust)                                     123   12.1% 
+                           Trust in political               1 (no trust)                      123   12.11% 
+                           institutions and the state                                                      
 
-                                                                                   2                                                155   15.3% 
+                                                            2                                 155   15.26% 
 
-                                                                                   3                                                207   20.4% 
+                                                            3                                 207   20.37% 
 
-                                                                                   4                                                276   27.2% 
+                                                            4                                 276   27.17% 
 
-                                                                                   5                                                151   14.9% 
+                                                            5                                 151   14.86% 
 
-                                                                                   6                                                49    4.8%  
+                                                            6                                 49    4.82%  
 
-                                                                                   7 (complete trust)                               55    5.4%  
+                                                            7 (complete trust)                55    5.41%  
 
-                                   Political ideology                              1 (extremely liberal)                            87    8.6%  
+                           Political ideology               1 (extremely liberal)             87    8.56%  
 
-                                                                                   2                                                87    8.6%  
+                                                            2                                 87    8.56%  
 
-                                                                                   3                                                112   11.0% 
+                                                            3                                 112   11.02% 
 
-                                                                                   4                                                363   35.7% 
+                                                            4                                 363   35.73% 
 
-                                                                                   5                                                175   17.2% 
+                                                            5                                 175   17.22% 
 
-                                                                                   6                                                80    7.9%  
+                                                            6                                 80    7.87%  
 
-                                                                                   7 (extremely conservative)                       112   11.0% 
+                                                            7 (extremely conservative)        112   11.02% 
 
-                                   Involvement in activist causes                  Not involved                                     569   56.0% 
+                           Involvement in activist causes   Not involved                      569    56%   
 
-                                                                                   Involved                                         447   44.0% 
+                                                            Involved                          447    44%   
 
-                                   Frequency of attending religious services       Not sure                                         11    1.1%  
+                           Frequency of attending           Not sure                          11      1%   
+                           religious services                                                              
 
-                                                                                   Rarely                                           600   59.1% 
+                                                            Rarely                            600    59%   
 
-                                                                                   At least once a month                            405   39.9% 
+                                                            At least once a month             405    40%   
 
-                                   Importance of religion                          Not important                                    338   33.3% 
+                           Importance of religion           Not important                     338    33%   
 
-                                                                                   Important                                        678   66.7% 
-------------------------------------------------------------------------------------------------------------------------------------------------
+                                                            Important                         678    67%   
+-----------------------------------------------------------------------------------------------------------
 
 Table: Summary of individual respondent characteristics {#tbl:sample-details}
 
@@ -277,35 +289,53 @@ In this paper, we look at which kinds of donors are more or less likely to consi
 
 
 
--------------------------------------------------------------------------------------------------
-Demographics                    Politics and public affairs      Social views                    
-------------------------------- -------------------------------- --------------------------------
-High income ($100,000), male    Semi liberal (2), follows        High social trust: Trusts       
-                                national and international       political institutions, trusts  
-                                news often, has traveled         charities, thinks people        
-                                internationally                  should be more charitable,      
-                                                                 frequently volunteers, donates  
-                                                                 once a month, has a history of  
-                                                                 personal activism, is a member  
-                                                                 of an association               
+--------------------------------------------------------------------------------------------------
+Demographics                     Politics and public affairs      Social views                    
+-------------------------------- -------------------------------- --------------------------------
+Higher income (> US median       Liberal (1), follows national    High social trust: Trusts       
+($61,372)), high school          and international news often,    political institutions, trusts  
+graduate, frequent religious     has traveled internationally     charities, thinks people        
+attendance                                                        should be more charitable,      
+                                                                  frequently volunteers, donates  
+                                                                  once a month, has a history of  
+                                                                  personal activism, is a member  
+                                                                  of an association               
 
-Medium income ($50,000), male   Semi conservative (5), follows   Low social trust: Does not      
-                                news, has traveled               trust political institutions    
-                                                                 or charities, thinks people     
-                                                                 should be less charitable,      
-                                                                 does not volunteer or donate    
-                                                                 often, has no history of        
-                                                                 personal activism, is not a     
-                                                                 member of an association        
+Lower income (< US median),      Conservative (7), follows        Low social trust: Does not      
+high school graduate, frequent   news, has traveled               trust political institutions    
+religious attendance                                              or charities, thinks people     
+                                                                  should be less charitable,      
+                                                                  does not volunteer or donate    
+                                                                  often, has no history of        
+                                                                  personal activism, is not a     
+                                                                  member of an association        
 
-High income, female             Semi liberal, does not follow                                    
-                                news, has not traveled                                           
+Higher income, college           Liberal, does not follow news,                                   
+graduate, frequent religious     has not traveled                                                 
+attendance                                                                                        
 
-Medium income, female           Semi conservative, does not                                      
-                                follow news, has not traveled                                    
--------------------------------------------------------------------------------------------------
+Lower income, college            Conservative, does not follow                                    
+graduate, frequent religious     news, has not traveled                                           
+attendance                                                                                        
 
-Table: Individual attributes varied in the simulation, resulting in 32 persona profiles {#tbl:persona-attributes}
+Higher income, high school                                                                        
+graduate, rare religious                                                                          
+attendance                                                                                        
+
+Lower income, high school                                                                         
+graduate, rare religious                                                                          
+attendance                                                                                        
+
+Higher income, college                                                                            
+graduate, rare religious                                                                          
+attendance                                                                                        
+
+Lower income, college                                                                             
+graduate, rare religious                                                                          
+attendance                                                                                        
+--------------------------------------------------------------------------------------------------
+
+Table: Individual attributes varied in the simulation, resulting in 64 persona profiles {#tbl:persona-attributes}
 
 
 
@@ -329,46 +359,47 @@ We then combine these different scenarios of donor and organization attributes w
 
 
 
---------------------------------------------------------------------------------------------
-Organization                      Persona 2: Lower Income Male,   Persona 31: Higher Income 
-                                     Liberal that Reads and       Female, Conservative that 
-                                   Travels, Trusts and Donates     Doesn't Read or Travel,  
-                                                                   Doesn't Trust or Donate  
--------------------------------- ------------------------------- ---------------------------
-Org 1: Emergency Response,                    5.5%                          0.3%            
-Small Donors, Friendly                                                                      
+-------------------------------------------------------------------------------------------------
+Organization                       Persona 2: Lower income high      Persona 63: Higher income   
+                                    school graduate who rarely     college graduate who attends  
+                                   attends religious services;          religious services;      
+                                  liberal who reads and travels;   conservative who doesn't read 
+                                     doesn't trust or donate       or travel; trusts and donates 
+-------------------------------- -------------------------------- -------------------------------
+Org 1: Emergency response,                    11.4%                            3.3%              
+Small donors, Friendly                                                                           
 
-Org 2: Environment, Small                     2.3%                          0.1%            
-Donors, Friendly                                                                            
+Org 2: Emergency response,                     7.2%                            11.1%             
+Government grants, Friendly                                                                      
 
-Org 3: Human Rights, Small                    20.9%                         0.1%            
-Donors, Friendly                                                                            
+Org 3: Emergency response,                     1.1%                            1.3%              
+Small donors, Criticized                                                                         
 
-…                                               …                             …             
+…                                               …                                …               
 
-Org 7: Human Rights, Grants,                  17.9%                         0.2%            
-Friendly                                                                                    
+Org 7: Environment, Small                     10.2%                            1.6%              
+donors, Friendly                                                                                 
 
-Org 8: Refugee Relief, Grants,                6.2%                          0.6%            
-Friendly                                                                                    
+Org 8: Environment, Government                 6.5%                            5.2%              
+grants, Friendly                                                                                 
 
-Org 9: Emergency Response,                    1.5%                          10.4%           
-Small Donors, Criticized                                                                    
+Org 9: Environment, Small                      1.0%                            0.6%              
+donors, Criticized                                                                               
 
-…                                               …                             …             
+…                                               …                                …               
 
-Org 16: Refugee Relief,                       1.7%                          21.3%           
-Grants, Criticized                                                                          
+Org 16: Human rights,                          0.7%                            6.8%              
+Government grants, Criticized                                                                    
 
-Org 17: Emergency Response,                   1.3%                          2.7%            
-Small Donors, Crackdown                                                                     
+Org 17: Human rights, Small                    0.9%                            2.0%              
+donors, Under crackdown                                                                          
 
-…                                               …                             …             
+…                                               …                                …               
 
-**Total**                                     100%                          100%            
---------------------------------------------------------------------------------------------
+**Total**                                     100.0%                          100.0%             
+-------------------------------------------------------------------------------------------------
 
-Table: Sample output from the simulation {#tbl:sim-output}
+Table: Sample simulation output {#tbl:sim-output}
 
 
 Relying on simulation methods offers useful analytic benefits. Rather than interpret individual marginal effects from a regression model, we can explore multiple moving parts from the same model simultaneously to understand how individual characteristics interact with each other. This allows us to more fully explore our key research questions and see which kinds of donors are more or less likely to consider specific organizational attributes when deciding to donate, and which donor characteristics are associated with the propensity to donate. Importantly, each persona is an artificial construct. While some survey respondents might match an exact persona profile, others may not. This is acceptable in simulations as each combination of persona characteristics is plausible in the real world.
