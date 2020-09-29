@@ -1,0 +1,39 @@
+name: who-cares-about-crackdowns
+exclude:
+- Makefile
+- options.R
+- survey
+- Icon?
+navbar:
+  title: Who Cares About Crackdowns?
+  type: inverse
+  right:
+  - text: Generate and clean data
+    icon: fa-magic
+    href: 01_clean-generate-data.html
+  - text: Tables
+    icon: fa-table
+    href: 02_tables.html
+  - text: Analysis and figures
+    icon: fa-bar-chart
+    href: 03_analysis.html
+output:
+  html_document:
+    theme: journal
+    css: html/fixes.css
+    include:
+      after_body: html/footer.html
+    highlight: pygments
+    code_folding: show
+    code_download: yes
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+    toc_depth: 4
+    fig_height: 4
+    fig_width: 6
+    lib_dir: site_libs
+    self_contained: no
+output_dir: _site
+new_session: true

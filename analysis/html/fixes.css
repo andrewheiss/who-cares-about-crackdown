@@ -1,0 +1,50 @@
+.pull-left {
+    padding-right: 15px;
+}
+
+.pull-right {
+    padding-left: 15px;
+}
+
+.center {
+    margin: 0 auto;
+}
+
+.footer {
+    margin-top: 4em;
+    font-size: 0.8em;
+}
+
+blockquote {
+    font-size: 1em;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+pre {
+    font-size: 90%;
+}
+
+.datatables {
+    margin-bottom: 10.5px;
+}
+
+/* These overrides are necessary because pandoc now creates actual sections instead of <div class="section">, but the Bootstrap template still looks for classes named section.  */
+section h1, section h2, section h3, section h4, section h5, section h6 {
+    padding-top: 50px;
+    margin-top: -50px;
+}
+
+/* These overrides are necessary because of the fixed navbar in Bootstrap. The template inserts CSS in the <head> that adds top-margin: -50px and top-padding: 50px to allow anchored links to show up correctly. But doing that also kills the space before the headings, which is dumb. So here I add 21px/10.5px (the original amounts) of top padding for each heading, on top of the 65px for anchor jumping.  */
+section h1, section h2, section h3 {
+    padding-top: 71px !important;
+}
+
+section h4, section h5, section h6 {
+    padding-top: 60.5px !important;
+}
+
+/* Don't add first line indent to TOC entries */
+.tocify-header {
+    text-indent: initial;
+}
