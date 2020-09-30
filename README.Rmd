@@ -18,7 +18,7 @@ Year <- "2020"
 
 # `r Title`
 
-[Suparna Chaudhry](http://www.suparnachaudhry.com/) • Department of International Affairs • Christopher Newport University  
+[Suparna Chaudhry](http://www.suparnachaudhry.com/) • Department of International Affairs • Lewis & Clark College  
 [Marc Dotson](https://marriottschool.byu.edu/directory/details?id=50683) • Marriott School of Business • Brigham Young University  
 [Andrew Heiss](https://www.andrewheiss.com/) • Andrew Young School of Policy Studies • Georgia State University
 

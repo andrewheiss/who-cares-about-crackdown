@@ -4,7 +4,7 @@
 # Who Cares About Crackdowns? Exploring the Role of Trust in Individual Philanthropy
 
 [Suparna Chaudhry](http://www.suparnachaudhry.com/) • Department of
-International Affairs • Christopher Newport University  
+International Affairs • Lewis & Clark College  
 [Marc Dotson](https://marriottschool.byu.edu/directory/details?id=50683)
 • Marriott School of Business • Brigham Young University  
 [Andrew Heiss](https://www.andrewheiss.com/) • Andrew Young School of
