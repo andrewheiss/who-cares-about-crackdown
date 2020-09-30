@@ -16,7 +16,7 @@ author:
   email: aheiss@gsu.edu
 date: "September 29, 2020"
 published: Working paper.
-git-repo: https://example.com
+git-repo: https://github.com/andrewheiss/who-cares-about-crackdown
 abstract: >-
   Over the past two decades, international non-governmental organizations (INGOs) have faced increasing legal scrutiny and repression abroad. As a result, official aid to INGOs in repressive countries has reduced. NGOs thus need access to a diverse array of funds and may need to increase fundraising from private donors. However, research on the determinants of philanthropy towards international causes—particularly towards organizations working in challenging environments—is still in its infancy. Which demographic and experiential factors influence the decision of individuals to donate to legally besieged NGOs? We investigate this question using a market simulation based on a nationally representative conjoint experiment conducted on individuals across the U.S. with a history of charitable giving. We find that trust in political institutions and charities is enormously influential in shaping donor preferences. Donor profiles with high levels of social trust are likely to donate to human rights INGOs with friendly relationships with host governments, and that support holds steady if INGOs face criticism or crackdown. In contrast, donor profiles with lower levels of social trust prefer to donate to organizations that do not face criticism or crackdown abroad. Our findings have practical implications for INGOs raising funds from individuals amid closing civic space.
 reference-section-title: References
