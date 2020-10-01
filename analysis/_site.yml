@@ -8,6 +8,9 @@ navbar:
   title: Who Cares About Crackdowns?
   type: inverse
   right:
+  - text: Experiment
+    icon: fa-flask
+    href: experiment.html
   - text: Generate and clean data
     icon: fa-magic
     href: 01_clean-generate-data.html

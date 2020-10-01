@@ -1,0 +1,21 @@
+---
+title: "Experiment"
+author: "Suparna Chaudhry, Marc Dotson, and Andrew Heiss"
+date: "Last run: `r format(Sys.time(), '%F')`"
+output: 
+  html_document:
+    code_folding: hide
+    pandoc_args:
+      - "--default-image-extension=png"
+editor_options: 
+  chunk_output_type: console
+---
+
+# Description
+
+This survey was hosted on [Qualtrics](https://www.qualtrics.com) and participants were recruited through [Centiment](https://www.centiment.co/).
+
+# Survey experiment {.survey}
+
+```{r child = "text/experiment.md"}
+```
