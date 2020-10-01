@@ -31,7 +31,8 @@ theme_ngo <- function(base_size = 9, base_family = "IBM Plex Sans Condensed") {
                                     family = "IBM Plex Sans Condensed", face = "bold"),
           strip.background = element_rect(fill = "#ffffff", colour = NA),
           axis.ticks = element_blank(),
-          axis.title = element_text(family = "IBM Plex Sans Condensed SemiBold", face = "plain"),
+          axis.title = element_text(family = "IBM Plex Sans Condensed SemiBold", face = "plain", 
+                                    size = rel(0.8)),
           axis.title.x = element_text(margin = margin(t = 5)),
           axis.text = element_text(family = "IBM Plex Sans Condensed Light", face = "plain"),
           legend.key = element_blank(),
@@ -46,24 +47,39 @@ theme_ngo <- function(base_size = 9, base_family = "IBM Plex Sans Condensed") {
 }
 
 
-# Conversion and formatting help ------------------------------------------
+# Colors ------------------------------------------------------------------
 
-#' Convert mms to pts
-#'
-#' Convert units specified in millimeters to typographic points. This is especially helpful when working with ggplot geoms that use size parameters
-#'
-#' @param x a numeric value (in millimeters)
-#'
-#' @return A numeric value (in points)
-#' @export
-#'
-#' @examples
-#' library(ggplot2)
-#'
-#' ggplot(mtcars, aes(x = mpg, y = wt)) +
-#'   geom_point() +
-#'   annotate(geom = "text", x = 20, y = 4,
-#'            label = "Here's a label", size = pts(11))
-pts <- function(x) {
-  as.numeric(grid::convertUnit(grid::unit(x, "pt"), "mm"))
-}
+# colors_plasma <- viridisLite::plasma(6, begin = 0, end = 0.85)
+# colors_plasma %>% scales::show_col()
+# 
+# colors_viridis <- viridisLite::viridis(6, begin = 0, end = 0.97)
+# colors_viridis %>% scales::show_col()
+
+clrs_ngo <- as.list(c(viridisLite::plasma(6, begin = 0, end = 0.85), 
+                      viridisLite::viridis(6, begin = 0, end = 0.94)))
+# unlist(clrs_ngo) %>% scales::show_col()
+names(clrs_ngo) <- c("pl_blue", "pl_purple_dark", "pl_purple_light", 
+                     "pl_pink", "pl_orange", "pl_yellow",
+                     "vi_purple", "vi_blue_dark", "vi_blue_light", 
+                     "vi_turquoise", "vi_green", "vi_yellow")
+
+# Colors via http://clrs.cc/
+clrs <- list(
+  navy = "#001F3F",
+  blue = "#0074D9",
+  aqua = "#7FDBFF",
+  teal = "#39CCCC",
+  olive = "#3D9970",
+  green = "#2ECC40",
+  lime = "#01FF70",
+  yellow = "#FFDC00",
+  orange = "#FF851B",
+  red = "#FF4136",
+  fuchsia = "#F012BE",
+  purple = "#B10DC9",
+  maroon = "#85144B",
+  white = "#FFFFFF",
+  silver = "#DDDDDD",
+  gray = "#AAAAAA",
+  black = "#111111"
+)
