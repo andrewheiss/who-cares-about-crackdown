@@ -102,6 +102,10 @@ We use a conjoint experiment to study the simultaneous effects of organizational
 
 In our experiment, we presented respondents with four randomly selected international nonprofit organizations with four randomly assigned features.[^appendix-survey] We included organizations that are associated with a range of contentious and noncontentious issues: Amnesty International, Greenpeace, Oxfam, and the International Committee of the Red Cross. Because of their strong name recognition, these organizations (and others like World Vision, the World Wildlife Fund, and Médecins Sans Frontières) are commonly used in experimental surveys on philanthropy [@FaulknerTruongRomaniuk:2015].
 
+\stgroup
+
+\singlespacing
+
 
 
 -----------------------------------------------------------------------------------------------------------------------------
@@ -119,11 +123,15 @@ Red Cross               Refugee relief
 Table: Organization attributes varied in the experiment {#tbl:organization-attributes-full}
 
 
+\fingroup
+
 The hypothetical organizations are based on random combinations of features, including one of four issue areas, the presence or absence of two organizational practices, one of three funding sources, and one of three relationships with host governments (see @tbl:organization-attributes-full; see also Q3.1 in the survey text in the appendix). Respondents saw twelve sets of four hypothetical organizations out of 288 (4 × 4 × 2 × 3 × 3) possible combinations, meaning no single respondent was offered every combination. While not every combination necessarily reflected reality—for instance, a respondent might have been asked to compare a fictional Amnesty International that focuses on environmental issues and that is funded by private donations with a Greenpeace that focuses on human rights and that is funded by government grants—it is not important that these features align with true organizational characteristics, since the goal of these repeated hypothetical questions is to identify which attributes are the most salient for donors. 
 
 In June 2019, we recruited survey respondents through Centiment, a commercial provider of high-quality, non-probability opt-in survey panels. Centiment ensures panel quality by actively recruiting and paying representative samples of the U.S. population. To participate in the study, respondents were first screened based on their charitable activities. Those who indicated that they gave to charity once every few years or never were disqualified. After screening, we collected a sample of 1,016 respondents, which is sufficient for model estimation.[^sample-size]
 
-\newpage
+\stgroup
+
+\singlespacing
 
 
 
@@ -298,6 +306,8 @@ religion                   national news
 Table: Summary of individual respondent characteristics {#tbl:sample-details}
 
 
+\fingroup
+
 @tbl:sample-details provides a summary of the individual characteristics of survey respondents. Because we limited the sample to people who regularly make charitable contributions, most respondents have a favorable opinion of nonprofits and charities, with more than half reporting a 5 or greater level of trust in charities (on a 7-point scale). Moreover, nearly 90% indicated that it is important to trust charities. Additionally, the majority of respondents volunteer and donate to charity at least once a year and give between \$1–\$999 annually. Most rarely attend church, but feel that religion is important. Respondents are also civically engaged (three quarters voted in the last election) and follow national news closely (70% follow the news daily). Respondents are fairly balanced ideologically, with the majority reporting a 3, 4, or 5 on a 7-point scale of liberal–conservative political ideology.
 
 We analyze the effect of different combinations of organizational features and individual respondent attributes with a two-level hierarchical Bayesian multinomial logit model.[^model-details] Simply put, the first level of the model predicts individual donor preferences for various combinations of features (e.g. the combination of human rights issues, financial transparency, government funding, and government crackdown), while the second level predicts the heterogeneity of these fitted preferences as a function of individual donor characteristics.
@@ -305,6 +315,10 @@ We analyze the effect of different combinations of organizational features and i
 ## Simulated philanthropy market
 
 In this paper, we look at which kinds of donors are more or less likely to consider an NGO's issue area, funding sources, and relationships with host governments when deciding to donate. Disentangling the effect of every individual level-characteristic measured in the survey on every combination of organizational characteristics presented in the conjoint experiment is unwieldy and near impossible. Given the organizational attributes presented in our experiment, and the possible individual characteristics that respondents could select, there are billions of possible combinations and iterations of organizational and individual attributes—many of which rarely occur in the actual population of potential donors. To more fully explore the relationships between different organizational- and individual-level attributes, we turn to simulation methods that allow us to examine the impact of multiple covariates simultaneously. To simplify the possible combinations of individual characteristics, we generate 64 distinct personas with attributes that vary along different dimensions of demographics, politics and public affairs experience, and social attitudes (see @tbl:persona-attributes). We also generate 24 simulated organizations that vary by issue area, relationship with host government, and source of funding (see @tbl:organization-attributes).
+
+\stgroup
+
+\singlespacing
 
 
 
@@ -374,7 +388,13 @@ Refugee relief
 Table: Organization attributes varied in the simulation, resulting in 24 hypothetical organizations {#tbl:organization-attributes}
 
 
+\fingroup
+
 We then combine these different scenarios of donor and organization attributes with the coefficients from a multinomial multilevel regression model to calculate the probability that each simulated persona has of giving to specific combinations of organizational attributes. Any individual characteristics that we do not explicitly vary in @tbl:persona-attributes are held at their means or modal values from the survey sample. @tbl:sim-output provides an example of the simulation output, showing how two different personas are predicted to allocate donations to organizations with various characteristics. The proportion of donations from each persona sums to 100%, as every persona is guaranteed to make a donation.
+
+\stgroup
+
+\singlespacing
 
 
 
@@ -420,6 +440,8 @@ donors, Under crackdown
 
 Table: Sample simulation output {#tbl:sim-output}
 
+
+\fingroup
 
 Relying on simulation methods offers useful analytic benefits. Rather than interpret individual marginal effects from a regression model, we can explore multiple moving parts from the same model simultaneously to understand how individual characteristics interact with each other. This allows us to more fully explore our key research questions and see which kinds of donors are more or less likely to consider specific organizational attributes when deciding to donate, and which donor characteristics are associated with the propensity to donate. Importantly, each persona is an artificial construct. While some survey respondents might match an exact persona profile, others may not. This is acceptable in simulations as each combination of persona characteristics is plausible in the real world.
 
