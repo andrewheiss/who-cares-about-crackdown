@@ -103,6 +103,9 @@
 % https://tex.stackexchange.com/a/9763/11851
 \setlist[description]{style=unboxed}
 
+\usepackage{endnotes}
+\let\footnote\endnote
+
 
 % --------
 % MACROS
@@ -164,8 +167,9 @@ $endif$
 
 % biblatex setup
 % NB: Using "strict" messes with footnotes and removes the rule!
-\usepackage[authordate, backend=biber, noibid,
-            isbn=false, uniquename=false]{biblatex-chicago}
+% \usepackage[authordate, backend=biber, noibid,
+%             isbn=false, uniquename=false]{biblatex-chicago}
+\usepackage[backend=biber,bibencoding=utf8,hyperref=false,isbn=false,style=bath,sorting=ynt]{biblatex}
 
 \addbibresource{$bibliography$}
 \setlength\bibhang{\parindent}
@@ -281,6 +285,10 @@ $body$
 
 \newpage
 \singlespacing
+\newrefcontext[sorting=nyt]  % This is needed for bathbib to work
 \printbibliography[heading=bibliography$if(reference-section-title)$, title=$reference-section-title$$endif$]
+
+\newpage
+\theendnotes
 
 \end{document}
