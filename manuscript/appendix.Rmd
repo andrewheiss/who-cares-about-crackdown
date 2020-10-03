@@ -1,0 +1,31 @@
+---
+title: 'Online appendix for "Who Cares About Crackdowns? Exploring the Role of Trust in Individual Philanthropy"'
+short-title: 'Online appendix for "Who Cares About Crackdowns?"'
+author:
+- name: Suparna Chaudhry
+  affiliation: Lewis & Clark College
+  url: http://www.suparnachaudhry.com/
+  email: schaudhry@lclark.edu
+- name: Marc Dotson
+  affiliation: Brigham Young University
+  url: https://marriottschool.byu.edu/directory/details?id=50683
+  email: marc_dotson@byu.edu
+- name: Andrew Heiss
+  affiliation: Georgia State University
+  url: https://www.andrewheiss.com/
+  email: aheiss@gsu.edu
+date: "October 2, 2020"
+title-page: false
+published: 
+git-repo: https://github.com/andrewheiss/who-cares-about-crackdown
+reference-section-title: References
+toc: true
+appendix: true
+---
+
+<!-- supplement.md is generated from supplement.Rmd. Only edit the .Rmd file, *not* the .md file. -->
+
+# Survey experiment
+
+```{r child = "../analysis/text/experiment_anonymized.md"}
+```
