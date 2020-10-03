@@ -42,8 +42,8 @@
 # ----------------------
 # Modifiable variables
 # ----------------------
-# Main document (either .md or .Rmd)
-SRC = manuscript.Rmd
+# Markdown extension (e.g. md, markdown, mdown).
+MEXT = Rmd
 
 # Bibliography file
 BIB_FILE = bibliography.bib
@@ -132,21 +132,22 @@ endif
 # --------------------
 # Target definitions
 # --------------------
-MD_EXT = $(suffix $(SRC))
+# All markdown files in the working directory
+SRC = $(wildcard *.$(MEXT))
 BASE = $(basename $(SRC))
 
 # Targets
-MD=$(SRC:$(MD_EXT)=.md)
-HTML=$(SRC:$(MD_EXT)=.html)
-TEX=$(SRC:$(MD_EXT)=.tex)
-MS_TEX=$(SRC:$(MD_EXT)=-manuscript.tex)
-ODT=$(SRC:$(MD_EXT)=.odt)
-DOCX=$(SRC:$(MD_EXT)=.docx)
-MS_ODT=$(SRC:$(MD_EXT)=-manuscript.odt)
-MS_DOCX=$(SRC:$(MD_EXT)=-manuscript.docx)
-BIB=$(SRC:$(MD_EXT)=.bib)
+MD=$(SRC:.Rmd=.md)
+HTML=$(SRC:.Rmd=.html)
+TEX=$(SRC:.Rmd=.tex)
+MS_TEX=$(SRC:.Rmd=-manuscript.tex)
+ODT=$(SRC:.Rmd=.odt)
+DOCX=$(SRC:.Rmd=.docx)
+MS_ODT=$(SRC:.Rmd=-manuscript.odt)
+MS_DOCX=$(SRC:.Rmd=-manuscript.docx)
+BIB=$(SRC:.Rmd=.bib)
 
-.PHONY: clean count
+.PHONY: all md html odt docx ms msdoc tex mstex bib
 
 all:	clean $(MD) $(HTML) $(ODT) $(DOCX) $(MS_ODT) $(MS_DOCX) $(TEX) $(MS_TEX) $(BIB) count
 
@@ -260,9 +261,9 @@ bib:	$(BIB)
 	@echo "$(WARN_COLOR)Extracing all citations into a standalone .bib file...$(NO_COLOR)"
 	python ${PREFIX}/bin/bib_extract.py --bibtex_file $(BIB_FILE) --bibtools_resource ${PREFIX}/bin/bibtool.rsc $< $@
 
-count: html
+count: manuscript.html
 	@echo "$(WARN_COLOR)Count manuscript words like Word...$(NO_COLOR)"
-	Rscript ${PREFIX}/bin/word_count.R $(BASE).html
+	Rscript ${PREFIX}/bin/word_count.R $<
 
 clean:
 	@echo "$(WARN_COLOR)Deleting all existing targets...$(NO_COLOR)"
