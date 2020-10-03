@@ -21,8 +21,27 @@ abstract: >-
   Over the past two decades, international non-governmental organizations (INGOs) have faced increasing legal scrutiny and repression abroad. As a result, official aid to INGOs in repressive countries has reduced. NGOs thus need access to a diverse array of funds and may need to increase fundraising from private donors. However, research on the determinants of philanthropy towards international causes—particularly towards organizations working in challenging environments—is still in its infancy. Which demographic and experiential factors influence the decisions of individuals to donate to legally besieged NGOs? We investigate this question using a market simulation based on a nationally representative conjoint experiment conducted on individuals across the U.S. with a history of charitable giving. We find that trust in political institutions and charities is enormously influential in shaping donor preferences. Donor profiles with high levels of social trust are likely to donate to human rights INGOs with friendly relationships with host governments, and that support holds steady if INGOs face criticism or crackdown. In contrast, donor profiles with lower levels of social trust prefer to donate to organizations that do not face criticism or crackdown abroad. Our findings have practical implications for INGOs raising funds from individuals amid closing civic space.
 reference-section-title: References
 toc: false
+title-page: true
+word-count: "7,562"
+keywords: international NGOs, donor behavior, philanthropy, human rights, repression, international giving, donor choice
+thanks: >-
+  The data that support the findings of this study, as well as the code to reproduce the findings, are openly available at <https://github.com/andrewheiss/who-cares-about-crackdown> and <https://osf.io/sm5ew/>. This experiment received approval by the human subjects research committees at Christopher Newport University (1436622-1), Brigham Young University (E19135), and Georgia State University (H19644). As part of a larger project, we preregistered hypotheses and our research design at the Open Science Framework, and our preregistration protocol is available at <https://osf.io/hsbyd/>. This study covers the third research question of our preregistered design.
+author-note: >-
+  Suparna Chaudhry, PhD, Assistant Professor of International Affairs, Department of International Affairs, Lewis \& Clark College; Marc Dotson, PhD, Assistant Professor of Marketing, Marriott School of Business, Brigham Young University; Andrew Heiss, PhD, Assistant Professor of Public Management, Andrew Young School of Policy Studies, Georgia State University. 
+correspondence: >-
+  Correspondence concerning this article should be addressed to Andrew Heiss, PhD, Department of Public Management and Policy, Andrew Young School of Policy Studies, Georgia State University, 14 Marietta Street NW, Suite 357, Atlanta, GA 30303. Contact: aheiss@gsu.edu
 mainfont: Lora
 sansfont: IBM Plex Sans
+policy-implications: >-
+  In the wake of the global crackdown on civil society, international NGOs (INGOs) need to maintain access to multiple sources of funding, including individual donors. 
+
+  It is critical for INGOs to understand what motivates individuals to donate, especially if INGOs face legal crackdown in their host countries.
+  
+  Trust in political institutions and in charitable organizations matters substantially in shaping donor preferences.
+
+  We find that potential donors with low social trust tend to be wary of negative host-country relationships and prefer to donate to INGOs that are friendly with their host governments, while potential donors with high social trust are more willing to stick with legally besieged INGOs.
+
+  Donors that are the most trusting and involved may remain supportive when charities face government criticism and crackdown. The global crackdown on NGOs may also possibly sour NGOs' least trusting individual donors.
 ---
 
 <!-- manuscript.md is generated from manuscript.Rmd. Only edit the .Rmd file, *not* the .md file. -->
