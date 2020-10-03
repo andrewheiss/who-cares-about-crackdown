@@ -56,7 +56,7 @@ ENDFLOAT = FALSE
 BLINDED = FALSE
 
 # Add version control information in footer (only happens in tex target)
-VC_ENABLE = FALSE
+VC_ENABLE = TRUE
 
 # Output folder for LaTeX PDFs (uses a separate folder so all the intermediate
 # TeX stuff doesn't clutter up your main directory)

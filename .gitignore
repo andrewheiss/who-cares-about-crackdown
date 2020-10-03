@@ -16,6 +16,7 @@ manuscript/*.tex
 manuscript/tex_out/*
 manuscript/vc*
 manuscript/submissions/*
+manuscript/pandoc/bin/vc.tex
 
 # Original output
 data/private_data/*
