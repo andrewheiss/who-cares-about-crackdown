@@ -9,7 +9,6 @@
 #		- python3
 #		- LibreOffice
 #		- pandoc
-#		- pandoc-include (pip install pandoc-include)
 #		- pandoc-citeproc (brew install pandoc-citeproc on macOS)
 #		- pandoc-crossref (brew install pandoc-crossref on macOS)
 #		- bibtools (brew install bib-tools on macOS)
@@ -173,7 +172,6 @@ bib:	$(BIB)
 	python $(PREFIX)/bin/replace_pdfs.py $(PNG_CONVERT) $< | \
 	pandoc -r $(OPTIONS)+ascii_identifiers -s -w html \
 		$(CROSSREF) \
-		--filter pandoc-include \
 		--default-image-extension=png \
 		--mathjax \
 		--table-of-contents \
@@ -192,7 +190,6 @@ bib:	$(BIB)
 	@echo "$(WARN_COLOR)Converting Markdown to TeX using hikma-article template...$(NO_COLOR)"
 	pandoc -r $(OPTIONS)+raw_tex -w latex -s \
 		$(CROSSREF) \
-		--filter pandoc-include \
 		--default-image-extension=pdf \
 		--pdf-engine=xelatex \
 		--template=$(PREFIX)/templates/xelatex.tex \
@@ -213,7 +210,6 @@ bib:	$(BIB)
 	pandoc -r $(OPTIONS)+raw_tex -w latex -s \
 		$(CROSSREF) \
 		$(ENDFLOAT_PANDOC) \
-		--filter pandoc-include \
 		--default-image-extension=pdf \
 		--pdf-engine=xelatex \
 		--template=$(PREFIX)/templates/xelatex-manuscript.tex \
@@ -231,7 +227,6 @@ bib:	$(BIB)
 	python $(PREFIX)/bin/replace_pdfs.py $(PNG_CONVERT) $< | \
 	pandoc -r $(OPTIONS) -w odt \
 		$(CROSSREF) \
-		--filter pandoc-include \
 		--default-image-extension=png \
 		--template=$(PREFIX)/templates/odt.odt \
 		--reference-doc=$(PREFIX)/templates/reference.odt \
@@ -246,7 +241,6 @@ bib:	$(BIB)
 	python $(PREFIX)/bin/replace_pdfs.py $(PNG_CONVERT) $< $(BLINDIFY) | \
 	pandoc -r $(OPTIONS) -w odt \
 		$(CROSSREF) \
-		--filter pandoc-include \
 		--default-image-extension=png \
 		--template=$(PREFIX)/templates/odt-manuscript.odt \
 		--reference-doc=$(PREFIX)/templates/reference-manuscript.odt \
