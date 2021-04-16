@@ -180,7 +180,7 @@ bib:	$(BIB)
 		--metadata linkReferences=true \
 		--template=$(PREFIX)/templates/html.html \
 		--css=$(PREFIX)/templates/ath-clean.css \
-		--filter pandoc-citeproc \
+		--citeproc \
 		--csl=$(PREFIX)/csl/$(CSL).csl \
 		--bibliography=$(BIB_FILE) \
 		-o $@
