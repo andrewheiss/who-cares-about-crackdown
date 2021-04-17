@@ -9,13 +9,13 @@ navbar:
   - text: Experiment
     icon: fas fa-flask
     href: experiment.html
-  - text: Generate and clean data
+  - text: Data
     icon: fas fa-magic
     href: 01_clean-generate-data.html
   - text: Tables
     icon: fas fa-table
     href: 02_tables.html
-  - text: Analysis and figures
+  - text: Figures
     icon: fas fa-chart-bar
     href: 03_analysis.html
   - text: Manuscript
