@@ -18,6 +18,27 @@ navbar:
   - text: Analysis and figures
     icon: fas fa-chart-bar
     href: 03_analysis.html
+  - text: Manuscript
+    icon: far fa-file-alt
+    menu:
+      - text: "PDF"
+        href: "output/manuscript.pdf"
+      - text: "Manuscripty PDF"
+        href: "output/manuscript-ms.pdf"
+      - text: "HTML"
+        href: "output/manuscript.html"
+      - text: "Word"
+        href: "output/manuscript.docx"
+      - text: "Citations"
+        href: "output/extracted-citations.bib"
+      - text: "Appendix (PDF)"
+        href: "output/appendix.pdf"
+      - text: "Appendix (Manuscripty PDF)"
+        href: "output/appendix-ms.pdf"
+      - text: "Appendix (HTML)"
+        href: "output/appendix.html"
+  - icon: fab fa-github
+    href: https://github.com/andrewheiss/who-cares-about-crackdown
 output:
   html_document:
     theme: journal
