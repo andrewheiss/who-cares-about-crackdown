@@ -1,1 +1,1 @@
-knit: stop('\n\nDon\'t knit with the "Knit" button in RStudio.\nUse RStudio\'s Terminal panel, navigate to the manuscript folder, then run "make html",\n"make tex", "make docx", etc.\n\n')
+knit: stop('\n\nDon\'t knit with the "Knit" button in RStudio.\nRun one of these commands in an R console:\n\ntargets::tar_make(html)\ntargets::tar_make(pdf)\ntargets::tar_make(ms_pdf)\ntargets::tar_make(docx)\n\nYou can also run targets::tar_make() to build the whole project.\n\n')
