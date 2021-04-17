@@ -86,6 +86,7 @@ options(
 library(tidyverse)
 library(targets)
 library(kableExtra)
+library(huxtable)
 library(patchwork)
 library(scales)
 library(janitor)
@@ -133,9 +134,9 @@ Mre than 100 countries have proposed or enacted 244 measures restricting, repres
 
 Many INGOs in the Global South receive funds from a variety of public and private sources each year. Public funds—or traditional donor aid—channel money from official aid agencies through a variety of bilateral and multilateral institutions. Private sources include foundations, private corporations, and individuals. While INGOs have not been passive in responding to the crackdown on civil society, they face increasing obstacles from a funding perspective. 
 
-Closing civic space not just resulted in net losses of income to INGOs, particularly through official bilateral and multilateral aid [@DupuyPrakash:2018], it has also affected how and where funds are allocated. Following the passage of anti-NGO laws, official donors move funds away from contentious causes such as human rights, media, corruption, advocacy, among others, towards tamer and more regime-compatible causes such as health, education [@ChaudhryHeiss:2018]. The latter trend has also been exacerbated by a preference among donors working in official aid and the democracy promotion establishment to gradually increase funding directed towards tame causes, at the expense of more contentious causes. This is because many tame causes can have easily quantifiable, measurable outputs, which makes it clear to show a program’s effectiveness over time (Bush 2015).
+Closing civic space not just resulted in net losses of income to INGOs, particularly through official bilateral and multilateral aid [@DupuyPrakash:2018], it has also affected how and where funds are allocated. Following the passage of anti-NGO laws, official donors move funds away from contentious causes such as human rights, media, corruption, advocacy, among others, towards tamer and more regime-compatible causes such as health, education [@ChaudhryHeiss:2018]. The latter trend has also been exacerbated by a preference among donors working in official aid and the democracy promotion establishment to gradually increase funding directed towards tame causes, at the expense of more contentious causes. This is because many tame causes can have easily quantifiable, measurable outputs, which makes it clear to show a program's effectiveness over time [@Bush:2015].
 
-We argue that individual private donors can help fill in an important gap. Individual donors do not use the same performance-based metrics as official donors [@desaikharas]. Rather, individual donors often use heuristics to simply their decision-making, making cursory judgments about an organization’s issue area, mission, vision, and values and seek out supplementary information from friends, family, and acquaintances [@TBPrakash:2017; @SzperPrakash:2011]. Due to these differences, individual donors can help address some of the challenges arising from reduced public funding available to INGOs. To be clear, we are not arguing that giving by individual donors would be a perfect substitute for NGOs net loss of income or income for certain programs, but rather, an important supplement to reduced funding from foreign sources. Moreover, it would also be a supplement to private funding from foundations towards international nonprofits which has not been as adversely affected, with foundations continue to channel funds to countries with hostile legal environments [@NeedlesWolcheckSato:2018].
+We argue that individual private donors can help fill in an important gap. Individual donors do not use the same performance-based metrics as official donors [@desaikharas]. Rather, individual donors often use heuristics to simply their decision-making, making cursory judgments about an organization's issue area, mission, vision, and values and seek out supplementary information from friends, family, and acquaintances [@TBPrakash:2017; @SzperPrakash:2011]. Due to these differences, individual donors can help address some of the challenges arising from reduced public funding available to INGOs. To be clear, we are not arguing that giving by individual donors would be a perfect substitute for NGOs net loss of income or income for certain programs, but rather, an important supplement to reduced funding from foreign sources. Moreover, it would also be a supplement to private funding from foundations towards international nonprofits which has not been as adversely affected, with foundations continue to channel funds to countries with hostile legal environments [@NeedlesWolcheckSato:2018].
 
 However, research on the determinants of individual-level philanthropy for international causes—particularly towards organizations working in challenging environments—is still in its infancy due to the absence of expansive and high-quality data [@greenhill2013]. Moreover, a majority of research on giving to international groups is restricted to elite high net-worth donors[^highnetworth] [@USTrust2014]. We still know little about demographic traits and experiences that motivate or deter individuals to donate during shrinking civic space. Below, we look at key drivers of individual-level philanthropy and show how the importance of trust in donating during civic crackdowns. 
 
@@ -175,12 +176,32 @@ In our experiment, we presented respondents with four randomly selected internat
 \singlespacing
 
 ```{r organization-attributes-full}
-orgs$org_attributes %>% 
+tbl_org_attributes_caption <- "Organization attributes varied in the experiment. Each participant saw repeated combinations of attributes, with one attribute randomly selected from each column."
+
+tbl_org_attributes <- orgs$org_attributes %>% 
   select(Organization, `Issue area`, `Organizational practices`, 
-         `Funding sources`, `Relationship with government`) %>% 
-  kbl(align = "lllll",
-      caption = "Organization attributes varied in the experiment. Each participant saw repeated combinations of attributes, with one attribute randomly selected from each column.") %>% 
-  kable_styling()
+         `Funding sources`, `Relationship with government`)
+
+if (!is_docx) {
+  tbl_org_attributes %>%
+    kbl(align = c("l", "l", "l", "l", "l"),
+        booktabs = TRUE, linesep = "\\addlinespace",
+        caption = tbl_org_attributes_caption) %>% 
+    kable_styling() %>% 
+    column_spec(1:5, width = "0.17\\\\textwidth")
+} else {
+  tbl_org_attributes %>% 
+    hux() %>% 
+    set_font_size(10) %>%
+    set_all_padding(3) %>% 
+    set_top_border(1, everywhere) %>%
+    set_bottom_border(c(1, 5), everywhere) %>%
+    set_width(1) %>% 
+    set_wrap(TRUE) %>% 
+    huxtable::set_caption(tbl_org_attributes_caption) %>% 
+    huxtable::as_flextable() %>% 
+    flextable::font(fontname = "Times New Roman")
+}
 ```
 
 \fingroup
@@ -189,23 +210,59 @@ The hypothetical organizations are based on random combinations of features, inc
 
 In June 2019, we recruited survey respondents through Centiment, a commercial provider of high-quality, non-probability opt-in survey panels. Centiment ensures panel quality by actively recruiting and paying representative samples of the U.S. population. To participate in the study, respondents were first screened based on their charitable activities. Those who indicated that they gave to charity once every few years or never were disqualified. After screening, we collected a sample of 1,016 respondents, which is sufficient for model estimation.[^sample-size]
 
-
-
 \stgroup
 
 \singlespacing
 
 ```{r sample-details}
-participant_summary %>% 
+tbl_participant_summary_caption <- "Summary of individual respondent characteristics"
+
+tbl_participant_summary <- participant_summary %>% 
   select(Question = clean_name,
          Response = level,
          N = count,
-         `%` = nice_prop) %>% 
-  kbl(align = "lllcc",
-      caption = "Summary of individual respondent characteristics") %>% 
-  pack_rows(index = table(fct_inorder(participant_summary$category))) %>%
-  collapse_rows(columns = 1, valign = "top") %>% 
-  kable_styling()
+         `%` = nice_prop) 
+
+if (!is_docx) {
+  tbl_participant_summary %>% 
+    kbl(align = c("l", "l", "c", "c"),
+        longtable = TRUE, booktabs = TRUE, linesep = "",
+        caption = tbl_participant_summary_caption) %>% 
+    pack_rows(index = table(fct_inorder(participant_summary$category)),
+              latex_gap_space = "1.5em", indent = FALSE) %>%
+    collapse_rows(columns = 1, valign = "top", latex_hline = "major") %>% 
+    kable_styling(latex_options = c("repeat_header"))
+} else {
+  tbl_participant_summary %>% 
+    hux() %>% 
+    set_font_size(10) %>%
+    set_all_padding(3) %>% 
+    set_align(everywhere, 1:2, "left") %>% 
+    set_align(everywhere, 3:4, "center") %>% 
+    merge_repeated_rows(col = 1) %>% 
+    insert_row("Demographics", "", "", "", after = 1) %>% 
+    insert_row("\nAttitudes toward charity", "", "", "", after = 23) %>% 
+    insert_row("\nPolitics, ideology, and religion", "", "", "", after = 51) %>%
+    merge_cells(2, 1:2) %>%
+    merge_cells(24, 1:2) %>%
+    merge_cells(52, 1:2) %>%
+    set_bold(1, everywhere) %>%
+    set_bold(c(2, 24, 52), everywhere) %>%
+    set_top_border(1, everywhere) %>%
+    set_bottom_border(1, everywhere) %>%
+    set_bottom_border(c(7, 9, 14, 21, 23,
+                        26, 33, 40, 47, 51,
+                        55, 57, 59, 66, 73, 75, 78, 80), 
+                      everywhere) %>% 
+    set_width(1) %>% 
+    set_col_width(1, 0.25) %>%
+    set_col_width(2, 0.4) %>%
+    set_col_width(3:4, 0.1) %>%
+    set_wrap(TRUE) %>% 
+    huxtable::set_caption(tbl_participant_summary_caption) %>% 
+    huxtable::as_flextable() %>% 
+    flextable::font(fontname = "Times New Roman")
+}
 ```
 
 \fingroup
@@ -223,18 +280,61 @@ In this paper, we look at which kinds of donors are more or less likely to consi
 \singlespacing
 
 ```{r persona-attributes}
-personas$persona_attributes %>% 
-  kbl(align = "lll",
-      caption = "Individual attributes varied in the simulation, resulting in 64 persona profiles") %>% 
-  kable_styling()
+tbl_persona_attributes_caption <- "Individual attributes varied in the simulation, resulting in 64 persona profiles"
+
+tbl_persona_attributes <- personas$persona_attributes 
+
+if (!is_docx) {
+  tbl_persona_attributes %>% 
+    kbl(align = c("l", "l", "l"),
+        booktabs = TRUE, linesep = "\\addlinespace",
+        caption = tbl_persona_attributes_caption) %>% 
+    kable_styling() %>% 
+    column_spec(1, width = "0.3\\\\textwidth") %>% 
+    column_spec(2, width = "0.3\\\\textwidth") %>% 
+    column_spec(3, width = "0.3\\\\textwidth")
+} else {
+  tbl_persona_attributes %>% 
+    hux() %>% 
+    set_font_size(10) %>%
+    set_all_padding(3) %>% 
+    set_align(everywhere, everywhere, "left") %>% 
+    set_top_border(1, everywhere) %>%
+    set_bottom_border(c(1, 9), everywhere) %>%
+    set_width(1) %>% 
+    set_wrap(TRUE) %>% 
+    huxtable::set_caption(tbl_persona_attributes_caption) %>% 
+    huxtable::as_flextable() %>% 
+    flextable::font(fontname = "Times New Roman")
+}
 ```
 
 ```{r organization-attributes}
-orgs$org_attributes %>% 
-  select(`Issue area`, `Relationship with government`, `Funding`) %>% 
-  kbl(align = "lll",
-      caption = "Organization attributes varied in the simulation, resulting in 24 hypothetical organizations") %>% 
-  kable_styling()
+tbl_org_attributes_caption <- "Organization attributes varied in the simulation, resulting in 24 hypothetical organizations"
+
+tbl_org_attributes <- orgs$org_attributes %>% 
+  select(`Issue area`, `Relationship with government`, `Funding`) 
+
+if (!is_docx) {
+  tbl_org_attributes %>% 
+    kbl(align = c("l", "l", "l"),
+        booktabs = TRUE, linesep = "\\addlinespace",
+        caption = tbl_org_attributes_caption) %>% 
+    kable_styling()
+} else {
+  tbl_persona_attributes %>% 
+    hux() %>% 
+    set_font_size(10) %>%
+    set_all_padding(3) %>% 
+    set_align(everywhere, everywhere, "left") %>% 
+    set_top_border(1, everywhere) %>%
+    set_bottom_border(c(1, 9), everywhere) %>%
+    set_width(1) %>% 
+    set_wrap(TRUE) %>% 
+    huxtable::set_caption(tbl_org_attributes_caption) %>% 
+    huxtable::as_flextable() %>% 
+    flextable::font(fontname = "Times New Roman")
+}
 ```
 
 \fingroup
@@ -271,12 +371,33 @@ example_persona_results_small <- example_persona_results %>%
   mutate(across(everything(), ~replace_na(., "…"))) %>% 
   rename(Organization = org_clean)
 
-example_persona_results_small %>% 
-  mutate(Organization = text_spec(Organization, bold = Organization == "Total")) %>% 
-  kbl(align = "lcc",
-      caption = "Sample simulation output",
-      escape = FALSE) %>% 
-  kable_styling()
+example_personal_results_caption <- "Sample simulation output"
+
+if (!is_docx) {
+  example_persona_results_small %>% 
+    # mutate(Organization = text_spec(Organization, bold = Organization == "Total")) %>% 
+    kbl(align = c("l", "c", "c"),
+        booktabs = TRUE, linesep = "\\addlinespace",
+        caption = example_personal_results_caption) %>% 
+    kable_styling() %>% 
+    column_spec(1, width = "0.2\\\\textwidth") %>% 
+    column_spec(2, width = "0.35\\\\textwidth") %>% 
+    column_spec(3, width = "0.35\\\\textwidth")
+} else {
+  example_persona_results_small %>% 
+    hux() %>% 
+    set_font_size(10) %>%
+    set_all_padding(3) %>% 
+    set_align(everywhere, 1, "left") %>% 
+    set_align(everywhere, 2:3, "center") %>% 
+    set_top_border(1, everywhere) %>%
+    set_bottom_border(c(1, 12, 13), everywhere) %>%
+    set_width(1) %>% 
+    set_wrap(TRUE) %>% 
+    huxtable::set_caption(example_personal_results_caption) %>% 
+    huxtable::as_flextable() %>% 
+    flextable::font(fontname = "Times New Roman")
+}
 ```
 
 \fingroup

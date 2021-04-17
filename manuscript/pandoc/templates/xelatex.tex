@@ -107,7 +107,7 @@ $endif$
     \setsecnumdepth{chapter}
 
     % Change formatting in title block
-    \pretitle{\par\vskip 0.5em \flushleft\LARGE\sffamily\bfseries}
+    \pretitle{\par\vskip 3em \flushleft\LARGE\sffamily\bfseries}
     \posttitle{\par\vskip 0.75em}
     \preauthor{\flushleft\sffamily}
     \postauthor{}
@@ -153,8 +153,12 @@ $endif$
 }
 \makepsmarks{ath}{\@athmarks}
 \makepsmarks{ath}{}
-\makeevenhead{ath}{}{}{\scshape\thepage}
-\makeoddhead{ath}{}{}{\scshape\thepage}
+% For the first page
+\makeevenfoot{plain}{}{\sffamily\footnotesize\thepage}{}
+\makeoddfoot{plain}{}{\sffamily\footnotesize\thepage}{}
+% For regular pages
+\makeevenhead{ath}{}{}{\sffamily\footnotesize\thepage}
+\makeoddhead{ath}{}{}{\sffamily\footnotesize\thepage}
 \makeatother
 
 
@@ -166,6 +170,29 @@ $endif$
 
 % For better TOCs
 \usepackage{tocloft}
+
+% Treat the TOC title as a section instead of a chapter
+\makeatletter
+\renewcommand\@tocmaketitle{%
+  \section*{\contentsname}
+  \tocmark%
+  \@afterheading}
+\makeatother
+
+% Shift indentation back
+% See table showing tocloft's default indents and numwidths
+% https://tex.stackexchange.com/a/50472/11851
+\cftsetindents{section}{0em}{1.5em}
+\cftsetindents{subsection}{1.5em}{2.3em}
+\cftsetindents{subsubsection}{3.8em}{3.2em}
+
+% Use sans fonts for all parts of the TOC
+\renewcommand{\cftsectionfont}{\normalfont\sffamily}
+\renewcommand{\cftsectionpagefont}{\normalfont\sffamily} 
+\renewcommand{\cftsubsectionfont}{\normalfont\sffamily}
+\renewcommand{\cftsubsectionpagefont}{\normalfont\sffamily}
+\renewcommand{\cftsubsubsectionfont}{\normalfont\sffamily}
+\renewcommand{\cftsubsubsectionpagefont}{\normalfont\sffamily}
 
 % Page margins
 % {left}{right}{ratio} - one has to be *
@@ -234,8 +261,11 @@ $endif$
 \newcommand{\stgroup}{\begingroup}
 \newcommand{\fingroup}{\endgroup}
 
-\newcommand{\memSingle}{\setSingleSpace{1.15}\SingleSpacing}
-\newcommand{\memSingleSmall}{\setSingleSpace{0.9}\SingleSpacing}
+\DisemulatePackage{setspace}
+\usepackage{setspace}
+
+% \newcommand{\memSingle}{\setSingleSpace{1.15}\SingleSpacing}
+% \newcommand{\memSingleSmall}{\setSingleSpace{0.9}\SingleSpacing}
 
 % --------
 % TABLES
@@ -258,9 +288,9 @@ $endif$
 \usepackage{xcolor}
 
 % Make tables sans serif
-\setfloatadjustment{table}{\small\sffamily}
+\setfloatadjustment{table}{\footnotesize\sffamily}
 % memoir's setfloatadjustment doesn't work on longtables, but this does
-\AtBeginEnvironment{longtable}{\small\sffamily}
+\AtBeginEnvironment{longtable}{\footnotesize\sffamily}
 
 % Remove left margin in lists inside longtables
 % https://tex.stackexchange.com/a/378190/11851
@@ -349,7 +379,7 @@ $endif$
 
 % Add content from pandoc metadata
 $if(title)$
-\title{\bigskip $title$$if(thanks)$\thanks{$thanks$}$endif$}
+\title{\bigskip \bigskip $title$$if(thanks)$\thanks{$thanks$}$endif$}
 $endif$
 
 \author{

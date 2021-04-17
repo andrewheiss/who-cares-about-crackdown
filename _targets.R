@@ -89,34 +89,36 @@ list(
                csl = csl,
                bib_file,
                support_folder = "output/html-support"),
-             format = "file"),#,
-  # tar_target(pdf,
-  #            render_pdf(
-  #              input = main_manuscript,
-  #              output = here_rel("manuscript", "output/manuscript.pdf"),
-  #              bibstyle = bibstyle,
-  #              bib_file),
-  #            format = "file"),
-  # tar_target(ms_pdf,
-  #            render_pdf_ms(
-  #              input = main_manuscript,
-  #              output = here_rel("manuscript", "output/manuscript-ms.pdf"),
-  #              bibstyle = bibstyle,
-  #              bib_file),
-  #            format = "file"),
-  # tar_target(docx,
-  #            render_docx(
-  #              input = main_manuscript,
-  #              output = here_rel("manuscript", "output/manuscript.docx"),
-  #              csl = csl,
-  #              bib_file),
-  #            format = "file"),
-  # tar_target(bib,
-  #            extract_bib(
-  #              input_rmd = main_manuscript,
-  #              input_bib = bib_file,
-  #              output = here_rel("manuscript", "output", "extracted-citations.bib")),
-  #            format = "file")
+             format = "file"),
+  tar_target(pdf,
+             render_pdf(
+               input = main_manuscript,
+               output = here_rel("manuscript", "output", "manuscript.pdf"),
+               bibstyle = bibstyle,
+               bib_file),
+             format = "file"),
+  tar_target(ms_pdf,
+             render_pdf_ms(
+               input = main_manuscript,
+               output = here_rel("manuscript", "output", "manuscript-ms.pdf"),
+               bibstyle = bibstyle,
+               bib_file),
+             format = "file"),
+  tar_target(docx,
+             render_docx(
+               input = main_manuscript,
+               output = here_rel("manuscript", "output", "manuscript.docx"),
+               csl = csl,
+               bib_file),
+             format = "file"),
+  tar_target(bib,
+             extract_bib(
+               input_rmd = main_manuscript,
+               input_bib = bib_file,
+               output = here_rel("manuscript", "output", "extracted-citations.bib")),
+             format = "file"),
+  
+  # Appendix stuff
   tar_target_raw("appendix", here_rel("manuscript", "appendix.Rmd"),
                  format = "file",
                  deps = c("bib_file",
@@ -128,5 +130,26 @@ list(
                csl = csl,
                bib_file,
                support_folder = "output/html-support"),
+             format = "file"),
+  tar_target(app_pdf,
+             render_pdf(
+               input = appendix,
+               output = here_rel("manuscript", "output", "appendix.pdf"),
+               bibstyle = bibstyle,
+               bib_file),
+             format = "file"),
+  tar_target(app_ms_pdf,
+             render_pdf_ms(
+               input = appendix,
+               output = here_rel("manuscript", "output", "appendix-ms.pdf"),
+               bibstyle = bibstyle,
+               bib_file),
+             format = "file"),
+  tar_target(app_docx,
+             render_docx(
+               input = appendix,
+               output = here_rel("manuscript", "output", "appendix.docx"),
+               csl = csl,
+               bib_file),
              format = "file")
 )
