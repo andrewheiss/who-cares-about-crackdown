@@ -3,8 +3,8 @@ library(tarchetypes)
 library(tibble)
 
 # General variables
-csl <- "pandoc/csl/the-open-university-harvard.csl"
-bibstyle <- "bibstyle-chicago-authordate"
+csl <- "pandoc/csl/apa.csl"
+bibstyle <- "bibstyle-apa"
 
 options(tidyverse.quiet = TRUE,
         dplyr.summarise.inform = FALSE)
@@ -147,5 +147,8 @@ list(
                output = here_rel("manuscript", "output", "appendix.docx"),
                csl = csl,
                bib_file),
-             format = "file")
+             format = "file"),
+  
+  tar_target(word_count, count_words(html)),
+  tar_force(show_word_count, print(word_count), TRUE)
 )

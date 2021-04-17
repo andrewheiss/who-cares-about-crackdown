@@ -27,7 +27,6 @@ library(tidyverse)
 library(targets)
 library(scales)
 library(patchwork)
-library(ggstance)
 library(here)
 
 # Generated via random.org
