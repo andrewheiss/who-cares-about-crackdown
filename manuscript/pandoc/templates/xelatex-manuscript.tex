@@ -34,9 +34,9 @@
 % TITLE SECTION
 % ---------------
 % Abstract
-\usepackage{abstract} 
+\usepackage{abstract}
 \renewcommand{\abstractnamefont}{\normalfont\normalsize\bfseries}
-\renewcommand{\abstracttextfont}{\normalsize} 
+\renewcommand{\abstracttextfont}{\normalsize}
 \setlength{\absleftindent}{\parindent}
 \setlength{\absrightindent}{\parindent}
 
@@ -47,7 +47,7 @@
 \usepackage{authblk} % For multiple authors
 
 % Keywords
-\providecommand{\keywords}[1]{\textbf{\textit{Keywords:}} #1}
+\providecommand{\keywords}[1]{\textbf{\textit{Keywords---}}#1}
 
 
 % -------------------
@@ -65,32 +65,39 @@
 % Ensure that figures are floated where or after they're defined
 \usepackage{flafter}
 
-% Headers from page 2 on
+% Running header stuff
 \usepackage{fancyhdr}
 \setlength{\headheight}{0.25in}
-\pagestyle{fancy}
-\lhead{\uppercase{$short-title$}}
-\chead{}
-\rhead{}
-\lfoot{}
-\cfoot{\thepage}
-\rfoot{}
-\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\headrulewidth}{0pt}  % Remove lines
 \renewcommand{\footrulewidth}{0pt}
 
-% Pandoc tightlists
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% SHORT TITLE           Page #
+\fancypagestyle{normal}{
+  \fancyhf{}
+  \lhead{\uppercase{$if(short-title)$ $short-title$ $else$ $title$ $endif$}}
+  \rhead{\thepage}
+}
+
+% Running head: SHORT TITLE        Page #
+\fancypagestyle{title}{
+  \fancyhf{}
+  \lhead{Running head: \uppercase{$if(short-title)$ $short-title$ $else$ $title$ $endif$}}
+  \rhead{}
+}
+
+% Use regular heading style
+\pagestyle{normal}
 
 
 % ------------------
 % TYPOGRAPHY STUFF
 % ------------------
+% Pandoc tightlists
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
 % Fix widows and orphans
 \usepackage[all,defaultlines=2]{nowidow}
-
-% Line spacing
-\usepackage{setspace}
 
 % Don't typeset URLs in a monospaced font
 \usepackage{url}
@@ -103,8 +110,43 @@
 % https://tex.stackexchange.com/a/9763/11851
 \setlist[description]{style=unboxed}
 
-\usepackage{endnotes}
-\let\footnote\endnote
+% Format section headings
+\titleformat*{\section}{\center\large\bfseries}
+\titleformat*{\subsection}{\large\bfseries}
+\titleformat*{\subsubsection}{\normalsize\bfseries}
+
+% Disable section numbering
+\setcounter{secnumdepth}{0}
+
+% Fancier verbatims
+\usepackage{fancyvrb}
+
+% Line spacing
+\usepackage{setspace}
+
+% Single spacing in code chunks
+\AtBeginEnvironment{verbatim}{\singlespacing}
+
+% Hyperlink stuff
+\usepackage[xetex, colorlinks=true, urlcolor=DarkSlateBlue,
+            citecolor=DarkSlateBlue, filecolor=DarkSlateBlue, plainpages=false,
+            hyperfootnotes=false,  % For compatibility with footmisc
+            pdfpagelabels, bookmarksnumbered]{hyperref}
+
+% Color names for hyperlinks
+\usepackage[svgnames]{xcolor}
+
+% Epigraphs
+$if(epigraph)$
+\usepackage{epigraph}
+\renewcommand{\epigraphsize}{\footnotesize}
+\setlength{\epigraphrule}{0pt}
+$endif$
+
+% Syntax highlighting stuff
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
 
 
 % --------
@@ -115,64 +157,90 @@
 \newcommand{\stgroup}{\begingroup}
 \newcommand{\fingroup}{\endgroup}
 
+\newcommand{\memSingle}{}
+\newcommand{\memSingleSmall}{}
+
 
 % --------
 % TABLES
 % --------
-\usepackage{floatrow}
-\usepackage{longtable}
 \usepackage{booktabs}
+\usepackage{longtable}
 \usepackage{pbox}  % For multi-line table cells
 
-% Single spacing in longtables
-% This doesn't work with endfloat though
-% \BeforeBeginEnvironment{longtable}{\begin{singlespacing}}
-% \AfterEndEnvironment{longtable}{\end{singlespacing}}
+% Things that kableExtra needs
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+
+% Make table text slightly smaller, but not captions
+\usepackage[font=normalsize]{caption}
+\AtBeginEnvironment{longtable}{\small}
+\AtBeginEnvironment{tabular}{\small}
 
 % Remove left margin in lists inside longtables
 % https://tex.stackexchange.com/a/378190/11851
-\AtBeginEnvironment{longtable} {\setlist[itemize]{nosep, wide=0pt, leftmargin=*, before=\vspace*{-\baselineskip}, after=\vspace*{-\baselineskip}}}
+\AtBeginEnvironment{longtable}{\setlist[itemize]{nosep, wide=0pt, leftmargin=*, before=\vspace*{-\baselineskip}, after=\vspace*{-\baselineskip}}}
 
 
 % ----------
 % GRAPHICS
 % ----------
 \usepackage{graphicx}
-% We will generate all images so they have a width \maxwidth. This means
-% that they will get their normal width if they fit onto the page, but
-% are scaled down if they would overflow the margins.
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
-\else\Gin@nat@width\fi}
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
 \makeatother
-\let\Oldincludegraphics\includegraphics
-\renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=\maxwidth]{#1}}
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 
-$if(endfloat)$
-\usepackage[nolists]{endfloat}
-\DeclareDelayedFloatFlavour*{longtable}{table}
-$endif$
 
 % ------------
 % REFERENCES
 % ------------
-% Color names for hyperlinks
-\usepackage[svgnames]{xcolor}
-
-% Hyperlink stuff
-\usepackage[xetex, colorlinks=true, urlcolor=DarkSlateBlue,
-            citecolor=DarkSlateBlue, filecolor=DarkSlateBlue, plainpages=false,
-            hyperfootnotes=false,  % For compatibility with footmisc
-            pdfpagelabels, bookmarksnumbered]{hyperref}
-
-% biblatex setup
 % NB: Using "strict" messes with footnotes and removes the rule!
-% \usepackage[authordate, backend=biber, noibid,
-%             isbn=false, uniquename=false]{biblatex-chicago}
-\usepackage[backend=biber,bibencoding=utf8,hyperref=false,isbn=false,style=bath,sorting=ynt]{biblatex}
+$if(biblatex)$
+
+$if(bibstyle-chicago-notes)$
+\usepackage[notes, backend=biber,
+            autolang=hyphen, bibencoding=inputenc,
+            isbn=false, uniquename=false]{biblatex-chicago} % biblatex setup
+$endif$
+$if(bibstyle-chicago-authordate)$
+\usepackage[authordate, backend=biber, noibid,
+            autolang=hyphen, bibencoding=inputenc,
+            isbn=false, uniquename=false]{biblatex-chicago} % biblatex setup
+$endif$
+$if(bibstyle-apa)$
+\usepackage[style=apa, backend=biber]{biblatex}
+\DeclareLanguageMapping{american}{american-apa}
+$endif$
+
+% No space between bib entries
+\setlength\bibitemsep{0pt}
+
+%% Fix biblatex's odd preference for using In: by default.
+\renewbibmacro{in:}{%
+  \ifentrytype{article}{}{%
+  \printtext{\bibstring{}\intitlepunct}}}
+
+%% bibnamedash: with Minion Pro the three-emdash lines in the
+%% bibliogrpaphy end up separated from one another, which is very
+%% annoying. Replace them with a line of appropriate size and weight.
+\renewcommand{\bibnamedash}{\rule[3.5pt]{3em}{0.5pt}}
 
 \addbibresource{$bibliography$}
 \setlength\bibhang{\parindent}
+$endif$
 
 
 % -----------
@@ -180,20 +248,49 @@ $endif$
 % -----------
 % NB: footmisc has to come after setspace and biblatex because of conflicts
 \usepackage[bottom, flushmargin]{footmisc}
-\renewcommand*{\footnotelayout}{\normalsize}
+\renewcommand*{\footnotelayout}{\footnotesize}
 
 \addtolength{\skip\footins}{12pt}    % vertical space between rule and main text
 \setlength{\footnotesep}{16pt}  % vertical space between footnotes
 
+
+% -----------------------
+% ENDFLOAT AND ENDNOTES
+% -----------------------
+$if(endfloat)$
+\usepackage[nolists]{endfloat}
+\DeclareDelayedFloatFlavour*{longtable}{table}
+$endif$
+
+$if(endnotes)$
+\usepackage{endnotes}
+\renewcommand{\enotesize}{\normalsize}
+\let\footnote=\endnote
+$endif$
+
+
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+
+% ----------------
+% ACTUAL DOCUMENT
+% ----------------
+
 \begin{document}
 
+
+% ------------
+% TITLE PAGE
+% ------------
 $if(title-page)$
 
 \begin{titlepage}
+\thispagestyle{title}
 \center
 
 \vspace*{0.5in}
-{\bfseries $title$}
+{\large\bfseries $title$}
 
 \vspace{\baselineskip}
 
@@ -207,21 +304,27 @@ $endfor$
 
 \vspace{0.25in}
 
+$if(word-count)$
 {\center Word count: $word-count$}
+$endif$
 
 \vspace{0.5in}
 
+$if(author-note)$
 {\center Author note}
 
 \begin{flushleft}
 $author-note$
 \end{flushleft}
+$endif$
 
+$if(correspondence)$
 {\center Correspondence}
 
 \begin{flushleft}
 $correspondence$
 \end{flushleft}
+$endif$
 
 $if(additional-info)$
 {\center Additional information}
@@ -231,11 +334,13 @@ $additional-info$
 \end{flushleft}
 $endif$
 
+$if(thanks)$
 {\center Acknowledgments}
 
 \begin{flushleft}
 $thanks$
 \end{flushleft}
+$endif$
 
 \vfill  % Fill the rest of the page with whitespace
 
@@ -253,17 +358,16 @@ $if(keywords)$\indent \keywords{$keywords$}$endif$
 
 \newpage
 
-\begin{center}
-{\bfseries $title$}
-\end{center}
-
 $endif$
 
-$if(appendix)$
+
+% ------------------------
+% ACTUAL ACTUAL DOCUMENT
+% ------------------------
+
 \begin{center}
-{\LARGE\bfseries $title$}
+{\large\bfseries $title$}
 \end{center}
-$endif$
 
 $if(toc)$
 {
@@ -279,16 +383,31 @@ $endif$
 }
 $endif$
 
+$if(epigraph)$
+$for(epigraph)$
+$if(epigraph.source)$
+\epigraph{$epigraph.text$}{---$epigraph.source$}
+$else$
+\epigraph{$epigraph.text$}
+$endif$
+$endfor$
+$endif$
+
 \doublespacing
 
 $body$
 
-\newpage
+\clearpage
 \singlespacing
-\newrefcontext[sorting=nyt]  % This is needed for bathbib to work
 \printbibliography[heading=bibliography$if(reference-section-title)$, title=$reference-section-title$$endif$]
 
-\newpage
+$if(endnotes)$
+\clearpage
+\begingroup
+\parindent 0pt
+\parskip 1em
 \theendnotes
+\endgroup
+$endif$
 
 \end{document}

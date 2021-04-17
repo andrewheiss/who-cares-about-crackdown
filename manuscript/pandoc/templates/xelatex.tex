@@ -1,253 +1,402 @@
 %!TEX program = xelatex
-% \documentclass[11pt,article,oneside]{memoir}
 \documentclass[$if(fontsize)$$fontsize$,$else$11pt,$endif$article,oneside]{memoir}
 
-\usepackage{pandoc/templates/hikma-preamble-xelatex}
+% Disable all warnings issued by biblatex starting with "Since you are using the 'memoir' class..."
+\usepackage{silence}
+\WarningFilter{biblatex}{Since you are using the}
+% Not all fonts have fancy OpenType features like proportional and oldstyle
+% figures, so this suppresses fontspec's warnings when using those kinds of fonts
+\PassOptionsToPackage{quiet}{fontspec}
 
-% For custom math fonts
-\usepackage{unicode-math}
 
-% This stuff has to come before polyglossia and bidi
+% ---------------
+% GENERAL SETUP
+% ---------------
+\usepackage[american]{babel}
+\usepackage[babel]{csquotes}
+\usepackage{enumitem}
+\usepackage{etoolbox}
+
+\setlength{\parindent}{1.5em}
+
+
+% -------
+% FONTS
+% -------
+% Math stuff
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{unicode-math}  % For custom math fonts
+
+% Custom fonts
+\usepackage{fontspec}
+\usepackage{xunicode}
+\defaultfontfeatures{Mapping=tex-text,Ligatures=TeX,Scale=MatchLowercase}
+$if(mainfont)$
+\setmainfont[Numbers={Proportional,OldStyle}]{$mainfont$}
+$else$
+\setmainfont[Numbers={Proportional,OldStyle}]{Linux Libertine O}
+$endif$
+$if(sansfont)$
+\setsansfont{$sansfont$}
+$else$
+\setsansfont{Source Sans Pro}
+$endif$
+$if(monofont)$
+\setmonofont[Mapping=tex-ansi, Scale=MatchLowercase]{$monofont$}
+$else$
+\setmonofont[Mapping=tex-ansi, Scale=MatchLowercase]{InconsolataGo}
+$endif$
+$if(mathfont)$
+\setmathfont{$mathfont$}
+$else$
+\setmathfont{Libertinus Math}
+$endif$
+
+
+% ---------------
+% TITLE SECTION
+% ---------------
+% Keywords
+\providecommand{\keywords}[1]{\small{\sffamily{\textbf{\textit{Keywords---}}#1 \vskip 3em}}}
+
+% Redefine \and and \andnext to remove tabular environment.
+% Needed below for custom article-styles when multiple authors are present.
+\renewcommand{\and}{\, }
+\renewcommand*{\andnext}{%
+  \\\medskip }
+
+% Command for a note at the top of the first page describing the publication
+% status of the paper.
+\newcommand{\published}[1]{%
+   \gdef\puB{#1}}
+   \newcommand{\puB}{}
+   \renewcommand{\maketitlehooka}{%
+       \par\noindent\footnotesize\sffamily \puB}
+
+
+% --------------------------------
+% MEMOIR CHAPTER AND PAGE STYLES
+% --------------------------------
+% Main style
+\makechapterstyle{hikma-article}{
+    % Heading 1
+    \setsecheadstyle{\Large\sffamily\bfseries}
+    \setbeforesecskip{-4.5ex}  % Space before; if negative, next paragraph will not be indented
+    \setaftersecskip{1ex}  % Space after
+
+    % Heading 2
+    \setsubsecheadstyle{\large\sffamily}
+    \setbeforesubsecskip{-2.5ex}
+    \setaftersubsecskip{0.7ex}
+
+    % Heading 3
+    \setaftersubsubsecskip{-1em}  % Inline heading
+    \setsubsubsecheadstyle{\normalsize\sffamily\bfseries}
+    \setbeforesubsubsecskip{1.5ex}
+
+    % Captions
+    \captiontitlefont{\small\sffamily}
+    \captionnamefont{\small\sffamily}
+    \subcaptionsize{\small}
+    \subcaptionlabelfont{\sffamily}
+    \subcaptionfont{\sffamily}
+
+    % TOC stuff
+    \settocdepth{subsubsection}
+    \maxsecnumdepth{subsubsection}
+    \setsecnumdepth{chapter}
+
+    % Change formatting in title block
+    \pretitle{\par\vskip 0.5em \flushleft\LARGE\sffamily\bfseries}
+    \posttitle{\par\vskip 0.75em}
+    \preauthor{\flushleft\sffamily}
+    \postauthor{}
+    \predate{\normalsize}
+    \postdate{}
+
+    % Abstract stuff
+    \renewcommand{\abstractname}{\vspace{-\baselineskip}}  % Remove abstract title
+    \renewcommand{\abstracttextfont}{\small\sffamily}
+
+    \epigraphfontsize{\normalfont\footnotesize}
+    \setlength\epigraphwidth{186pt}  % 15p6 (31p0 / 2)
+    \setlength\epigraphrule{0pt}
+
+    % Footnotes
+    \setfootins{3em}{3em}
+}
+
+% Numbered article style
+\makechapterstyle{hikma-article-numbered} {
+  \chapterstyle{hikma-article}  % Copy previous style
+  \counterwithout{section}{chapter}  % Make sections start at 1, not 0
+  \settocdepth{subsubsection}
+  \maxsecnumdepth{subsubsection}
+  \setsecnumdepth{subsubsection}
+}
+
+% General page style
+\makepagestyle{ath}
+\makeatletter
+\newcommand{\@athmarks}{%
+  \let\@mkboth\markboth
+  \def\chaptermark##1{%
+    \markboth{%
+      \ifnum \c@secnumdepth >\m@ne
+        \if@mainmatter
+          \thechapter. \ %
+        \fi
+      \fi
+      ##1}{}}
+  \def\sectionmark##1{%
+    \markright{##1}}
+}
+\makepsmarks{ath}{\@athmarks}
+\makepsmarks{ath}{}
+\makeevenhead{ath}{}{}{\scshape\thepage}
+\makeoddhead{ath}{}{}{\scshape\thepage}
+\makeatother
+
+
+% -------------------
+% PAGE LAYOUT SUTFF
+% -------------------
+% For landscape PDF pages
+\usepackage{pdflscape}
+
+% For better TOCs
+\usepackage{tocloft}
+
+% Page margins
+% {left}{right}{ratio} - one has to be *
+% 10p0 left/right, 11p0 top/bottom
+% Text block is 31p0 wide, 44p0 tall
+\setlrmarginsandblock{10pc}{10pc}{*}  % 10p0
+\setulmarginsandblock{11pc}{11pc}{*}  % 11p0
+\checkandfixthelayout
+
+
+% ------------------
+% TYPOGRAPHY STUFF
+% ------------------
+% Pandoc tightlists
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Fix widows and orphans
+\usepackage[all,defaultlines=2]{nowidow}
+
+% Add - as an acceptable hyphenation break in URLs
+\usepackage{url}
+\def\UrlBreaks{\do\.\do\@\do\\\do\/\do\!\do\_\do\|\do\;\do\>\do\]%
+    \do\)\do\,\do\?\do\&\do\'\do+\do\=\do\#\do-}
+
+% Ordinarily I'd like to make URLs not monospaced up here with other typographic
+% settings, but NOO because if you use apacite, it overwrites whatever
+% \urlstyle{} you use, so the actual \urlstyle{same} appears down below in
+% the REFERENCES section
+
+% Use "1. Note" in the footnotes
+\footmarkstyle{#1.\,}
+
+% Tweak \thanks{} stuff
+\thanksheadextra{\small}{}  % Marker in title section
+\thanksmarkstyle{\footnotesize #1\,}  % Actual note down in footnotes
+\let\oldthanks\thanks
+\renewcommand{\thanks}[1]{\oldthanks{\sffamily \footnotesize #1}}
 
 % Wrap definition list terms
 % https://tex.stackexchange.com/a/9763/11851
-\usepackage{enumitem}
 \setlist[description]{style=unboxed}
 
+% Fancier verbatims
 \usepackage{fancyvrb}
-$if(tables)$
+
+% Hyperlink stuff
+\usepackage[xetex, colorlinks=true, urlcolor=DarkSlateBlue,
+            citecolor=DarkSlateBlue, filecolor=DarkSlateBlue, plainpages=false,
+            pdfpagelabels, bookmarksnumbered]{hyperref}
+
+% Color names for hyperlinks
+\usepackage[svgnames]{xcolor}
+
+% Syntax highlighting stuff
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+
+% --------
+% MACROS
+% --------
+\newcommand{\blandscape}{\begin{landscape}}
+\newcommand{\elandscape}{\end{landscape}}
+\newcommand{\stgroup}{\begingroup}
+\newcommand{\fingroup}{\endgroup}
+
+\newcommand{\memSingle}{\setSingleSpace{1.15}\SingleSpacing}
+\newcommand{\memSingleSmall}{\setSingleSpace{0.9}\SingleSpacing}
+
+% --------
+% TABLES
+% --------
+\usepackage{booktabs}
 \usepackage{longtable}
+\usepackage{pbox}  % For multi-line table cells
+
+% Things that kableExtra needs
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+
+% Make tables sans serif
+\setfloatadjustment{table}{\small\sffamily}
+% memoir's setfloatadjustment doesn't work on longtables, but this does
+\AtBeginEnvironment{longtable}{\small\sffamily}
 
 % Remove left margin in lists inside longtables
 % https://tex.stackexchange.com/a/378190/11851
-\usepackage{etoolbox}
-\AtBeginEnvironment{longtable} {\setlist[itemize]{nosep, wide=0pt, leftmargin=*, before=\vspace*{-\baselineskip}, after=\vspace*{-\baselineskip}}}
+\AtBeginEnvironment{longtable}{\setlist[itemize]{nosep, wide=0pt, leftmargin=*, before=\vspace*{-\baselineskip}, after=\vspace*{-\baselineskip}}}
 
-$endif$
 
+% ----------
+% GRAPHICS
+% ----------
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+
+
+% --------------
+% I18N SUPPORT
+% --------------
 % This has to come before loading biblatex
 \usepackage{polyglossia}
 \setdefaultlanguage{english}
 \setotherlanguage{arabic}
 \newfontfamily\arabicfont[Script = Arabic]{Amiri}
 
-% Bibliography stuff
+
+% ------------
+% REFERENCES
+% ------------
+% NB: Using "strict" messes with footnotes and removes the rule!
 $if(biblatex)$
+
 $if(bibstyle-chicago-notes)$
 \usepackage[notes, backend=biber,
             autolang=hyphen, bibencoding=inputenc,
-            strict, isbn=false, uniquename=false]{biblatex-chicago} % biblatex setup
-% No space between bib entries + use smaller font
-\setlength\bibitemsep{0pt}
-\renewcommand*{\bibfont}{\footnotesize}
-
-%% Fix biblatex's odd preference for using In: by default.
-\renewbibmacro{in:}{%
-  \ifentrytype{article}{}{%
-  \printtext{\bibstring{}\intitlepunct}}}
-
-%% bibnamedash: with Minion Pro the three-emdash lines in the
-%% bibliogrpaphy end up separated from one another, which is very
-%% annoying. Replace them with a line of appropriate size and weight.
-\renewcommand{\bibnamedash}{\rule[3.5pt]{3em}{0.5pt}}
+            isbn=false, uniquename=false]{biblatex-chicago} % biblatex setup
 $endif$
 $if(bibstyle-chicago-authordate)$
 \usepackage[authordate, backend=biber, noibid,
             autolang=hyphen, bibencoding=inputenc,
-            strict, isbn=false, uniquename=false]{biblatex-chicago} % biblatex setup
-% No space between bib entries + use smaller font
-\setlength\bibitemsep{0pt}
-\renewcommand*{\bibfont}{\footnotesize}
-
-%% Fix biblatex's odd preference for using In: by default.
-\renewbibmacro{in:}{%
-  \ifentrytype{article}{}{%
-  \printtext{\bibstring{}\intitlepunct}}}
-
-%% bibnamedash: with Minion Pro the three-emdash lines in the
-%% bibliogrpaphy end up separated from one another, which is very
-%% annoying. Replace them with a line of appropriate size and weight.
-\renewcommand{\bibnamedash}{\rule[3.5pt]{3em}{0.5pt}}
+            isbn=false, uniquename=false]{biblatex-chicago} % biblatex setup
 $endif$
 $if(bibstyle-apa)$
 \usepackage[style=apa, backend=biber]{biblatex}
 \DeclareLanguageMapping{american}{american-apa}
 $endif$
 
+% No space between bib entries + use smaller font
+\setlength\bibitemsep{0pt}
+\renewcommand*{\bibfont}{\footnotesize}
+
+%% Fix biblatex's odd preference for using In: by default.
+\renewbibmacro{in:}{%
+  \ifentrytype{article}{}{%
+  \printtext{\bibstring{}\intitlepunct}}}
+
+%% bibnamedash: with Minion Pro the three-emdash lines in the
+%% bibliogrpaphy end up separated from one another, which is very
+%% annoying. Replace them with a line of appropriate size and weight.
+\renewcommand{\bibnamedash}{\rule[3.5pt]{3em}{0.5pt}}
+
 \addbibresource{$bibliography$}
 \setlength\bibhang{\parindent}
 $endif$
 
-% Set the format for footnote numbering and length and size of footnote rule
-\footmarkstyle{#1.\,}
-\renewcommand*{\footnoterule}{\kern-3pt\hrule width 0.3\columnwidth\kern 4pt}
-
-$if(vc)$
-\input{pandoc/bin/vc}
-$if(git-repo)$
-\gdef\GITURL{$git-repo$}
-$endif$
-$endif$
-
-$if(listings)$
-\usepackage{listings}
-$endif$
-$if(lhs)$
-\lstnewenvironment{code}{\lstset{language=r,basicstyle=\small\ttfamily}}{}
-$endif$
-$if(highlighting-macros)$
-$highlighting-macros$
-$endif$
-
-$if(graphics)$
-\usepackage{graphicx}
-% We will generate all images so they have a width \maxwidth. This means
-% that they will get their normal width if they fit onto the page, but
-% are scaled down if they would overflow the margins.
-\makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
-\else\Gin@nat@width\fi}
-\makeatother
-\let\Oldincludegraphics\includegraphics
-\renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=\maxwidth]{#1}}
-$endif$
-
-% memoir does its own subfloats with \subtop and \subbottom. Instead of
-% fighting with pandoc-crossref, which outputs \subfloat, just redefine
-% \subfloat as \subbottom
-\newsubfloat{figure}  % Allow subfloats in figure environment
-\let\subfloat\subbottom
-
-$if(blinded)$
-$if(title)$
-\title{\bigskip \bigskip $title$}
-$endif$
-$else$
-$if(title)$
-\title{\bigskip \bigskip $title$$if(thanks)$\thanks{$thanks$}$endif$}
-$endif$
-$endif$
-
-$if(blinded)$
-\author{~}
-$else$
-\author{
-  $for(author)$
-    \Large $author.name$ \newline
-    \footnotesize $author.affiliation$ \newline
-    \footnotesize \url{$author.email$}\vspace*{1.1em}\newline 
-    $sep$ \and 
-  $endfor$
-}
-$endif$
-
-\date{}
-
-$if(memo)$
-\newcommand{\memoheader}{
-  \begin{tabbing}
-  \hspace*{2cm} \= \kill
-  To:      \> $for(to)$$to$$sep$, $endfor$ \\
-  From:    \> $for(author)$$author.name$$if(author.email)$~(\url{$author.email$})$endif$$sep$, $endfor$ \\
-  Date:    \> $date$ \\
-  Subject: \> \textbf{$title$}
-  \end{tabbing}
-  \vspace*{0.2in}
-}
-$endif$
+% Don't typeset URLs in a monospaced font
+% This has to come after apacite because apacite sets its own URL style
+\urlstyle{same}
 
 
+% ----------
+% METADATA
+% ----------
 % Add PDF metadata
-$if(blinded)$
-\hypersetup{pdfinfo={
-  Title={},
-  Author={},
-  Creator={Markdown, pandoc, and TeX}
-  % Subject={}
-  % Keywords={things, go, here}
-}}
-$else$
 \hypersetup{pdfinfo={
   Title={$title$},
   Author={$for(author)$$author.name$$sep$, $endfor$},
-  Creator={Markdown, pandoc, and TeX}
+  Creator={R Markdown, pandoc, and TeX},
+  Keywords={$if(keywords)$$keywords$$endif$}
   % Subject={},
-  % Keywords={things, go, here}
 }}
+
+% Add content from pandoc metadata
+$if(title)$
+\title{\bigskip $title$$if(thanks)$\thanks{$thanks$}$endif$}
 $endif$
 
-\defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+\author{
+$for(author)$
+  \large $author.name$ \newline
+  \footnotesize $author.affiliation$ \newline
+  \footnotesize \url{$author.email$}\vspace*{1.1em}\newline
+  $sep$  \and
+$endfor$
+}
 
-$if(mainfont)$
-    \setmainfont[Numbers={Proportional,OldStyle}]{$mainfont$}
-$else$
-    \setmainfont[Numbers={Proportional,OldStyle}]{Linux Libertine O}
-$endif$
-$if(sansfont)$
-    \setsansfont{$sansfont$}
-$else$
-    \setsansfont{Source Sans Pro}
-$endif$
-$if(monofont)$
-    \setmonofont[Mapping=tex-ansi]{$monofont$}
-$else$
-    \setmonofont[Mapping=tex-ansi]{InconsolataGo}
-$endif$
-$if(mathfont)$
-    \setmathfont{$mathfont$}
-$else$
-    \setmathfont{Libertinus Math}
-$endif$
+\date{}
 
-$if(toc)$
-\makeatletter
-\renewcommand\@tocmaketitle{%
-  \section*{\contentsname}
-  \tocmark%
-  \@afterheading}
-\makeatother
-$endif$
 
-% The manuscript template uses the setspace package for \doublespacing and 
-% \singlespacing, but this template doesn't. If we use \singlespacing anywhere 
-% in the document to change spacing (like for tables), this template no longer 
-% compiles. So we create empty versions of \singlespacing and \doublespacing 
-% here that don't do anything
-\let\singlespacing\relax
-\let\doublespacing\relax
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+
+% ----------------
+% ACTUAL DOCUMENT
+% ----------------
 
 \begin{document}
-\setkeys{Gin}{width=1\textwidth}
-% Deal with verbatim font sizes, since this handles leading better than setting
-% a Scale factor in \setmonofont
-\fvset{fontsize=\footnotesize}
-\RecustomVerbatimEnvironment{verbatim}{Verbatim}{}
 
 $if(chapterstyle)$
 \chapterstyle{$chapterstyle$}
 $else$
-\chapterstyle{hikma-article} 
+\chapterstyle{hikma-article}
 $endif$
-
-
 $if(pagestyle)$
 \pagestyle{$pagestyle$}
 $else$
-\pagestyle{ath} 
+\pagestyle{ath}
 $endif$
 
-$if(vc)$
-\copypagestyle{plain}{athgit_first}  % Modified first page with git information
-$endif$
-
-$if(memo)$
-% If this is a memo, use the fancy memo heading; otherwise, use the normal article title
-\memoheader
-$else$
 $if(published)$
-\published{$date$. $published$}
+$if(code-repo)$
+\published{\textbf{$date$} \qquad $published$ \\ {\tiny $code-repo$}}
 $else$
-\published{$date$}
+\published{\textbf{$date$} \qquad {\tiny $published$}}
+$endif$
+$else$
+$if(code-repo)$
+\published{\textbf{$date$} \\ {\tiny $code-repo$}}
+$else$
+\published{\textbf{$date$}}
+$endif$
 $endif$
 
 $if(title)$
@@ -270,18 +419,20 @@ $if(abstract)$
 $else$
 \vskip 5em
 $endif$
+
+$if(keywords)$
+\keywords{$keywords$}
 $endif$
 
 $if(epigraph)$
-  $for(epigraph)$
-    $if(epigraph.source)$
-    \epigraph{$epigraph.text$}{---$epigraph.source$}
-    $else$
-    \epigraph{$epigraph.text$}
-    $endif$
-  $endfor$
+$for(epigraph)$
+$if(epigraph.source)$
+\epigraph{$epigraph.text$}{---$epigraph.source$}
+$else$
+\epigraph{$epigraph.text$}
 $endif$
-
+$endfor$
+$endif$
 
 $body$
 
@@ -290,6 +441,6 @@ $if(biblatex)$
 $endif$
 $for(include-after)$
 $include-after$
-
 $endfor$
+
 \end{document}

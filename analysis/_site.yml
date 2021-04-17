@@ -1,24 +1,22 @@
 name: who-cares-about-crackdowns
 exclude:
 - Makefile
-- options.R
-- survey
 - Icon?
 navbar:
   title: Who Cares About Crackdowns?
   type: inverse
   right:
   - text: Experiment
-    icon: fa-flask
+    icon: fas fa-flask
     href: experiment.html
   - text: Generate and clean data
-    icon: fa-magic
+    icon: fas fa-magic
     href: 01_clean-generate-data.html
   - text: Tables
-    icon: fa-table
+    icon: fas fa-table
     href: 02_tables.html
   - text: Analysis and figures
-    icon: fa-bar-chart
+    icon: fas fa-chart-bar
     href: 03_analysis.html
 output:
   html_document:

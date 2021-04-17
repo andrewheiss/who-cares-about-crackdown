@@ -55,31 +55,30 @@ theme_ngo <- function(base_size = 9, base_family = "IBM Plex Sans Condensed") {
 # colors_viridis <- viridisLite::viridis(6, begin = 0, end = 0.97)
 # colors_viridis %>% scales::show_col()
 
-clrs_ngo <- as.list(c(viridisLite::plasma(6, begin = 0, end = 0.85), 
-                      viridisLite::viridis(6, begin = 0, end = 0.94)))
-# unlist(clrs_ngo) %>% scales::show_col()
-names(clrs_ngo) <- c("pl_blue", "pl_purple_dark", "pl_purple_light", 
-                     "pl_pink", "pl_orange", "pl_yellow",
-                     "vi_purple", "vi_blue_dark", "vi_blue_light", 
-                     "vi_turquoise", "vi_green", "vi_yellow")
+# colors_viridis <- viridisLite::viridis(4, option = "viridis")
 
-# Colors via http://clrs.cc/
-clrs <- list(
-  navy = "#001F3F",
-  blue = "#0074D9",
-  aqua = "#7FDBFF",
-  teal = "#39CCCC",
-  olive = "#3D9970",
-  green = "#2ECC40",
-  lime = "#01FF70",
-  yellow = "#FFDC00",
-  orange = "#FF851B",
-  red = "#FF4136",
-  fuchsia = "#F012BE",
-  purple = "#B10DC9",
-  maroon = "#85144B",
-  white = "#FFFFFF",
-  silver = "#DDDDDD",
-  gray = "#AAAAAA",
-  black = "#111111"
-)
+# Okabe and Ito (2008) colorblind-safe qualitative palette: https://jfly.uni-koeln.de/color/
+# See also https://clauswilke.com/dataviz/color-pitfalls.html
+clrs_okabe_ito <- list(orange = "#E69F00",
+                       sky_blue = "#56B4E9",
+                       bluish_green = "#009E73",
+                       yellow = "#F0E442",
+                       blue = "#0072B2",
+                       vermilion = "#D55E00",
+                       reddish_purple = "#CC79A7",
+                       black = "#000000")
+
+clrs_ngo_pairs <- list(c(clrs_okabe_ito[[1]], clrs_okabe_ito[[2]]),
+                       c(clrs_okabe_ito[[3]], clrs_okabe_ito[[4]]),
+                       c(clrs_okabe_ito[[5]], clrs_okabe_ito[[6]]),
+                       c(clrs_okabe_ito[[7]], clrs_okabe_ito[[8]]))
+
+
+# Helper functions --------------------------------------------------------
+
+# Wrap factor levels
+# via Hadley: https://github.com/tidyverse/stringr/issues/107#issuecomment-233723948
+str_wrap_factor <- function(x, ...) {
+  levels(x) <- str_wrap(levels(x), ...)
+  x
+}

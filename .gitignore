@@ -3,20 +3,26 @@ analysis/_site/*
 analysis/survey/*.pdf
 analysis/survey/*.html
 
+# Site output
+analysis/_site/*
+analysis/site_libs/*
+
 # knitr and caching stuff
 *_files/*
 *_cache/*
 lib/*.rds
 
+# Targets stuff
+_targets
+
 # Manuscript output
-manuscript/*.docx
-manuscript/*.html
-manuscript/*.pdf
-manuscript/*.tex
-manuscript/tex_out/*
-manuscript/vc*
+manuscript/*.log
+manuscript/output/*.docx
+manuscript/output/*.html
+manuscript/output/*.pdf
+manuscript/output/*.tex
+manuscript/output/figures/*
 manuscript/submissions/*
-manuscript/pandoc/bin/vc.tex
 
 # Original output
 data/private_data/*

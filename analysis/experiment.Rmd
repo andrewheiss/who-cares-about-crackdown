@@ -5,8 +5,6 @@ date: "Last run: `r format(Sys.time(), '%F')`"
 output: 
   html_document:
     code_folding: hide
-    pandoc_args:
-      - "--default-image-extension=png"
 editor_options: 
   chunk_output_type: console
 ---

@@ -45,6 +45,9 @@ $endif$
 $if(published)$
 <p class="published">$published$</h3>
 $endif$
+$if(published)$
+<p class="code-repo">$code-repo$</h3>
+$endif$
 
 <h1 class="title">$title$</h1>
 $if(subtitle)$
@@ -72,6 +75,10 @@ $endif$
 
 $if(abstract)$
 <div class="abstract">$abstract$</div>
+$endif$
+
+$if(keywords)$
+<div class="keywords"><span class="keywords-title">Keywords</span>&mdash;$keywords$</div>
 $endif$
 
 $if(blinded)$
@@ -102,7 +109,7 @@ $if(keywords)$
 $endif$
 
 <article>
-$body$    
+$body$
 </article>
 
 $for(include-after)$

@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 
 Title <- "Who Cares About Crackdowns? Exploring the Role of Trust in Individual Philanthropy"
 Authors <- "Suparna Chaudhry, Marc Dotson, and Andrew Heiss"
-Year <- "2020"
+Year <- "2021"
 ```
 
 # `r Title`

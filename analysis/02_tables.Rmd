@@ -5,89 +5,84 @@ date: "Last run: `r format(Sys.time(), '%F')`"
 output: 
   html_document:
     code_folding: hide
-    pandoc_args:
-      - "--default-image-extension=png"
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r packages, warning=FALSE, message=FALSE, include=FALSE}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.retina = 3,
+                      tidy.opts = list(width.cutoff = 120),  # For code
+                      options(width = 90),  # For output
+                      fig.asp = 0.618, fig.width = 7, 
+                      fig.align = "center", out.width = "85%")
+
+options(dplyr.summarise.inform = FALSE,
+        knitr.kable.NA = "")
+```
+
+```{r load-libraries-data, message=FALSE, warning=FALSE}
 library(tidyverse)
-library(pander)
-library(magrittr)
+library(targets)
+library(kableExtra)
 library(glue)
 library(scales)
 library(janitor)
 library(here)
-```
 
-```{r load-data}
-sim_clean <- read_rds(here("data", "derived_data", "sim_final.rds"))
-results <- read_rds(here("data", "raw_data", "final_data.rds"))
+# Generated via random.org
+set.seed(8316)
 
-org_attributes <- tribble(
-  ~`Issue area`, ~`Relationship with government`, ~`Funding`, ~`Funding sources`, ~`Organizational practices`, ~`Organization`,
-  "Emergency response", "Friendly", "Small private donors", "Small private donors", "Financial transparency", "Amnesty International",
-  "Environment", "Criticized", "Government grants", "Wealthy donors", "Accountability", "Greenpeace",
-  "Human rights", "Crackdown", "", "Government grants", "", "Oxfam",
-  "Refugee relief", "", "", "", "", "Red Cross"
-)
-
-persona_attributes <- tribble(
-  ~`Demographics`, ~`Politics and public affairs`, ~`Social views`,
-  "Higher income (> US median ($61,372)), high school graduate, frequent religious attendance", "Liberal (1), follows national and international news often, has traveled internationally", "High social trust: Trusts political institutions, trusts charities, thinks people should be more charitable, frequently volunteers, donates once a month, has a history of personal activism, is a member of an association",
-  "Lower income (< US median), high school graduate, frequent religious attendance", "Conservative (7), follows news, has traveled", "Low social trust: Does not trust political institutions or charities, thinks people should be less charitable, does not volunteer or donate often, has no history of personal activism, is not a member of an association",
-  "Higher income, college graduate, frequent religious attendance", "Liberal, does not follow news, has not traveled", "",
-  "Lower income, college graduate, frequent religious attendance", "Conservative, does not follow news, has not traveled", "",
-  "Higher income, high school graduate, rare religious attendance", "", "",
-  "Lower income, high school graduate, rare religious attendance", "", "",
-  "Higher income, college graduate, rare religious attendance", "", "",
-  "Lower income, college graduate, rare religious attendance", "", ""
-)
+# Load data
+# Need to use this withr thing because tar_read() and tar_load() need to see the
+# _targets folder in the current directory, but this .Rmd file is in a subfolder
+withr::with_dir(here::here(), {
+  tar_load(personas)
+  tar_load(orgs)
+  tar_load(sim_final)
+  tar_load(survey_results)
+  tar_load(participant_summary)
+})
 ```
 
 # Organization attributes
 
 ## All possible conjoint attributes 
 
-```{r results="asis"}
-org_attributes %>% 
+```{r organization-attributes-full}
+orgs$org_attributes %>% 
   select(Organization, `Issue area`, `Organizational practices`, `Funding sources`, `Relationship with government`) %>% 
-  pandoc.table.return(caption = 'Organization attributes varied in the experiment {#tbl:organization-attributes-full}',
-                      justify = "lllll", split.tables = Inf) %T>%
-  cat() %>%
-  cat(file = here("analysis", "output", "tables", "tbl-organization-attributes-full.md"))
+  kbl(align = "lllll",
+      caption = "Organization attributes varied in the experiment") %>% 
+  kable_styling()
 ```
 
 ## Attributes varied in simulation
 
-```{r results="asis"}
-org_attributes %>% 
+```{r organization-attributes}
+orgs$org_attributes %>% 
   select(`Issue area`, `Relationship with government`, `Funding`) %>% 
-  pandoc.table.return(caption = 'Organization attributes varied in the simulation, resulting in 24 hypothetical organizations {#tbl:organization-attributes}',
-                      justify = "lll") %T>%
-  cat() %>%
-  cat(file = here("analysis", "output", "tables", "tbl-organization-attributes.md"))
+  kbl(align = "lll",
+      caption = "Organization attributes varied in the simulation, resulting in 24 hypothetical organizations") %>% 
+  kable_styling()
 ```
 
 # Persona attributes
 
 ## Attributes varied in simulation
 
-```{r results="asis"}
-persona_attributes %>% 
-  pandoc.table.return(caption = 'Individual attributes varied in the simulation, resulting in 64 persona profiles {#tbl:persona-attributes}',
-                      justify = "lll", split.tables = Inf) %T>%
-  cat() %>%
-  cat(file = here("analysis", "output", "tables", "tbl-persona-attributes.md"))
+```{r persona-attributes}
+personas$persona_attributes %>% 
+  kbl(align = "lll",
+      caption = "Individual attributes varied in the simulation, resulting in 64 persona profiles") %>% 
+  kable_styling()
 ```
 
 # Example simulation output
 
-```{r results="asis"}
+```{r example-personas}
 example_personas <- c("persona2", "persona63")
 
-example_persona_details <- sim_clean %>%
+example_persona_details <- sim_final %>%
   filter(persona_id %in% example_personas) %>% 
   select(starts_with("persona")) %>% 
   slice(1:2)
@@ -97,11 +92,13 @@ example_persona_details %>%
   pivot_longer(cols = !persona) %>% 
   pivot_wider(names_from = "persona", values_from = "value") %>% 
   select(-name) %>% 
-  pandoc.table(justify = "ll")
+  kbl(align = "ll",
+      caption = "Example personas") %>% 
+  kable_styling()
 ```
 
-```{r results="asis"}
-example_persona_results <- sim_clean %>% 
+```{r sim-output}
+example_persona_results <- sim_final %>% 
   filter(persona_id %in% example_personas) %>% 
   mutate(org_funding = str_to_sentence(str_remove(org_funding, "Mostly funded by "))) %>% 
   mutate(org_clean = glue("{organization}: {org_issue}, {org_funding}, {org_relationship}")) %>% 
@@ -113,7 +110,7 @@ example_persona_results <- sim_clean %>%
   mutate(persona_clean = glue("{persona}: {persona_desc}")) %>% 
   select(persona_clean, share, org_clean) %>% 
   pivot_wider(names_from = "persona_clean", values_from = "share") %>% 
-  adorn_totals(where = "row", name = "**Total**")
+  adorn_totals(where = "row", name = "Total")
 
 example_persona_results_small <- example_persona_results %>% 
   slice(c(1, 2, 3, 7, 8, 9, 16, 17, 25)) %>% 
@@ -125,87 +122,27 @@ example_persona_results_small <- example_persona_results %>%
   rename(Organization = org_clean)
 
 example_persona_results_small %>% 
-  pandoc.table.return(caption = 'Sample simulation output {#tbl:sim-output}',
-                      justify = "lcc", split.tables = Inf) %T>%
-  cat() %>%
-  cat(file = here("analysis", "output", "tables", "tbl-sim-output.md"))
+  mutate(Organization = text_spec(Organization, bold = Organization == "Total")) %>% 
+  kbl(align = "lcc",
+      caption = "Sample simulation output",
+      escape = FALSE) %>% 
+  kable_styling()
 ```
 
 
 # Sample details
 
-```{r}
-vars_to_summarize <- tribble(
-  ~category, ~variable, ~clean_name,
-  "Demographics", "Q5.12", "Gender",
-  "Demographics", "Q5.17", "Age",
-  "Demographics", "Q5.13", "Marital status",
-  "Demographics", "Q5.14", "Education",
-  "Demographics", "Q5.15", "Income",
-  "Attitudes toward charity", "Q2.5", "Frequency of donating to charity",
-  "Attitudes toward charity", "Q2.6", "Amount of donations to charity last year",
-  "Attitudes toward charity", "Q2.7_f", "Importance of trusting charities",
-  "Attitudes toward charity", "Q2.8_f", "Level of trust in charities",
-  "Attitudes toward charity", "Q2.10", "Frequency of volunteering",
-  "Politics, ideology, and religion", "Q2.1", "Frequency of following national news",
-  "Politics, ideology, and religion", "Q5.7", "Traveled to a developing country",
-  "Politics, ideology, and religion", "Q5.1", "Voted in last election",
-  "Politics, ideology, and religion", "Q5.6_f", "Trust in political institutions and the state",
-  "Politics, ideology, and religion", "Q5.2_f", "Political ideology",
-  "Politics, ideology, and religion", "Q5.4", "Involvement in activist causes",
-  "Politics, ideology, and religion", "Q5.8", "Frequency of attending religious services",
-  "Politics, ideology, and religion", "Q5.9", "Importance of religion"
-)
-
-summarize_factor <- function(x) {
-  output <- table(x) %>% 
-    as_tibble() %>% 
-    magrittr::set_colnames(., c("level", "count")) %>% 
-    mutate(level = factor(level, levels = levels(x))) %>%
-    mutate(prop = count / sum(count),
-           nice_prop = scales::percent(prop))
-  
-  return(list(output))
-}
-
-participant_summary <- results %>% 
-  select(one_of(vars_to_summarize$variable)) %>% 
-  summarize_all(summarize_factor) %>% 
-  pivot_longer(cols = everything(), names_to = "variable", values_to = "details") %>% 
-  left_join(vars_to_summarize, by = "variable") %>% 
-  unnest(details) %>% 
-  mutate(level = as.character(level)) %>% 
-  mutate(level = case_when(
-    variable == "Q2.7_f" & level == "1" ~ "1 (not important)",
-    variable == "Q2.7_f" & level == "7" ~ "7 (important)",
-    variable == "Q2.8_f" & level == "1" ~ "1 (no trust)",
-    variable == "Q2.8_f" & level == "7" ~ "7 (complete trust)",
-    variable == "Q5.6_f" & level == "1" ~ "1 (no trust)",
-    variable == "Q5.6_f" & level == "7" ~ "7 (complete trust)",
-    variable == "Q5.2_f" & level == "1" ~ "1 (extremely liberal)",
-    variable == "Q5.2_f" & level == "7" ~ "7 (extremely conservative)",
-    variable == "Q5.15" & level == "Less than median" ~ "Less than 2017 national median ($61,372)",
-    variable == "Q5.17" & level == "Less than median" ~ "Less than 2017 national median (36)",
-    TRUE ~ level
-  )) %>% 
-  mutate(clean_name_shrunk = ifelse(clean_name == lag(clean_name), "", clean_name),
-         clean_name_shrunk = ifelse(is.na(clean_name_shrunk), 
-                                    clean_name[1], 
-                                    clean_name_shrunk),
-         category_shrunk = ifelse(category == lag(category), "", category),
-         category_shrunk = ifelse(is.na(category_shrunk), 
-                                    category[1], 
-                                    category_shrunk))
-```
-
-```{r results="asis"}
+```{r sample-details}
 participant_summary %>% 
-  select("Category" = category_shrunk, "Question" = clean_name_shrunk, 
-         "Response" = level, "N" = count, "%" = nice_prop) %>% 
-  pandoc.table.return(caption = 'Summary of individual respondent characteristics {#tbl:sample-details}',
-                      justify = "lllcc", split.tables = Inf) %T>%
-  cat() %>%
-  cat(file = here("analysis", "output", "tables", "tbl-sample-details.md"))
+  select(Question = clean_name,
+         Response = level,
+         N = count,
+         `%` = nice_prop) %>% 
+  kbl(align = "lllcc",
+      caption = "Summary of individual respondent characteristics") %>% 
+  pack_rows(index = table(fct_inorder(participant_summary$category))) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  kable_styling()
 ```
 
 \
@@ -223,4 +160,3 @@ writeLines(readLines(file.path(Sys.getenv("HOME"), ".R/Makevars")))
 ```
 
 </div>
-

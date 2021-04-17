@@ -12,79 +12,63 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.retina = 3, fig.align = "center")
+knitr::opts_chunk$set(fig.retina = 3,
+                      tidy.opts = list(width.cutoff = 120),  # For code
+                      options(width = 90),  # For output
+                      fig.asp = 0.618, fig.width = 7, 
+                      fig.align = "center", out.width = "85%")
+
+options(dplyr.summarise.inform = FALSE,
+        knitr.kable.NA = "")
 ```
 
-```{r load-packages, warning=FALSE, message=FALSE}
+```{r load-libraries-data, message=FALSE, warning=FALSE}
 library(tidyverse)
+library(targets)
 library(scales)
 library(patchwork)
 library(ggstance)
 library(here)
 
-# Wrap factor levels
-# via Hadley: https://github.com/tidyverse/stringr/issues/107#issuecomment-233723948
-str_wrap_factor <- function(x, ...) {
-  levels(x) <- str_wrap(levels(x), ...)
-  x
-}
+# Generated via random.org
+set.seed(8316)
 
-# Turn off grouping message
-options(dplyr.summarise.inform = FALSE)
-
-# Project-specific functions
-source(here("R", "graphics.R"))
-
-# General settings
-source(here("analysis", "options.R"))
-
-# Make all the randomness reproducible
-set.seed(1234)
+# Load data
+# Need to use this withr thing because tar_read() and tar_load() need to see the
+# _targets folder in the current directory, but this .Rmd file is in a subfolder
+withr::with_dir(here::here(), {
+  source(tar_read(plot_funs))
+  
+  tar_load(sim_excel_final)
+  tar_load(sim_final)
+  tar_load(giving_aggregate)
+  tar_load(giving_per_capita)
+})
 ```
 
-```{r load-data}
-sim_excel_clean <- read_rds(here("data", "derived_data", "sim_excel_final.rds"))
-sim_clean <- read_rds(here("data", "derived_data", "sim_final.rds"))
-```
 
 
 # General trends in private philanthropy
 
 Based on data from [Giving USA](https://theconversation.com/fewer-americans-are-giving-money-to-charity-but-total-donations-are-at-record-levels-anyway-98291), philanthropy in the United states continues to increase, both in aggregate and per capita.
 
-```{r giving-usa-data, message=FALSE}
-giving_aggregate_raw <- read_csv(here("data", "raw_data", "data-FTjUv.csv"))
-
-giving_aggregate <- giving_aggregate_raw %>% 
-  mutate(total = `Total donations` * 1000000000)
-
-giving_per_capita_raw <- read_csv(here("data", "raw_data", "data-xextT.csv"))
-
-giving_per_capita <- giving_per_capita_raw
-```
-
 ## Total giving
 
-```{r plot-total-giving, fig.width=4, fig.height=2.4, out.width="80%"}
+```{r plot-total-giving, fig.width=4, fig.height=2.4, fig.asp=NULL, out.width="60%"}
 ggplot(giving_aggregate, aes(x = Year, y = `Total donations`)) +
-  geom_line(size = 1, color = clrs_ngo$vi_blue_dark) +
+  geom_line(size = 1, color = clrs_okabe_ito$orange) +
   scale_x_continuous(breaks = seq(1980, 2015, 5)) +
   scale_y_continuous(labels = dollar, breaks = seq(100, 450, 50)) + 
   coord_cartesian(ylim = c(100, 450)) +
   labs(x = NULL, y = "Billions of dollars") + 
   theme_ngo()
-
-ggsave(here("analysis", "output", "figures", "giving_aggregate.pdf"), 
-       width = 4, height = 2.4, units = "in", device = cairo_pdf)
-ggsave(here("analysis", "output", "figures", "giving_aggregate.png"), 
-       width = 4, height = 2.4, units = "in", type = "cairo", dpi = 300)
 ```
 
 ## Average per capita giving
 
-```{r plot-per-capita-giving, fig.width=4, fig.height=2.4, out.width="80%"}
+```{r plot-per-capita-giving, fig.width=4, fig.height=2.4, fig.asp=NULL, out.width="60%"}
 ggplot(giving_per_capita, aes(x = Year, y = `Average giving`)) +
-  geom_line(size = 1, color = clrs_ngo$vi_blue_dark) +
+  geom_line(size = 1, color = clrs_okabe_ito$sky_blue) +
   scale_x_continuous(breaks = seq(2000, 2014, 2)) +
   scale_y_continuous(labels = dollar, breaks = seq(1750, 2750, 250)) + 
   coord_cartesian(ylim = c(1750, 2750)) +
@@ -97,41 +81,41 @@ ggplot(giving_per_capita, aes(x = Year, y = `Average giving`)) +
 
 ## Income across issue area, funding, and relationship
 
-```{r income-issue-funding-relationship, fig.width=6, fig.height=4.5, out.width="100%"}
-plot_income_issue <- sim_clean %>% 
+```{r income-issue-funding-relationship, fig.width=6, fig.height=4.5, fig.asp=NULL, out.width="100%"}
+plot_income_issue <- sim_final %>% 
   group_by(org_issue, persona_income) %>% 
   summarize(avg_share = mean(share)) %>% 
   mutate(facet = "Issue area") %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_issue, 15)),
              x = avg_share, color = fct_rev(persona_income))) +
-  geom_pointrangeh(size = 0.75, fatten = 1.5,
-                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  geom_pointrange(size = 0.75, fatten = 1.5,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002)),
                      breaks = seq(0, 0.06, 0.02)) +
-  scale_color_manual(values = c(clrs_ngo$vi_turquoise, clrs_ngo$vi_purple), guide = FALSE) +
+  scale_color_manual(values = clrs_ngo_pairs[[1]], guide = FALSE) +
   coord_cartesian(xlim = c(0, 0.06)) +
   labs(x = "Average donation share", y = NULL, color = NULL) +
   facet_wrap(vars(facet)) +
   theme_ngo() +
   theme(panel.grid.major.y = element_blank())
 
-plot_income_funding <- sim_clean %>% 
+plot_income_funding <- sim_final %>% 
   group_by(org_funding, persona_income) %>% 
   summarize(avg_share = mean(share)) %>% 
   mutate(facet = "Funding sources") %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_funding, 10)), 
              x = avg_share, color = fct_rev(persona_income))) +
-  geom_pointrangeh(size = 0.75, fatten = 1.5,
-                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  geom_pointrange(size = 0.75, fatten = 1.5,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
   coord_cartesian(xlim = c(0, 0.06)) +
-  scale_color_manual(values = c(clrs_ngo$vi_turquoise, clrs_ngo$vi_purple), guide = FALSE) +
+  scale_color_manual(values = clrs_ngo_pairs[[1]], guide = FALSE) +
   labs(x = "Average donation share", y = NULL, color = NULL) +
   facet_wrap(vars(facet)) +
   theme_ngo() +
   theme(panel.grid.major.y = element_blank())
 
-plot_income_relationship <- sim_clean %>% 
+plot_income_relationship <- sim_final %>% 
   mutate(persona_income = fct_recode(persona_income,
                                      "< $61,372/year" = "Lower income",
                                      "> $61,372/year" = "Higher income")) %>% 
@@ -140,19 +124,21 @@ plot_income_relationship <- sim_clean %>%
   mutate(facet = "Relationship with host government") %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_relationship, 10)), 
              x = avg_share, color = fct_rev(persona_income))) +
-  geom_pointrangeh(size = 0.75, fatten = 1.5, 
-                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) +
+  geom_pointrange(size = 0.75, fatten = 1.5, 
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) +
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.003))) +
   coord_cartesian(xlim = c(0, 0.1)) +
-  scale_color_manual(values = c(clrs_ngo$vi_turquoise, clrs_ngo$vi_purple), 
+  scale_color_manual(values = clrs_ngo_pairs[[1]], 
                      guide = guide_legend(reverse = TRUE, nrow = 1,
-                                          override.aes = list(size = 0.25))) +
+                                          override.aes = list(size = 0.25,
+                                                              linetype = 0))) +
   labs(x = "Average donation share", y = NULL, color = NULL) +
   facet_wrap(vars(str_wrap(facet, 50))) +
   theme_ngo() +
-  theme(panel.grid.major.y = element_blank())
+  theme(panel.grid.major.y = element_blank(),
+        legend.key.width = unit(0.5, "lines"))
 
-plot_income_relationship_extreme <- sim_excel_clean %>% 
+plot_income_relationship_extreme <- sim_excel_final %>% 
   mutate(persona_income = fct_recode(persona_income,
                                      "$50,000/year" = "Lower income",
                                      "$100,000/year" = "Higher income"),
@@ -163,82 +149,82 @@ plot_income_relationship_extreme <- sim_excel_clean %>%
   mutate(facet = "Relationship with host government") %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_relationship, 10)), 
              x = avg_share, color = fct_rev(persona_income))) +
-  geom_pointrangeh(size = 0.75, fatten = 1.5,
-                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  geom_pointrange(size = 0.75, fatten = 1.5, linetype = "21", pch = 2,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
   coord_cartesian(xlim = c(0, 0.1)) +
-  scale_color_manual(values = c(clrs_ngo$pl_yellow, clrs_ngo$pl_purple_light), 
+  scale_color_manual(values = clrs_ngo_pairs[[1]], 
                      guide = guide_legend(reverse = TRUE, nrow = 1,
-                                          override.aes = list(size = 0.25))) +
+                                          override.aes = list(size = 0.25, 
+                                                              linetype = 0))) +
   labs(x = "Average donation share", y = NULL, color = NULL) +
   facet_wrap(vars(str_wrap(facet, 50))) +
   theme_ngo() +
-  theme(panel.grid.major.y = element_blank())
+  theme(panel.grid.major.y = element_blank(),
+        legend.key.width = unit(0.5, "lines"))
 
 plot_income <- ((plot_income_issue + labs(x = NULL)) + 
   (plot_income_funding + labs(x = NULL))) / 
   (plot_income_relationship + plot_income_relationship_extreme)
 
 plot_income
-ggsave(plot_income, filename = here("analysis", "output", "figures", "income-all.pdf"),
-       width = 6, height = 4.5, units = "in", device = cairo_pdf)
-ggsave(plot_income, filename = here("analysis", "output", "figures", "income-all.png"),
-       width = 6, height = 4.5, units = "in", type = "cairo", dpi = 300)
 ```
 
 ## Education across issue area, funding, and relationship
 
-```{r edu-issue-funding-relationship, fig.width=8, fig.height=2.75, out.width="100%"}
-plot_education_issue <- sim_clean %>% 
+```{r edu-issue-funding-relationship, fig.width=8, fig.height=2.75, fig.asp=NULL, out.width="100%"}
+plot_education_issue <- sim_final %>% 
   group_by(org_issue, persona_education) %>% 
   summarize(avg_share = mean(share)) %>% 
   mutate(facet = "Issue area") %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_issue, 15)), 
              x = avg_share, color = fct_rev(persona_education))) +
-  geom_pointrangeh(size = 0.75, fatten = 1.5,
-                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  geom_pointrange(size = 0.75, fatten = 1.5,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
   coord_cartesian(xlim = c(0, 0.06)) +
-  scale_color_manual(values = c(clrs_ngo$pl_purple_dark, clrs_ngo$pl_orange), guide = FALSE) +
+  scale_color_manual(values = clrs_ngo_pairs[[2]], guide = FALSE) +
   labs(x = "Average donation share", y = NULL, color = NULL) +
   facet_wrap(vars(facet)) +
   theme_ngo() +
   theme(panel.grid.major.y = element_blank())
 
-plot_education_funding <- sim_clean %>% 
+plot_education_funding <- sim_final %>% 
   group_by(org_funding, persona_education) %>% 
   summarize(avg_share = mean(share)) %>% 
   mutate(facet = "Funding sources") %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_funding, 10)), 
              x = avg_share, color = fct_rev(persona_education))) +
-  geom_pointrangeh(size = 0.75, fatten = 1.5,
-                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  geom_pointrange(size = 0.75, fatten = 1.5,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
   coord_cartesian(xlim = c(0, 0.06)) +
-  scale_color_manual(values = c(clrs_ngo$pl_purple_dark, clrs_ngo$pl_orange), guide = FALSE) +
+  scale_color_manual(values = clrs_ngo_pairs[[2]], guide = FALSE) +
   labs(x = "Average donation share", y = NULL, color = NULL) +
   facet_wrap(vars(facet)) +
   theme_ngo() +
   theme(panel.grid.major.y = element_blank())
 
-plot_education_relationship <- sim_clean %>% 
+plot_education_relationship <- sim_final %>% 
   group_by(org_relationship, persona_education) %>% 
   summarize(avg_share = mean(share)) %>% 
   mutate(facet = "Relationship with host government") %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_relationship, 10)),
              x = avg_share, color = fct_rev(persona_education))) +
-  geom_pointrangeh(size = 0.75, fatten = 1.5,
-                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  geom_pointrange(size = 0.75, fatten = 1.5,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
   coord_cartesian(xlim = c(0, 0.1)) +
-  scale_color_manual(values = c(clrs_ngo$pl_purple_dark, clrs_ngo$pl_orange), 
+  scale_color_manual(values = clrs_ngo_pairs[[2]], 
                      guide = guide_legend(reverse = TRUE, ncol = 1,
-                                          override.aes = list(size = 0.25)),
+                                          override.aes = list(size = 0.25,
+                                                              linetype = 0)),
                      labels = label_wrap(15)) +
   labs(x = "Average donation share", y = NULL, color = NULL) +
   facet_wrap(vars(str_wrap(facet, 20))) +
   theme_ngo() +
-  theme(panel.grid.major.y = element_blank())
+  theme(panel.grid.major.y = element_blank(),
+        legend.key.width = unit(0.5, "lines"))
 
 plot_education <- plot_education_issue + plot_education_funding + 
   plot_education_relationship + guide_area() +
@@ -248,57 +234,59 @@ plot_education
 
 ## Religiosity across issue area, funding, and relationship
 
-```{r religion-issue-funding-relationship, fig.width=8, fig.height=2.75, out.width="100%"}
-plot_religion_issue <- sim_clean %>% 
+```{r religion-issue-funding-relationship, fig.width=8, fig.height=2.75, fig.asp=NULL, out.width="100%"}
+plot_religion_issue <- sim_final %>% 
   group_by(org_issue, persona_religion) %>% 
   summarize(avg_share = mean(share)) %>% 
   mutate(facet = "Issue area") %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_issue, 15)), 
              x = avg_share, color = fct_rev(persona_religion))) +
-  geom_pointrangeh(size = 0.75, fatten = 1.5, 
-                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  geom_pointrange(size = 0.75, fatten = 1.5, pch = 17,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
   coord_cartesian(xlim = c(0, 0.06)) +
-  scale_color_manual(values = c(clrs_ngo$vi_blue_light, clrs_ngo$vi_yellow), guide = FALSE) +
+  scale_color_manual(values = clrs_ngo_pairs[[4]], guide = FALSE) +
   labs(x = "Average donation share", y = NULL, color = NULL) +
   facet_wrap(vars(facet)) +
   theme_ngo() +
   theme(panel.grid.major.y = element_blank())
 
-plot_religion_funding <- sim_clean %>% 
+plot_religion_funding <- sim_final %>% 
   group_by(org_funding, persona_religion) %>% 
   summarize(avg_share = mean(share)) %>% 
   mutate(facet = "Funding sources") %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_funding, 10)), 
              x = avg_share, color = fct_rev(persona_religion))) +
-  geom_pointrangeh(size = 0.75, fatten = 1.5,
-                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  geom_pointrange(size = 0.75, fatten = 1.5, pch = 17,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
   coord_cartesian(xlim = c(0, 0.06)) +
-  scale_color_manual(values = c(clrs_ngo$vi_blue_light, clrs_ngo$vi_yellow), guide = FALSE) +
+  scale_color_manual(values = clrs_ngo_pairs[[4]], guide = FALSE) +
   labs(x = "Average donation share", y = NULL, color = NULL) +
   facet_wrap(vars(facet)) +
   theme_ngo() +
   theme(panel.grid.major.y = element_blank())
 
-plot_religion_relationship <- sim_clean %>% 
+plot_religion_relationship <- sim_final %>% 
   group_by(org_relationship, persona_religion) %>% 
   summarize(avg_share = mean(share)) %>% 
   mutate(facet = "Relationship with host government") %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_relationship, 10)), 
              x = avg_share, color = fct_rev(persona_religion))) +
-  geom_pointrangeh(size = 0.75, fatten = 1.5,
-                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  geom_pointrange(size = 0.75, fatten = 1.5, pch = 17,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
   coord_cartesian(xlim = c(0, 0.1)) +
-  scale_color_manual(values = c(clrs_ngo$vi_blue_light, clrs_ngo$vi_yellow), 
+  scale_color_manual(values = clrs_ngo_pairs[[4]], 
                      guide = guide_legend(reverse = TRUE, ncol = 1,
-                                          override.aes = list(size = 0.25)),
+                                          override.aes = list(size = 0.25,
+                                                              linetype = 0)),
                      labels = label_wrap(20)) +
   labs(x = "Average donation share", y = NULL, color = NULL) +
   facet_wrap(vars(str_wrap(facet, 20))) +
   theme_ngo() +
-  theme(panel.grid.major.y = element_blank())
+  theme(panel.grid.major.y = element_blank(),
+        legend.key.width = unit(0.5, "lines"))
 
 plot_religion <- plot_religion_issue + plot_religion_funding + 
   plot_religion_relationship + guide_area() +
@@ -308,7 +296,7 @@ plot_religion
 
 ## Education and religion across issue area, funding, and relationship
 
-```{r education-religion-issue-funding-relationship, fig.width=6, fig.height=4.5, out.width="100%"}
+```{r education-religion-issue-funding-relationship, fig.width=6, fig.height=4.5, fig.asp=NULL, out.width="100%"}
 plot_education_religion <- (plot_education_issue + labs(x = NULL)) + 
   (plot_education_funding + labs(x = NULL)) + 
   (plot_education_relationship + labs(x = NULL)) + 
@@ -319,91 +307,79 @@ plot_education_religion <- (plot_education_issue + labs(x = NULL)) +
   plot_layout(guides = "collect", ncol = 4)
 
 plot_education_religion
-ggsave(plot_education_religion, 
-       filename = here("analysis", "output", "figures", "education-religion-all.pdf"),
-       width = 6.5, height = 4.5, units = "in", device = cairo_pdf)
-ggsave(plot_education_religion, 
-       filename = here("analysis", "output", "figures", "education-religion-all.png"),
-       width = 6.5, height = 4.5, units = "in", type = "cairo", dpi = 300)
 ```
 
 
 ## Social trust across issue area
 
-```{r trust-issues, fig.width=6, fig.height=4, out.width="100%"}
-plot_issue_social <- sim_clean %>% 
+```{r trust-issues, fig.width=6, fig.height=4, fig.asp=NULL, out.width="100%"}
+plot_issue_social <- sim_final %>% 
   group_by(org_issue, persona_trust, persona_ideology, persona_experience) %>% 
   summarize(avg_share = mean(share)) %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_issue, 15)), 
              x = avg_share, color = persona_trust)) +
-  geom_pointrangeh(size = 0.75, fatten = 1.5, 
-                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  geom_pointrange(size = 0.75, fatten = 1.5, 
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
-  scale_color_manual(values = c(clrs_ngo$pl_blue, clrs_ngo$pl_pink), 
+  scale_color_manual(values = clrs_ngo_pairs[[3]], 
                      guide = guide_legend(reverse = TRUE,
-                                          override.aes = list(size = 0.25))) +
+                                          override.aes = list(size = 0.25,
+                                                              linetype = 0))) +
   labs(x = "Average share of donations", y = NULL, color = NULL) +
   facet_grid(rows = vars(persona_ideology), cols = vars(str_wrap(persona_experience, 100))) +
   theme_ngo() +
-  theme(panel.grid.major.y = element_blank())
+  theme(panel.grid.major.y = element_blank(),
+        legend.key.width = unit(0.5, "lines"))
 
 plot_issue_social
-ggsave(plot_issue_social, filename = here("analysis", "output", "figures", "issue-social.pdf"),
-       width = 6, height = 4, units = "in", device = cairo_pdf)
-ggsave(plot_issue_social, filename = here("analysis", "output", "figures", "issue-social.png"),
-       width = 6, height = 4, units = "in", type = "cairo", dpi = 300)
 ```
 
 ## Social trust across relationship
 
-```{r trust-relationship, fig.width=6, fig.height=4, out.width="100%"}
-plot_relationship_social <- sim_clean %>% 
+```{r trust-relationship, fig.width=6, fig.height=4, fig.asp=NULL, out.width="100%"}
+plot_relationship_social <- sim_final %>% 
   group_by(org_relationship, persona_trust, persona_ideology, persona_experience) %>% 
   summarize(avg_share = mean(share)) %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_relationship, 10)), 
              x = avg_share, color = persona_trust)) +
-  geom_pointrangeh(size = 0.75, fatten = 1.5,
-                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  geom_pointrange(size = 0.75, fatten = 1.5,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
-  scale_color_manual(values = c(clrs_ngo$pl_blue, clrs_ngo$pl_pink), 
+  scale_color_manual(values = clrs_ngo_pairs[[3]], 
                      guide = guide_legend(reverse = TRUE,
-                                          override.aes = list(size = 0.25))) +
+                                          override.aes = list(size = 0.25,
+                                                              linetype = 0))) +
   labs(x = "Average share of donations", y = NULL, color = NULL) +
   facet_grid(rows = vars(persona_ideology), cols = vars(str_wrap(persona_experience, 100))) +
   theme_ngo() +
-  theme(panel.grid.major.y = element_blank())
+  theme(panel.grid.major.y = element_blank(),
+        legend.key.width = unit(0.5, "lines"))
 
 plot_relationship_social
-ggsave(plot_relationship_social, filename = here("analysis", "output", "figures", "relationship-social.pdf"),
-       width = 6, height = 4, units = "in", device = cairo_pdf)
-ggsave(plot_relationship_social, filename = here("analysis", "output", "figures", "relationship-social.png"),
-       width = 6, height = 4, units = "in", type = "cairo", dpi = 300)
 ```
 
 ## Social trust across funding
 
-```{r trust-funding, fig.width=6, fig.height=4, out.width="100%"}
-plot_funding_social <- sim_clean %>% 
+```{r trust-funding, fig.width=6, fig.height=4, fig.asp=NULL, out.width="100%"}
+plot_funding_social <- sim_final %>% 
   group_by(org_funding, persona_trust, persona_ideology, persona_experience) %>% 
   summarize(avg_share = mean(share)) %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_funding, 15)), 
              x = avg_share, color = persona_trust)) +
-  geom_pointrangeh(size = 0.75, fatten = 1.5,
-                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  geom_pointrange(size = 0.75, fatten = 1.5,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
-  scale_color_manual(values = c(clrs_ngo$pl_blue, clrs_ngo$pl_pink), 
+  scale_color_manual(values = clrs_ngo_pairs[[3]], 
                      guide = guide_legend(reverse = TRUE,
-                                          override.aes = list(size = 0.25))) +
+                                          override.aes = list(size = 0.25,
+                                                              linetype = 0))) +
   labs(x = "Average share of donations", y = NULL, color = NULL) +
   facet_grid(rows = vars(persona_ideology), cols = vars(str_wrap(persona_experience, 100))) +
   theme_ngo() +
-  theme(panel.grid.major.y = element_blank())
+  theme(panel.grid.major.y = element_blank(),
+        legend.key.width = unit(0.5, "lines"))
 
 plot_funding_social
-ggsave(plot_funding_social, filename = here("analysis", "output", "figures", "funding-social.pdf"),
-       width = 6, height = 4, units = "in", device = cairo_pdf)
-ggsave(plot_funding_social, filename = here("analysis", "output", "figures", "funding-social.png"),
-       width = 6, height = 4, units = "in", type = "cairo", dpi = 300)
 ```
 
 

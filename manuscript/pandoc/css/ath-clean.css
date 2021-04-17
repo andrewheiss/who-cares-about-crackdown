@@ -251,6 +251,10 @@ hr {
   font-size: 1em;
 }
 
+.code-repo {
+  font-size: 0.8em;
+}
+
 .authors {
   margin: 2em 0;
 }
@@ -273,6 +277,14 @@ hr {
   padding: 5px;
 }
 
+.keywords {
+  font-family: "Work Sans", "Roboto Condensed", sans-serif;
+  font-weight: 300;
+  font-size: 1em;
+  margin: 1.5em 3em 0;
+  padding: 5px;
+}
+
 .acknowledgments {
   font-family: "Work Sans", "Roboto Condensed", sans-serif;
   font-weight: 300;
@@ -282,28 +294,40 @@ hr {
   background: #f2f2f2;
 }
 
+.keywords-title, .acknowledgments-title {
+  font-weight: 700;
+  font-style: italic;
+}
+
 .epigraph-wrapper {
   overflow: hidden;
 }
 
 .epigraph {
-  width: 65%;
+  width: 50%;
   float: right;
   color: #8a8a8a;
+  font-size: 0.9em;
 }
 
 .epigraph-text {
   padding-top: 0.8em;
   font-style: italic;
-  font-size: 1.6em;
 }
 
 .epigraph-source {
   text-align: right;
-  font-size: 1.2em;
 }
 
-.references p {
+p.epigraph-text {
+  margin-bottom: 0;
+}
+
+p.epigraph-source {
+  margin-top: 0;
+}
+
+.references .csl-entry {
   padding-left: 3rem;
   text-indent: -3rem;
   font-size: 1.1em;
@@ -318,7 +342,7 @@ hr {
     position: relative;
     margin: 1em 0 2em;
     text-align: center;
-}    
+}
 
 img {
     margin: 0 auto;
