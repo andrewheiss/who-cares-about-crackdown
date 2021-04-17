@@ -11,11 +11,7 @@ options(tidyverse.quiet = TRUE,
 
 set.seed(1746)  # From random.org
 
-tar_option_set(packages = c("tidyverse", "here", "fs", "scales",
-                            "readxl", "haven", "sf", "lubridate", "scales",
-                            "janitor", "kableExtra", "huxtable", "modelsummary",
-                            "knitr", "withr", "flextable", "testthat", "DT",
-                            "brms", "tidybayes", "broom", "cmdstanr", "jsonlite"))
+tar_option_set(packages = c("tidyverse", "here", "fs", "scales", "withr"))
 
 source("R/funs_data-generation.R")
 source("R/funs_survey.R")
