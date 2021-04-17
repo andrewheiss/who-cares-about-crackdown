@@ -89,7 +89,7 @@ list(
                csl = csl,
                bib_file,
                support_folder = "output/html-support"),
-             format = "file")#,
+             format = "file"),#,
   # tar_target(pdf,
   #            render_pdf(
   #              input = main_manuscript,
@@ -117,4 +117,16 @@ list(
   #              input_bib = bib_file,
   #              output = here_rel("manuscript", "output", "extracted-citations.bib")),
   #            format = "file")
+  tar_target_raw("appendix", here_rel("manuscript", "appendix.Rmd"),
+                 format = "file",
+                 deps = c("bib_file",
+                          tar_knitr_deps(here_rel("manuscript", "appendix.Rmd")))),
+  tar_target(app_html,
+             render_html(
+               input = appendix,
+               output = here_rel("manuscript", "output", "appendix.html"),
+               csl = csl,
+               bib_file,
+               support_folder = "output/html-support"),
+             format = "file")
 )

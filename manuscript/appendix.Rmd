@@ -14,7 +14,7 @@ author:
   affiliation: Georgia State University
   url: https://www.andrewheiss.com/
   email: aheiss@gsu.edu
-date: "October 2, 2020"
+date: "April 17, 2021"
 title-page: false
 published: 
 git-repo: https://github.com/andrewheiss/who-cares-about-crackdown
