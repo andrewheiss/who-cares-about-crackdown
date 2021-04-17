@@ -19,8 +19,9 @@ published: Working paper.
 git-repo: https://github.com/andrewheiss/who-cares-about-crackdown
 abstract: >-
   The phenomenon of closing civic space has adversely impacted the operations of INGOs. It has not just resulted in net losses of income to INGOs, but also how and where funds are allocated. We argue that individual private donors can be important in sustaining the operations of INGOs working in repressive contexts. Individual donors do not use the same performance-based metrics as official aid donors, and trust has shown to be an important component of support for nonprofits working towards difficult goals. How does trust in charitable organizations influence individuals’ preferences to donate, especially when these groups face crackdown? Using a simulated market for philanthropic donations towards INGOs, based on data from a nationally representative sample of individuals in the United States who regularly donate to charity, we find that trust in charitable organizations matters substantially in shaping donor preferences. Donor profiles with high levels of social trust are likely to donate to INGOs with friendly relationships with host governments. This support holds steady if INGOs face criticism or crackdown. In contrast, donor profiles with lower levels of social trust prefer to donate to organizations that do not face criticism or crackdown abroad. The global crackdown on NGOs may thus possibly sour NGOs' least trusting individual donors. Our findings have practical implications for INGOs raising funds from individuals amid closing civic space.
-reference-section-title: References
 toc: false
+reference-section-title: References
+bibliography: bibliography.bib
 title-page: true
 word-count: "7,562"
 keywords: international NGOs, donor behavior, philanthropy, human rights, repression, international giving, donor choice
@@ -34,17 +35,73 @@ mainfont: Lora
 sansfont: IBM Plex Sans
 policy-implications: >-
   In the wake of the global crackdown on civil society, international NGOs (INGOs) need to maintain access to multiple sources of funding, including individual donors. 
-
   It is critical for INGOs to understand what motivates individuals to donate, especially if INGOs face legal crackdown in their host countries.
   
   Trust in political institutions and in charitable organizations matters substantially in shaping donor preferences.
-
   We find that potential donors with low social trust tend to be wary of negative host-country relationships and prefer to donate to INGOs that are friendly with their host governments, while potential donors with high social trust are more willing to stick with legally besieged INGOs.
-
   Donors that are the most trusting and involved may remain supportive when charities face government criticism and crackdown. The global crackdown on NGOs may also possibly sour NGOs' least trusting individual donors.
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!-- manuscript.md is generated from manuscript.Rmd. Only edit the .Rmd file, *not* the .md file. -->
+
+```{r setup, include=FALSE}
+# Figure out output format
+is_docx <- knitr::pandoc_to("docx") | knitr::pandoc_to("odt")
+is_latex <- knitr::pandoc_to("latex")
+is_html <- knitr::pandoc_to("html")
+
+# Word-specific things
+table_format <- ifelse(is_docx, "huxtable", "kableExtra")  # Huxtable tables
+conditional_dpi <- ifelse(is_docx, 300, 300)  # Higher DPI
+conditional_align <- ifelse(is_docx, "default", "center")  # Word doesn't support align
+
+# Knitr options
+knitr::opts_chunk$set(
+  echo = FALSE, warning = FALSE, message = FALSE,
+  tidy.opts = list(width.cutoff = 120),  # Code width
+  fig.retina = 3, dpi = conditional_dpi,
+  fig.width = 7, fig.asp = 0.618,
+  fig.align = conditional_align, out.width = "100%",
+  fig.path = "output/figures/",
+  cache.path = "output/_cache/",
+  fig.process = function(x) {  # Remove "-1" from figure names
+    x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+    if (file.rename(x, x2)) x2 else x
+  }
+)
+
+# R options
+options(
+  width = 90,  # Output width
+  dplyr.summarise.inform = FALSE,  # Turn off dplyr's summarize() auto messages
+  knitr.kable.NA = "",  # Make NAs blank in kables
+  kableExtra.latex.load_packages = FALSE,  # Don't add LaTeX preamble stuff
+  modelsummary_default = table_format  # Set modelsummary backend
+)
+```
+
+```{r libraries-data, include=FALSE}
+library(tidyverse)
+library(targets)
+library(kableExtra)
+library(patchwork)
+library(scales)
+library(janitor)
+library(glue)
+library(here)
+
+withr::with_dir(here::here(), {
+  source(tar_read(plot_funs))
+  
+  tar_load(personas)
+  tar_load(orgs)
+  tar_load(participant_summary)
+  tar_load(sim_final)
+  tar_load(sim_excel_final)
+})
+```
 
 In 2016, Human Rights Watch claimed that civil society was under more aggressive attack than at any time in recent memory [@Roth:2016]. Governments across the globe have cracked down on civil society organizations (CSOs) and non-governmental organizations (NGOs)—a phenomenon known as "closing civic space" [@CarothersBrechenmacher:2014; @CIVICUS:2017; @DPR:2015; @DPR:2016].[^NGOdef] Legal restrictions, or what we refer to as legal crackdowns, are a core part of these efforts. These crackdowns create barriers to entry, funding, and advocacy for NGOs in an effort to control, obstruct, and repress these organizations. Barriers to funding are especially pervasive and restrict the ability of NGOs to secure financial resources. Restrictive states may prevent the transfer of foreign funds to NGOs based on the origin of these funds and which issues these funds can be used towards.
 
@@ -117,51 +174,109 @@ In our experiment, we presented respondents with four randomly selected internat
 
 \singlespacing
 
-```{r child = "output/tables/tbl-organization-attributes-full.md"}
+```{r organization-attributes-full}
+orgs$org_attributes %>% 
+  select(Organization, `Issue area`, `Organizational practices`, 
+         `Funding sources`, `Relationship with government`) %>% 
+  kbl(align = "lllll",
+      caption = "Organization attributes varied in the experiment. Each participant saw repeated combinations of attributes, with one attribute randomly selected from each column.") %>% 
+  kable_styling()
 ```
 
 \fingroup
 
-The hypothetical organizations are based on random combinations of features, including one of four issue areas, the presence or absence of two organizational practices, one of three funding sources, and one of three relationships with host governments (see @tbl:organization-attributes-full; see also Q3.1 in the survey text in the appendix). Respondents saw twelve sets of four hypothetical organizations out of 288 (4 × 4 × 2 × 3 × 3) possible combinations, meaning no single respondent was offered every combination. While not every combination necessarily reflected reality—for instance, a respondent might have been asked to compare a fictional Amnesty International that focuses on environmental issues and that is funded by private donations with a Greenpeace that focuses on human rights and that is funded by government grants—it is not important that these features align with true organizational characteristics, since the goal of these repeated hypothetical questions is to identify which attributes are the most salient for donors. 
+The hypothetical organizations are based on random combinations of features, including one of four issue areas, the presence or absence of two organizational practices, one of three funding sources, and one of three relationships with host governments (see Table \@ref(tab:organization-attributes-full); see also Q3.1 in the survey text in the appendix). Respondents saw twelve sets of four hypothetical organizations out of 288 (4 × 4 × 2 × 3 × 3) possible combinations, meaning no single respondent was offered every combination. While not every combination necessarily reflected reality—for instance, a respondent might have been asked to compare a fictional Amnesty International that focuses on environmental issues and that is funded by private donations with a Greenpeace that focuses on human rights and that is funded by government grants—it is not important that these features align with true organizational characteristics, since the goal of these repeated hypothetical questions is to identify which attributes are the most salient for donors. 
 
 In June 2019, we recruited survey respondents through Centiment, a commercial provider of high-quality, non-probability opt-in survey panels. Centiment ensures panel quality by actively recruiting and paying representative samples of the U.S. population. To participate in the study, respondents were first screened based on their charitable activities. Those who indicated that they gave to charity once every few years or never were disqualified. After screening, we collected a sample of 1,016 respondents, which is sufficient for model estimation.[^sample-size]
+
+
 
 \stgroup
 
 \singlespacing
 
-```{r child = "output/tables/tbl-sample-details.md"}
+```{r sample-details}
+participant_summary %>% 
+  select(Question = clean_name,
+         Response = level,
+         N = count,
+         `%` = nice_prop) %>% 
+  kbl(align = "lllcc",
+      caption = "Summary of individual respondent characteristics") %>% 
+  pack_rows(index = table(fct_inorder(participant_summary$category))) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  kable_styling()
 ```
 
 \fingroup
 
-@tbl:sample-details provides a summary of the individual characteristics of survey respondents. Because we limited the sample to people who regularly make charitable contributions, most respondents have a favorable opinion of nonprofits and charities, with more than half reporting a 5 or greater level of trust in charities (on a 7-point scale). Moreover, nearly 90% indicated that it is important to trust charities. Additionally, the majority of respondents volunteer and donate to charity at least once a year and give between \$1–\$999 annually. Most rarely attend church, but feel that religion is important. Respondents are also civically engaged (three quarters voted in the last election) and follow national news closely (70% follow the news daily). Respondents are fairly balanced ideologically, with the majority reporting a 3, 4, or 5 on a 7-point scale of liberal–conservative political ideology.
+Table \@ref(tab:sample-details) provides a summary of the individual characteristics of survey respondents. Because we limited the sample to people who regularly make charitable contributions, most respondents have a favorable opinion of nonprofits and charities, with more than half reporting a 5 or greater level of trust in charities (on a 7-point scale). Moreover, nearly 90% indicated that it is important to trust charities. Additionally, the majority of respondents volunteer and donate to charity at least once a year and give between \$1–\$999 annually. Most rarely attend church, but feel that religion is important. Respondents are also civically engaged (three quarters voted in the last election) and follow national news closely (70% follow the news daily). Respondents are fairly balanced ideologically, with the majority reporting a 3, 4, or 5 on a 7-point scale of liberal–conservative political ideology.
 
 We analyze the effect of different combinations of organizational features and individual respondent attributes with a two-level hierarchical Bayesian multinomial logit model.[^model-details] Simply put, the first level of the model predicts individual donor preferences for various combinations of features (e.g. the combination of human rights issues, financial transparency, government funding, and government crackdown), while the second level predicts the heterogeneity of these fitted preferences as a function of individual donor characteristics.
 
 ## Simulated philanthropy market
 
-In this paper, we look at which kinds of donors are more or less likely to consider an NGO's issue area, funding sources, and relationships with host governments when deciding to donate. Disentangling the effect of every individual level-characteristic measured in the survey on every combination of organizational characteristics presented in the conjoint experiment is unwieldy and near impossible. Given the organizational attributes presented in our experiment, and the possible individual characteristics that respondents could select, there are billions of possible combinations and iterations of organizational and individual attributes—many of which rarely occur in the actual population of potential donors. To more fully explore the relationships between different organizational- and individual-level attributes, we turn to simulation methods that allow us to examine the impact of multiple covariates simultaneously. To simplify the possible combinations of individual characteristics, we generate 64 distinct personas with attributes that vary along different dimensions of demographics, politics and public affairs experience, and social attitudes (see @tbl:persona-attributes). We also generate 24 simulated organizations that vary by issue area, relationship with host government, and source of funding (see @tbl:organization-attributes).
+In this paper, we look at which kinds of donors are more or less likely to consider an NGO's issue area, funding sources, and relationships with host governments when deciding to donate. Disentangling the effect of every individual level-characteristic measured in the survey on every combination of organizational characteristics presented in the conjoint experiment is unwieldy and near impossible. Given the organizational attributes presented in our experiment, and the possible individual characteristics that respondents could select, there are billions of possible combinations and iterations of organizational and individual attributes—many of which rarely occur in the actual population of potential donors. To more fully explore the relationships between different organizational- and individual-level attributes, we turn to simulation methods that allow us to examine the impact of multiple covariates simultaneously. To simplify the possible combinations of individual characteristics, we generate 64 distinct personas with attributes that vary along different dimensions of demographics, politics and public affairs experience, and social attitudes (see Table \@ref(tab:persona-attributes)). We also generate 24 simulated organizations that vary by issue area, relationship with host government, and source of funding (see Table \@ref(tab:organization-attributes)).
 
 \stgroup
 
 \singlespacing
 
-```{r child = "output/tables/tbl-persona-attributes.md"}
+```{r persona-attributes}
+personas$persona_attributes %>% 
+  kbl(align = "lll",
+      caption = "Individual attributes varied in the simulation, resulting in 64 persona profiles") %>% 
+  kable_styling()
 ```
 
-```{r child = "output/tables/tbl-organization-attributes.md"}
+```{r organization-attributes}
+orgs$org_attributes %>% 
+  select(`Issue area`, `Relationship with government`, `Funding`) %>% 
+  kbl(align = "lll",
+      caption = "Organization attributes varied in the simulation, resulting in 24 hypothetical organizations") %>% 
+  kable_styling()
 ```
 
 \fingroup
 
-We then combine these different scenarios of donor and organization attributes with the coefficients from a multinomial multilevel regression model to calculate the probability that each simulated persona has of giving to specific combinations of organizational attributes. Any individual characteristics that we do not explicitly vary in @tbl:persona-attributes are held at their means or modal values from the survey sample. @tbl:sim-output provides an example of the simulation output, showing how two different personas are predicted to allocate donations to organizations with various characteristics. The proportion of donations from each persona sums to 100%, as every persona is guaranteed to make a donation.
+We then combine these different scenarios of donor and organization attributes with the coefficients from a multinomial multilevel regression model to calculate the probability that each simulated persona has of giving to specific combinations of organizational attributes. Any individual characteristics that we do not explicitly vary in Table \@ref(tab:persona-attributes) are held at their means or modal values from the survey sample. Table \@ref(tab:sim-output) provides an example of the simulation output, showing how two different personas are predicted to allocate donations to organizations with various characteristics. The proportion of donations from each persona sums to 100%, as every persona is guaranteed to make a donation.
 
 \stgroup
 
 \singlespacing
 
-```{r child = "output/tables/tbl-sim-output.md"}
+```{r sim-output}
+example_personas <- c("persona2", "persona63")
+
+example_persona_results <- sim_final %>% 
+  filter(persona_id %in% example_personas) %>% 
+  mutate(org_funding = str_to_sentence(str_remove(org_funding, "Mostly funded by "))) %>% 
+  mutate(org_clean = glue("{organization}: {org_issue}, {org_funding}, {org_relationship}")) %>% 
+  mutate(persona_desc = recode(
+    persona_id,
+    "persona2" = "Lower income high school graduate who rarely attends religious services; liberal who reads and travels; doesn't trust or donate",
+    "persona63" = "Higher income college graduate who attends religious services; conservative who doesn't read or travel; trusts and donates")
+  ) %>%
+  mutate(persona_clean = glue("{persona}: {persona_desc}")) %>% 
+  select(persona_clean, share, org_clean) %>% 
+  pivot_wider(names_from = "persona_clean", values_from = "share") %>% 
+  adorn_totals(where = "row", name = "Total")
+
+example_persona_results_small <- example_persona_results %>% 
+  slice(c(1, 2, 3, 7, 8, 9, 16, 17, 25)) %>% 
+  mutate(across(where(is.numeric), ~ percent_format(accuracy = 0.1)(.))) %>% 
+  add_row(org_clean = "…", .after = 3) %>% 
+  add_row(org_clean = "…", .after = 7) %>% 
+  add_row(org_clean = "…", .after = 10) %>% 
+  mutate(across(everything(), ~replace_na(., "…"))) %>% 
+  rename(Organization = org_clean)
+
+example_persona_results_small %>% 
+  mutate(Organization = text_spec(Organization, bold = Organization == "Total")) %>% 
+  kbl(align = "lcc",
+      caption = "Sample simulation output",
+      escape = FALSE) %>% 
+  kable_styling()
 ```
 
 \fingroup
@@ -173,41 +288,281 @@ Relying on simulation methods offers useful analytic benefits. Rather than inter
 
 These simulated findings are more abstract than the results from an ordinary survey sample. But by using simulations, we can discover interesting patterns of donor preferences when faced with organizations focusing on a variety of issues, funding sources, and legal restrictions abroad. Our market simulation reveals which combination of organizational features each persona is most likely to express a preference for donating to. We examine the results of the simulation in three stages, looking at how personas with different (1) demographic characteristics, (2) public affairs knowledge and experience, and (3) levels of trust in government, charitable work, and associational life change their donation preferences across different organizational issue areas, relationships with host governments, and funding sources.
 
-## Demographics
+## Patterns across demographics
 
-We begin by looking at differences in donation preferences across a range of basic demographic characteristics. The four panels of @fig:income show the average predicted market share for different organizational issue areas, funding sources, and relationships with host governments across different levels of persona income, with two different cutpoints for high and low income. To ease with modeling and interpretation, we split high- and low-income personas based on the 2017 U.S. median income (\$61,372), showing personas with incomes higher and lower than the national median. Because there is wide variation in donor incomes in the U.S., we also show the results from a simulation model with a more extreme split in income, holding annual persona income at \$50,000 and \$100,000+. The difference in the division of high and low income makes no difference in the market shares across issue areas and funding sources, but there are substantial income-based differences across different relationships with host governments.
+We begin by looking at differences in donation preferences across a range of basic demographic characteristics. The four panels of Figure \@ref(fig:income) show the average predicted market share for different organizational issue areas, funding sources, and relationships with host governments across different levels of persona income, with two different cutpoints for high and low income. To ease with modeling and interpretation, we split high- and low-income personas based on the 2017 U.S. median income (\$61,372), showing personas with incomes higher and lower than the national median. Because there is wide variation in donor incomes in the U.S., we also show the results from a simulation model with a more extreme split in income, holding annual persona income at \$50,000 and \$100,000+. The difference in the division of high and low income makes no difference in the market shares across issue areas and funding sources, but there are substantial income-based differences across different relationships with host governments.
 
-![Average predicted donation market shares across all personas, segmented by persona income across organizational issue area, relationship with host government, and funding sources](output/figures/income-all.pdf){#fig:income}
+```{r income, fig.width=6, fig.height=4.5, fig.asp=NULL, out.width="100%", fig.cap="Average predicted donation market shares across all personas, segmented by persona income across organizational issue area, relationship with host government, and funding sources"}
+plot_income_issue <- sim_final %>% 
+  group_by(org_issue, persona_income) %>% 
+  summarize(avg_share = mean(share)) %>% 
+  mutate(facet = "Issue area") %>% 
+  ggplot(aes(y = fct_rev(str_wrap_factor(org_issue, 15)),
+             x = avg_share, color = fct_rev(persona_income))) +
+  geom_pointrange(size = 0.75, fatten = 1.5,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002)),
+                     breaks = seq(0, 0.06, 0.02)) +
+  scale_color_manual(values = clrs_ngo_pairs[[1]], guide = FALSE) +
+  coord_cartesian(xlim = c(0, 0.06)) +
+  labs(x = "Average donation share", y = NULL, color = NULL) +
+  facet_wrap(vars(facet)) +
+  theme_ngo() +
+  theme(panel.grid.major.y = element_blank())
+
+plot_income_funding <- sim_final %>% 
+  group_by(org_funding, persona_income) %>% 
+  summarize(avg_share = mean(share)) %>% 
+  mutate(facet = "Funding sources") %>% 
+  ggplot(aes(y = fct_rev(str_wrap_factor(org_funding, 10)), 
+             x = avg_share, color = fct_rev(persona_income))) +
+  geom_pointrange(size = 0.75, fatten = 1.5,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
+  coord_cartesian(xlim = c(0, 0.06)) +
+  scale_color_manual(values = clrs_ngo_pairs[[1]], guide = FALSE) +
+  labs(x = "Average donation share", y = NULL, color = NULL) +
+  facet_wrap(vars(facet)) +
+  theme_ngo() +
+  theme(panel.grid.major.y = element_blank())
+
+plot_income_relationship <- sim_final %>% 
+  mutate(persona_income = fct_recode(persona_income,
+                                     "< $61,372/year" = "Lower income",
+                                     "> $61,372/year" = "Higher income")) %>% 
+  group_by(org_relationship, persona_income) %>% 
+  summarize(avg_share = mean(share)) %>% 
+  mutate(facet = "Relationship with host government") %>% 
+  ggplot(aes(y = fct_rev(str_wrap_factor(org_relationship, 10)), 
+             x = avg_share, color = fct_rev(persona_income))) +
+  geom_pointrange(size = 0.75, fatten = 1.5, 
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) +
+  scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.003))) +
+  coord_cartesian(xlim = c(0, 0.1)) +
+  scale_color_manual(values = clrs_ngo_pairs[[1]], 
+                     guide = guide_legend(reverse = TRUE, nrow = 1,
+                                          override.aes = list(size = 0.25,
+                                                              linetype = 0))) +
+  labs(x = "Average donation share", y = NULL, color = NULL) +
+  facet_wrap(vars(str_wrap(facet, 50))) +
+  theme_ngo() +
+  theme(panel.grid.major.y = element_blank(),
+        legend.key.width = unit(0.5, "lines"))
+
+plot_income_relationship_extreme <- sim_excel_final %>% 
+  mutate(persona_income = fct_recode(persona_income,
+                                     "$50,000/year" = "Lower income",
+                                     "$100,000/year" = "Higher income"),
+         org_relationship = fct_recode(org_relationship,
+                                       "Under crackdown" = "Crackdown")) %>% 
+  group_by(org_relationship, persona_income) %>% 
+  summarize(avg_share = mean(share)) %>% 
+  mutate(facet = "Relationship with host government") %>% 
+  ggplot(aes(y = fct_rev(str_wrap_factor(org_relationship, 10)), 
+             x = avg_share, color = fct_rev(persona_income))) +
+  geom_pointrange(size = 0.75, fatten = 1.5, linetype = "21", pch = 2,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
+  coord_cartesian(xlim = c(0, 0.1)) +
+  scale_color_manual(values = clrs_ngo_pairs[[1]], 
+                     guide = guide_legend(reverse = TRUE, nrow = 1,
+                                          override.aes = list(size = 0.25, 
+                                                              linetype = 0))) +
+  labs(x = "Average donation share", y = NULL, color = NULL) +
+  facet_wrap(vars(str_wrap(facet, 50))) +
+  theme_ngo() +
+  theme(panel.grid.major.y = element_blank(),
+        legend.key.width = unit(0.5, "lines"))
+
+plot_income <- ((plot_income_issue + labs(x = NULL)) + 
+  (plot_income_funding + labs(x = NULL))) / 
+  (plot_income_relationship + plot_income_relationship_extreme)
+
+plot_income
+```
 
 Regardless of income, personas respond better to human rights and refugee assistance organizations, followed closely by emergency response organizations. Environmental NGOs have the lowest market share across both levels of incomes. There are negligible differences across income levels—wealthier personas show a slight preference towards human rights and refugee organizations. This is possibly because income correlates with interest in public affairs and political activity—individuals who are wealthier arguably have more time and resources to follow the news and be continuously engaged in their communities and in other activist causes. There are no sizable differences in donation preferences by income across different forms of NGO funding—both levels of income tend to prefer organizations funded by government grants over small donors.
 
 An organization's relationship with its host government does influence market shares across levels of income, but the size of this difference depends on the magnitude of income. In general, personas prefer to donate to organizations with friendly relationships with their host governments and avoid those under crackdown. Wealthier donor personas are more likely to prefer donating to organizations that are criticized by their host governments. This falls in line with their preference for human rights organizations, which have more contentious missions and are more likely to be targeted. This support, however, evaporates as crackdown intensifies. High-income personas are the least likely demographic to prefer donating to NGOs under crackdown. Their lower income counterparts, on the other hand, are generally unfazed by NGOs' relationships with government, maintaining the same average market share across all three types of host country relationships. Patterns in preferences for issue area and funding sources remain constant across both methods of categorizing income—crackdown only has an effect on very high-income personas. Income thus appears to influence preferences particularly for NGOs facing crackdown abroad—wealthy donors are perhaps fair-weather friends that are more likely to pull their support when an organization's work becomes more difficult.
 
-![Average predicted donation market shares across all personas, segmented by persona education and religiosity across organizational issue area, relationship with host government, and funding sources](output/figures/education-religion-all.pdf){#fig:edu-religion}
+```{r edu-religion, fig.width=6, fig.height=4.5, fig.asp=NULL, out.width="100%", fig.cap="Average predicted donation market shares across all personas, segmented by persona education and religiosity across organizational issue area, relationship with host government, and funding sources"}
+# Education plots
+plot_education_issue <- sim_final %>% 
+  group_by(org_issue, persona_education) %>% 
+  summarize(avg_share = mean(share)) %>% 
+  mutate(facet = "Issue area") %>% 
+  ggplot(aes(y = fct_rev(str_wrap_factor(org_issue, 15)), 
+             x = avg_share, color = fct_rev(persona_education))) +
+  geom_pointrange(size = 0.75, fatten = 1.5,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
+  coord_cartesian(xlim = c(0, 0.06)) +
+  scale_color_manual(values = clrs_ngo_pairs[[2]], guide = FALSE) +
+  labs(x = "Average donation share", y = NULL, color = NULL) +
+  facet_wrap(vars(facet)) +
+  theme_ngo() +
+  theme(panel.grid.major.y = element_blank())
 
-While education and religiosity are both important drivers of individual philanthropy, neither are associated with any sizable differences in persona donation patterns (as seen in @fig:edu-religion). Human rights issues attract a slightly larger market share of personas who are college graduates or who attend religious services at least monthly, while refugee issues are more likely to attract less religious personas, but these differences are minor. Preferences are consistent for different sources of funding as well—personas generally prefer organizations funded mostly by government grants. Persona preferences across different organizational relationships with host governments are also consistent across education and religiosity, with most personas preferring to donate to NGOs that enjoy friendly relations abroad. 
+plot_education_funding <- sim_final %>% 
+  group_by(org_funding, persona_education) %>% 
+  summarize(avg_share = mean(share)) %>% 
+  mutate(facet = "Funding sources") %>% 
+  ggplot(aes(y = fct_rev(str_wrap_factor(org_funding, 10)), 
+             x = avg_share, color = fct_rev(persona_education))) +
+  geom_pointrange(size = 0.75, fatten = 1.5,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
+  coord_cartesian(xlim = c(0, 0.06)) +
+  scale_color_manual(values = clrs_ngo_pairs[[2]], guide = FALSE) +
+  labs(x = "Average donation share", y = NULL, color = NULL) +
+  facet_wrap(vars(facet)) +
+  theme_ngo() +
+  theme(panel.grid.major.y = element_blank())
 
+plot_education_relationship <- sim_final %>% 
+  group_by(org_relationship, persona_education) %>% 
+  summarize(avg_share = mean(share)) %>% 
+  mutate(facet = "Relationship with host government") %>% 
+  ggplot(aes(y = fct_rev(str_wrap_factor(org_relationship, 10)),
+             x = avg_share, color = fct_rev(persona_education))) +
+  geom_pointrange(size = 0.75, fatten = 1.5,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
+  coord_cartesian(xlim = c(0, 0.1)) +
+  scale_color_manual(values = clrs_ngo_pairs[[2]], 
+                     guide = guide_legend(reverse = TRUE, ncol = 1,
+                                          override.aes = list(size = 0.25,
+                                                              linetype = 0)),
+                     labels = label_wrap(15)) +
+  labs(x = "Average donation share", y = NULL, color = NULL) +
+  facet_wrap(vars(str_wrap(facet, 20))) +
+  theme_ngo() +
+  theme(panel.grid.major.y = element_blank(),
+        legend.key.width = unit(0.5, "lines"))
 
-## Public affairs knowledge, experience, and social trust
+# Religion plots
+plot_religion_issue <- sim_final %>% 
+  group_by(org_issue, persona_religion) %>% 
+  summarize(avg_share = mean(share)) %>% 
+  mutate(facet = "Issue area") %>% 
+  ggplot(aes(y = fct_rev(str_wrap_factor(org_issue, 15)), 
+             x = avg_share, color = fct_rev(persona_religion))) +
+  geom_pointrange(size = 0.75, fatten = 1.5, pch = 17,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
+  coord_cartesian(xlim = c(0, 0.06)) +
+  scale_color_manual(values = clrs_ngo_pairs[[4]], guide = FALSE) +
+  labs(x = "Average donation share", y = NULL, color = NULL) +
+  facet_wrap(vars(facet)) +
+  theme_ngo() +
+  theme(panel.grid.major.y = element_blank())
+
+plot_religion_funding <- sim_final %>% 
+  group_by(org_funding, persona_religion) %>% 
+  summarize(avg_share = mean(share)) %>% 
+  mutate(facet = "Funding sources") %>% 
+  ggplot(aes(y = fct_rev(str_wrap_factor(org_funding, 10)), 
+             x = avg_share, color = fct_rev(persona_religion))) +
+  geom_pointrange(size = 0.75, fatten = 1.5, pch = 17,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
+  coord_cartesian(xlim = c(0, 0.06)) +
+  scale_color_manual(values = clrs_ngo_pairs[[4]], guide = FALSE) +
+  labs(x = "Average donation share", y = NULL, color = NULL) +
+  facet_wrap(vars(facet)) +
+  theme_ngo() +
+  theme(panel.grid.major.y = element_blank())
+
+plot_religion_relationship <- sim_final %>% 
+  group_by(org_relationship, persona_religion) %>% 
+  summarize(avg_share = mean(share)) %>% 
+  mutate(facet = "Relationship with host government") %>% 
+  ggplot(aes(y = fct_rev(str_wrap_factor(org_relationship, 10)), 
+             x = avg_share, color = fct_rev(persona_religion))) +
+  geom_pointrange(size = 0.75, fatten = 1.5, pch = 17,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
+  coord_cartesian(xlim = c(0, 0.1)) +
+  scale_color_manual(values = clrs_ngo_pairs[[4]], 
+                     guide = guide_legend(reverse = TRUE, ncol = 1,
+                                          override.aes = list(size = 0.25,
+                                                              linetype = 0)),
+                     labels = label_wrap(20)) +
+  labs(x = "Average donation share", y = NULL, color = NULL) +
+  facet_wrap(vars(str_wrap(facet, 20))) +
+  theme_ngo() +
+  theme(panel.grid.major.y = element_blank(),
+        legend.key.width = unit(0.5, "lines"))
+
+plot_education_religion <- (plot_education_issue + labs(x = NULL)) + 
+  (plot_education_funding + labs(x = NULL)) + 
+  (plot_education_relationship + labs(x = NULL)) + 
+  guide_area() +
+  plot_religion_issue + 
+  plot_religion_funding + 
+  plot_religion_relationship +
+  plot_layout(guides = "collect", ncol = 4)
+
+plot_education_religion
+```
+
+While education and religiosity are both important drivers of individual philanthropy, neither are associated with any sizable differences in persona donation patterns (as seen in Figure \@ref(fig:edu-religion)). Human rights issues attract a slightly larger market share of personas who are college graduates or who attend religious services at least monthly, while refugee issues are more likely to attract less religious personas, but these differences are minor. Preferences are consistent for different sources of funding as well—personas generally prefer organizations funded mostly by government grants. Persona preferences across different organizational relationships with host governments are also consistent across education and religiosity, with most personas preferring to donate to NGOs that enjoy friendly relations abroad. 
+
+## Patterns across public affairs knowledge, experience, and social trust
 
 We next look at how differences in public affairs knowledge, experience, and political ideology influence a persona's propensity to donate to an organization. We vary personas along two dimensions: (1) political ideology, with semi-liberal and semi-conservative political leanings (2 and 5 on a 7-point scale), and (2) knowledge and experience with public affairs and the news, with personas that either follow national and international news and that have travelled abroad or personas that do not follow the news or travel. 
 
 We combine these dimensions with an additional set of donor characteristics that vary a persona's level of social trust. Personas with high levels of trust have high trust in political institutions and charities, think people should be more charitable, frequently volunteer, donate to charity once a month, have a history of political activism, and are members of an association. Personas with low levels of trust have the opposite characteristics: they do not trust political institutions or charities, rarely donate or volunteer, and are not members of associations. 
 
-![Average predicted donation market shares across all personas, segmented by persona public affairs knowledge, political ideology, and social trust across different NGO issue areas](output/figures/issue-social.pdf){#fig:issue-social}
+```{r issue-social, fig.width=6, fig.height=4, fig.asp=NULL, out.width="100%", fig.cap="Average predicted donation market shares across all personas, segmented by persona public affairs knowledge, political ideology, and social trust across different NGO issue areas"}
+sim_final %>% 
+  group_by(org_issue, persona_trust, persona_ideology, persona_experience) %>% 
+  summarize(avg_share = mean(share)) %>% 
+  ggplot(aes(y = fct_rev(str_wrap_factor(org_issue, 15)), 
+             x = avg_share, color = persona_trust)) +
+  geom_pointrange(size = 0.75, fatten = 1.5, 
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
+  scale_color_manual(values = clrs_ngo_pairs[[3]], 
+                     guide = guide_legend(reverse = TRUE,
+                                          override.aes = list(size = 0.25,
+                                                              linetype = 0))) +
+  labs(x = "Average share of donations", y = NULL, color = NULL) +
+  facet_grid(rows = vars(persona_ideology), cols = vars(str_wrap(persona_experience, 100))) +
+  theme_ngo() +
+  theme(panel.grid.major.y = element_blank(),
+        legend.key.width = unit(0.5, "lines"))
+```
 
-@fig:issue-social and @fig:relationship-social show the results of the market simulation across these three dimensions of persona characteristics, varying public affairs knowledge, political ideology, and social trust. Personas respond differently to organizational issue areas. In @fig:issue-social, those who follow the news and travel abroad are more likely to prefer donating to human rights organizations than their less knowledgeable and less traveled counterparts. Personas who do not follow the news or travel show a greater preference for emergency response and refugee relief organizations. There are no strong ideological effects across issue areas. Both conservative and liberal personas tend to follow similar patterns of preference across NGO issue. 
+Figures \@ref(fig:issue-social) and \@ref(fig:relationship-social) show the results of the market simulation across these three dimensions of persona characteristics, varying public affairs knowledge, political ideology, and social trust. Personas respond differently to organizational issue areas. In Figure \@ref(fig:issue-social), those who follow the news and travel abroad are more likely to prefer donating to human rights organizations than their less knowledgeable and less traveled counterparts. Personas who do not follow the news or travel show a greater preference for emergency response and refugee relief organizations. There are no strong ideological effects across issue areas. Both conservative and liberal personas tend to follow similar patterns of preference across NGO issue. 
 
 Social trust plays a substantial role in determining simulated market share, however. Those who trust social and charitable institutions are very likely to prefer donating to human rights organizations, regardless of their public affairs knowledge or political leanings. In all circumstances, those with high levels of trust have between a 7–10% chance of donating to a human rights organization, on average. Personas with low levels of trust, on the other hand, strongly avoid human rights organizations and prefer instead to donate to refugee and emergency response NGOs. The difference is substantial—a liberal persona with high levels of public affairs knowledge and experience will give to a human rights organization 10% of the time, on average if they have high levels of trust, but less than 3% of the time if they are less trusting. Trust in charities and institutions is a key factor in deciding to donate to more contentious human rights organizations.
 
-![Average predicted donation market shares across all personas, segmented by persona public affairs knowledge, political ideology, and social trust across different NGO–host government relationships](output/figures/relationship-social.pdf){#fig:relationship-social}
+```{r relationship-social, fig.width=6, fig.height=4, fig.asp=NULL, out.width="100%", fig.cap="Average predicted donation market shares across all personas, segmented by persona public affairs knowledge, political ideology, and social trust across different NGO–host government relationships"}
+sim_final %>% 
+  group_by(org_relationship, persona_trust, persona_ideology, persona_experience) %>% 
+  summarize(avg_share = mean(share)) %>% 
+  ggplot(aes(y = fct_rev(str_wrap_factor(org_relationship, 10)), 
+             x = avg_share, color = persona_trust)) +
+  geom_pointrange(size = 0.75, fatten = 1.5,
+                  aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
+  scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
+  scale_color_manual(values = clrs_ngo_pairs[[3]], 
+                     guide = guide_legend(reverse = TRUE,
+                                          override.aes = list(size = 0.25,
+                                                              linetype = 0))) +
+  labs(x = "Average share of donations", y = NULL, color = NULL) +
+  facet_grid(rows = vars(persona_ideology), cols = vars(str_wrap(persona_experience, 100))) +
+  theme_ngo() +
+  theme(panel.grid.major.y = element_blank(),
+        legend.key.width = unit(0.5, "lines"))
+```
 
-@fig:relationship-social shows how personas respond to different NGO–host government relationships. Public affairs knowledge and experience has little effect on donor preferences, as the average market shares are roughly identical across the two columns of the figure. Persona preferences toward friendly, criticized, and legally suppressed organizations do not change much across different ideological views. The strongest, most overriding factor in determining donor preferences when considering an organization's relationship with its host country is social trust. 
+Figure \@ref(fig:relationship-social) shows how personas respond to different NGO–host government relationships. Public affairs knowledge and experience has little effect on donor preferences, as the average market shares are roughly identical across the two columns of the figure. Persona preferences toward friendly, criticized, and legally suppressed organizations do not change much across different ideological views. The strongest, most overriding factor in determining donor preferences when considering an organization's relationship with its host country is social trust. 
 
 Personas across both levels of social trust are most likely to donate to organizations with friendly relationships with their host governments. However, those with higher trust are less likely to be deterred by poor host-country relationships, while those with low trust tend to not donate to organizations facing criticism or crackdown abroad. A friendly relationship with a host government may be a manifestation of a belief that charities behave properly and exert a positive influence on society. Once an organization faces criticism or crackdown, however, support deteriorates rapidly among personas with low social trust, since such a crackdown could be perceived as a violation of the persona's trust in the charity—that is, the organization must be doing something wrong to deserve criticism. When the risk of a certain action is higher, people need higher levels of confidence or trust to engage in that action [@coleman1990]. When NGOs have goals that are harder to accomplish (as is the case under shrinking civic space), there is greater uncertainty that the donated money will meaningfully contribute to the intended cause. 
 
 Personas with high levels of trust, on the other hand, seem to stick with legally besieged organizations and show targeted groups the benefit of the doubt. The global crackdown on NGOs thus sours NGOs' least trusting individual donors. Overall, our results support research that donors with high levels of trust are more active in giving than those with low levels of trust [@sargeant2008] and that trust especially matters when individuals donate to organizations working under great uncertainty and towards difficult goals [@Wiepking:2010].
-
 
 ## Concerns about inference and generalizability
 
@@ -238,8 +593,8 @@ When considering INGOs working in different issue areas, studies from a range of
 
 To be clear, research on international giving by individuals, especially in the era of closing civic space, is not meant to find answers that can act as substitutes for strategic policy responses, especially by official aid donors and foundations. However, many NGOs are under immediate threat, and individual-level philanthropy can help support these organizations. Existing initiatives such as the Lifeline Embattled CSO Assistance Funds provide models for channeling such funds. In the face of legal crackdowns abroad, individual donations are an important additional funding source for besieged NGOs.
 
-\newpage
 
+\newpage
 
 [^smalldonors]: Micro-donations refer to donations between $0.25–$10; small donors are individuals who donate up to $50 [@SaxtonWang:2014].
 
@@ -249,7 +604,7 @@ To be clear, research on international giving by individuals, especially in the 
 
 [^highnetworth]: High-net worth households have greater than \$200,000 in annual household income and/or have more than \$1,000,000 in assets, excluding primary residence.
 
-[^phildef]: We use philanthropy to connote voluntary giving to promote the common good. While it can include grants given by foundations and corporations to nonprofit organizations, our focus is on individual giving. Some perspectives see philanthropy as more of a strategic long-term practice addressing the root causes of issues, and charity as a more short-term practice focused on providing immediate relief. But many scholars see philanthropy as essentially synonymous with charitable donations, as the latter can also address longer-term or strategic isssues [@Castle:2004]. Despite these subtle differences, we use the terms inter-changeably here both because previous literature does so, and because in the case of giving to NGOs during crackdown, individuals could be giving to nonprofits both for immediate relief as well as long-term strategic purposes. 
+[^phildef]: We use philanthropy to connote voluntary giving to promote the common good. While it can include grants given by foundations and corporations to nonprofit organizations, our focus is on individual giving. Some perspectives see philanthropy as more of a strategic long-term practice addressing the root causes of issues, and charity as a more short-term practice focused on providing immediate relief. But many scholars see philanthropy as essentially synonymous with charitable donations, as the latter can also address longer-term or strategic issues [@Castle:2004]. Despite these subtle differences, we use the terms inter-changeably here both because previous literature does so, and because in the case of giving to NGOs during crackdown, individuals could be giving to nonprofits both for immediate relief as well as long-term strategic purposes. 
 
 [^intlaffairs]: Giving USA defines the sector of international affairs to include any nonprofit organization working in international development, international relief services, disaster relief, international human rights, international peace and security, foreign policy research and analysis, and international exchange programs.
 
