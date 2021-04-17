@@ -38,6 +38,7 @@ set.seed(8316)
 withr::with_dir(here::here(), {
   source(tar_read(plot_funs))
   
+  tar_load(survey_results)
   tar_load(sim_excel_final)
   tar_load(sim_final)
   tar_load(giving_aggregate)
@@ -45,7 +46,49 @@ withr::with_dir(here::here(), {
 })
 ```
 
+# General demographics of recipients
 
+## Religion
+
+```{r plot-religion}
+religion_lookup <- tribble(
+  ~Q5.10, ~religion,
+  1, "Catholic",
+  2, "Protestant",
+  3, "Christian Orthodox",
+  4, "Jewish",
+  5, "Muslim",
+  6, "Sikh",
+  7, "Hindu",
+  8, "Buddhist",
+  9, "Atheist",
+  10, "Other"
+)
+
+n_respondents <- nrow(survey_results)
+
+religions <- survey_results %>% 
+  count(Q5.10) %>% 
+  left_join(religion_lookup, by = "Q5.10") %>% 
+  arrange(n) %>% 
+  mutate(religion = fct_inorder(religion)) %>% 
+  mutate(percent = n / n_respondents)
+
+ggplot(religions, aes(x = n, y = religion)) +
+  geom_col(fill = clrs_okabe_ito$reddish_purple) +
+  scale_x_continuous(sec.axis = sec_axis(~. / n_respondents, labels = percent)) +
+  labs(x = "Number of respondents", y = NULL) +
+  theme_ngo()
+```
+
+```{r religion-others}
+religion_others <- survey_results %>% 
+  filter(!is.na(Q5.10_TEXT)) %>% 
+  mutate(Q5.10_TEXT = str_to_lower(Q5.10_TEXT)) %>% 
+  count(Q5.10_TEXT) %>% 
+  arrange(desc(n))
+religion_others
+```
 
 # General trends in private philanthropy
 
