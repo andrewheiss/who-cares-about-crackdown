@@ -16,7 +16,7 @@ author:
   email: aheiss@gsu.edu
 date: "April 17, 2021"
 published: Working paper.
-git-repo: https://github.com/andrewheiss/who-cares-about-crackdown
+code-repo: "Access the code and full analysis notebook at <https://stats.andrewheiss.com/who-cares-about-crackdowns/>"
 abstract: >-
   The phenomenon of closing civic space has adversely impacted the operations of INGOs. It has not just resulted in net losses of income to INGOs, but also how and where funds are allocated. We argue that individual private donors can be important in sustaining the operations of INGOs working in repressive contexts. Individual donors do not use the same performance-based metrics as official aid donors, and trust has shown to be an important component of support for nonprofits working towards difficult goals. How does trust in charitable organizations influence individuals' preferences to donate, especially when these groups face crackdown? Using a simulated market for philanthropic donations towards INGOs, based on data from a nationally representative sample of individuals in the United States who regularly donate to charity, we find that trust in charitable organizations matters substantially in shaping donor preferences. Donor profiles with high levels of social trust are likely to donate to INGOs with friendly relationships with host governments. This support holds steady if INGOs face criticism or crackdown. In contrast, donor profiles with lower levels of social trust prefer to donate to organizations that do not face criticism or crackdown abroad. The global crackdown on NGOs may thus possibly sour NGOs' least trusting individual donors. Our findings have practical implications for INGOs raising funds from individuals amid closing civic space.
 toc: false
