@@ -394,6 +394,33 @@ $endfor$
 \date{}
 
 
+% ---------------------
+% RESPONSE MEMO STUFF
+% ---------------------
+$if(response)$
+\newcommand{\responseheader}{
+    % \vspace*{1.2in}
+    \noindent\textsf{\textbf{\Large $title$}}
+    \vspace*{0.4in}
+}
+
+\definecolor{orange}{HTML}{D55E00}
+\definecolor{blue}{HTML}{0072B2}
+
+\newenvironment{reviewer}{\color{orange}\sffamily}{}
+\newcommand{\breviewer}{\begin{reviewer}}
+\newcommand{\ereviewer}{\end{reviewer}}
+
+\newenvironment{excerpt}{\color{blue}}{}
+\newcommand{\bexcerpt}{\begin{excerpt}}
+\newcommand{\eexcerpt}{\end{excerpt}}
+
+\setulmarginsandblock{1in}{1in}{*}
+\setlrmarginsandblock{1in}{1in}{*}
+\checkandfixthelayout
+$endif$
+
+
 % ------------------------------------------------------------------------------
 % ------------------------------------------------------------------------------
 % ------------------------------------------------------------------------------
@@ -415,6 +442,11 @@ $else$
 \pagestyle{ath}
 $endif$
 
+$if(response)$
+% If this is a peer review response, use the simple heading
+\responseheader
+$else$
+% Otherwise, use the normal article title + abstract + epigraph
 $if(published)$
 $if(code-repo)$
 \published{\textbf{$date$} \qquad $published$ \\ {\tiny $code-repo$}}
@@ -462,6 +494,8 @@ $else$
 \epigraph{$epigraph.text$}
 $endif$
 $endfor$
+$endif$
+
 $endif$
 
 $body$
