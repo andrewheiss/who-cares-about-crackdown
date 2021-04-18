@@ -14,18 +14,202 @@ author:
   affiliation: Georgia State University
   url: https://www.andrewheiss.com/
   email: aheiss@gsu.edu
-date: "April 17, 2021"
+date: "April 18, 2021"
 title-page: false
-published: 
-git-repo: https://github.com/andrewheiss/who-cares-about-crackdown
+published: Working paper.
+code-repo: "Access the code and full analysis notebook at <https://stats.andrewheiss.com/who-cares-about-crackdowns/>"
 reference-section-title: References
 toc: true
 appendix: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!-- supplement.md is generated from supplement.Rmd. Only edit the .Rmd file, *not* the .md file. -->
 
+```{r setup, include=FALSE}
+# Figure out output format
+is_docx <- knitr::pandoc_to("docx") | knitr::pandoc_to("odt")
+is_latex <- knitr::pandoc_to("latex")
+is_html <- knitr::pandoc_to("html")
+
+# Word-specific things
+table_format <- ifelse(is_docx, "huxtable", "kableExtra")  # Huxtable tables
+conditional_dpi <- ifelse(is_docx, 300, 300)  # Higher DPI
+conditional_align <- ifelse(is_docx, "default", "center")  # Word doesn't support align
+
+# Knitr options
+knitr::opts_chunk$set(
+  echo = FALSE, warning = FALSE, message = FALSE,
+  tidy.opts = list(width.cutoff = 120),  # Code width
+  fig.retina = 3, dpi = conditional_dpi,
+  fig.width = 7, fig.asp = 0.618,
+  fig.align = conditional_align, out.width = "100%",
+  fig.path = "output/figures/",
+  cache.path = "output/_cache/",
+  fig.process = function(x) {  # Remove "-1" from figure names
+    x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+    if (file.rename(x, x2)) x2 else x
+  }
+)
+
+# R options
+options(
+  width = 90,  # Output width
+  dplyr.summarise.inform = FALSE,  # Turn off dplyr's summarize() auto messages
+  knitr.kable.NA = "",  # Make NAs blank in kables
+  kableExtra.latex.load_packages = FALSE,  # Don't add LaTeX preamble stuff
+  modelsummary_default = table_format  # Set modelsummary backend
+)
+```
+
+```{r libraries-data, include=FALSE}
+library(tidyverse)
+library(kableExtra)
+library(huxtable)
+library(here)
+```
+
+# Model details
+
+We analyze the effect of the various combinations of organizational features and donor characteristics with the following hierarchical Bayesian multinomial logit model:
+
+$$
+\begin{aligned}
+\beta &\sim \operatorname{Multivariate} \mathcal{N}(Z \Gamma, \xi) \\
+y &\sim \operatorname{Multinomial\ logit}(X \beta, \varepsilon)
+\end{aligned}
+$$
+
+where $y$ = which alternative the respondent chooses to donate to, $X$ = design matrix of attribute levels (i.e. organizations, issue areas, organizational practices, funding sources, and government relations), $\beta$ = latent individual preferences for the attribute levels, $Z$ = matrix of individual-level covariates (i.e. demographics, political knowledge, attitudes towards charity, etc.), $\Gamma$ = matrix of coefficients mapping individual-level covariates onto the latent individual-level preferences, and $\varepsilon$ and $\xi$ = errors. Simply put, the first level of the model predicts individual donor preferences for various combinations of features (e.g. the combination of human rights issues, financial transparency, government funding, and government crackdown), while the second level of the model uses these fitted preferences to predict the ultimate choice of donation.
+
+We collected many individual level covariates in our survey. To aid in analysis, we categorized these survey questions into five broader theoretical themes that include smaller groups of variables. Table A\@ref(tab:individual-covariates) shows how we map individual survey questions to different groups. In this paper, we base our simulated market on a model that uses all individual characteristics in the first level:
+
+$$
+\text{Donation preferences } (\beta) \sim \operatorname{Multivariate} \mathcal{N}(Z \Gamma, \xi)
+$$
+
+where:
+
+$$
+\begin{aligned}
+Z\Gamma =& \Gamma_a \text{Public affairs} + \Gamma_b\text{Political ideology} + \Gamma_c \text{Social views} + \\
+& \Gamma_d \text{Charity and voluntarism} + \Gamma_e \text{Demographics}
+\end{aligned}
+$$
+
+The alphabetic subscripts for the $\Gamma$ coefficients here (i.e. $\Gamma_a$) represent multiple values, since broader categories like "Public affairs" comprise multiple variables, each with their own coefficients.
+
+The second level of the model incorporates the $\beta$ estimates from the first level and uses a design matrix of organizational characteristics:
+
+$$
+\text{Donation choice } (y) \sim \operatorname{Multinomial\ logit}(X \beta, \varepsilon)
+$$
+
+where (count of distinct values included in parentheses):
+
+$$
+\begin{aligned}
+X = \{&\text{Organization } (4),\ \text{Issue area } (4),\ \text{Organizational practices } (2), \\
+& \text{Funding sources } (3),\ \text{Government relations } (3)\}
+\end{aligned}
+$$
+\newpage
+
+\stgroup
+
+\singlespacing
+
+```{r individual-covariates}
+all_covariates <- tribble(
+  ~`Broader category`, ~Group, ~`Survey question`,
+  "Public affairs", "Public affairs knowledge", "Q2.1: How often do you follow national news?",
+  "Public affairs", "Public affairs knowledge", "Q2.2: How often do you follow international news?",
+  "Public affairs", "Public affairs knowledge", "Q2.3: Which mediums do you use to follow news?",
+  "Public affairs", "Public affairs knowledge", "Q2.4: How often would you say you follow what's going on in government and public affairs?",
+  "Public affairs", "Public affairs knowledge", "Q5.7: Have you ever traveled to a developing country?",
+  "Public affairs", "Public affairs activity", "Q5.1: Did you vote in the last election?",
+  "Political ideology", "Ideology", "Q5.2: 7-point scale on which the political views that people might hold are arranged from extremely liberal (left) to extremely conservative (right).",
+  "Social views", "Public affairs trust", "Q5.6: 7-point scale of trust in political institutions and the state, arranged from no trust (left) to complete trust (right)",
+  "Social views", "Social ideology", "Q5.11: 7-point scale of agreement with statement \"People should be more charitable towards others in society\", from strongly agree (1) to strongly disagree (7)",
+  "Social views", "Religiosity", "Q5.8: How often do you attend religious or worship services, not including weddings and funerals?",
+  "Social views", "Religiosity", "Q5.9: How important is religion in your life?",
+  "Social views", "Religiosity", "Q5.10: What is your current religion, if any?",
+  "Charity and voluntarism", "Charity trust", "Q2.7: How important is it that you trust a charity before giving to it?",
+  "Charity and voluntarism", "Charity trust", "Q2.8: How much do you trust charities?",
+  "Charity and voluntarism", "Charity activity", "Q2.5: How often do you donate to charity?",
+  "Charity and voluntarism", "Charity activity", "Q2.6: How much did you donate to charity last year?",
+  "Charity and voluntarism", "Volunteer activity", "Q2.9: Have you volunteered in the past 12 months?",
+  "Charity and voluntarism", "Volunteer activity", "Q2.10: How often do you volunteer?",
+  "Charity and voluntarism", "Activism activity", "Q5.4: Historically, how involved have you been in activist causes?",
+  "Charity and voluntarism", "Activism activity", "Q5.5: Historically, how involved has your family been in activist causes?",
+  "Charity and voluntarism", "Association membership", "Q5.3: List of possible types of organizations and associations",
+  "Demographics", "Gender", "Q5.12: What is your gender?",
+  "Demographics", "Marital status", "Q5.13: Are you now married, widowed, divorced, separated, or never married?",
+  "Demographics", "Education", "Q5.14: What is the highest degree or level of school you have completed?",
+  "Demographics", "Income", "Q5.15: What is your annual household income before taxes?",
+  "Demographics", "Race", "Q5.16: Choose one or more races that you consider yourself to be:",
+  "Demographics", "Age", "Q5.17: How old are you?"
+)
+
+covariate_caption <- "Individual covariates used in $Z$ to estmate the $\\Gamma$s in the first level of the model, or $\\operatorname{Multivariate} \\mathcal{N}(Z \\Gamma, \\xi)$"
+
+if (!is_docx) {
+  all_covariates %>% 
+    select(Group, `Survey question`) %>% 
+    kbl(align = c("l", "l"),
+        longtable = TRUE, booktabs = TRUE, linesep = "",
+        caption = covariate_caption) %>% 
+    pack_rows(index = table(fct_inorder(all_covariates$`Broader category`)),
+              latex_gap_space = "1.5em", indent = FALSE) %>%
+    kable_styling(latex_options = c("repeat_header")) %>% 
+    column_spec(1, width = "0.25\\\\textwidth") %>% 
+    column_spec(2, width = "0.68\\\\textwidth") %>% 
+    collapse_rows(columns = 1, valign = "top", latex_hline = "major")
+} else {
+  all_covariates %>% 
+    select(Group, `Survey question`) %>% 
+    hux() %>% 
+    set_font_size(10) %>%
+    set_all_padding(3) %>% 
+    set_align(everywhere, 1:2, "left") %>%
+    merge_repeated_rows(col = 1) %>% 
+    insert_row("Public affairs", "", after = 1) %>% 
+    insert_row("\nPolitical ideology", "", after = 8) %>% 
+    insert_row("\nSocial views", "", after = 10) %>%
+    insert_row("\nCharity and voluntarism", "", after = 16) %>%
+    insert_row("\nDemographics", "", after = 26) %>%
+    merge_cells(2, 1:2) %>%
+    merge_cells(9, 1:2) %>%
+    merge_cells(11, 1:2) %>%
+    merge_cells(17, 1:2) %>%
+    merge_cells(27, 1:2) %>%
+    set_bold(1, everywhere) %>%
+    set_bold(c(2, 9, 11, 17, 27), everywhere) %>%
+    set_top_border(1, everywhere) %>%
+    set_bottom_border(1, everywhere) %>%
+    set_bottom_border(c(7, 12, 13, 19, 21, 23, 25, 28:32), everywhere) %>% 
+    set_width(1) %>%
+    set_col_width(1, 0.25) %>%
+    set_col_width(2, 0.75) %>%
+    set_wrap(TRUE) %>% 
+    huxtable::set_caption(covariate_caption) %>% 
+    huxtable::as_flextable() %>% 
+    flextable::font(fontname = "Times New Roman")
+}
+```
+
+\fingroup
+
+\newpage
+
 # Survey experiment
+
+\stgroup
+
+\singlespacing
 
 ```{r child = "../analysis/text/experiment_anonymized.md"}
 ```
+
+\fingroup
