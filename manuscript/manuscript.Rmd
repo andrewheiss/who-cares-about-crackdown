@@ -14,7 +14,7 @@ author:
   affiliation: Georgia State University
   url: https://www.andrewheiss.com/
   email: aheiss@gsu.edu
-date: "April 17, 2021"
+date: "April 18, 2021"
 published: Working paper.
 code-repo: "Access the code and full analysis notebook at <https://stats.andrewheiss.com/who-cares-about-crackdowns/>"
 abstract: >-
@@ -23,10 +23,10 @@ toc: false
 reference-section-title: References
 bibliography: bibliography.bib
 title-page: true
-word-count: "7,986"
+word-count: "8,061"
 keywords: international NGOs, donor behavior, philanthropy, human rights, repression, international giving, donor choice
 thanks: >-
-  The data that support the findings of this study, as well as the code to reproduce the findings, are openly available at <https://github.com/andrewheiss/who-cares-about-crackdown> and <https://osf.io/sm5ew/>. This experiment received approval by the human subjects research committees at Christopher Newport University (1436622-1), Brigham Young University (E19135), and Georgia State University (H19644). As part of a larger project, we preregistered hypotheses and our research design at the Open Science Framework, and our preregistration protocol is available at <https://osf.io/hsbyd/>. This study covers the third research question of our preregistered design.
+  The data that support the findings of this study, as well as the code to reproduce the findings, are openly available at <https://github.com/andrewheiss/who-cares-about-crackdown> and <https://osf.io/sm5ew/>. This experiment received approval by the human subjects research committees at Christopher Newport University (1436622-1), Brigham Young University (E19135), and Georgia State University (H19644). As part of a larger project, we preregistered hypotheses and our research design at the Open Science Framework, and our preregistration protocol is available at <https://osf.io/hsbyd/>. This study covers the second research question of our preregistered design.
 author-note: >-
   Suparna Chaudhry, PhD, Assistant Professor of International Affairs, Department of International Affairs, Lewis \& Clark College; Marc Dotson, PhD, Assistant Professor of Marketing, Marriott School of Business, Brigham Young University; Andrew Heiss, PhD, Assistant Professor of Public Management, Andrew Young School of Policy Studies, Georgia State University. 
 correspondence: >-
@@ -34,12 +34,11 @@ correspondence: >-
 mainfont: Lora
 sansfont: IBM Plex Sans
 policy-implications: >-
-  In the wake of the global crackdown on civil society, international NGOs (INGOs) need to maintain access to multiple sources of funding, including individual donors. 
-  It is critical for INGOs to understand what motivates individuals to donate, especially if INGOs face legal crackdown in their host countries.
-  
-  Trust in political institutions and in charitable organizations matters substantially in shaping donor preferences.
-  We find that potential donors with low social trust tend to be wary of negative host-country relationships and prefer to donate to INGOs that are friendly with their host governments, while potential donors with high social trust are more willing to stick with legally besieged INGOs.
-  Donors that are the most trusting and involved may remain supportive when charities face government criticism and crackdown. The global crackdown on NGOs may also possibly sour NGOs' least trusting individual donors.
+  - In the wake of the global crackdown on civil society, international NGOs (INGOs) need to maintain access to multiple sources of funding, including individual donors.
+  - It is critical for INGOs to understand what motivates individuals to donate, especially if INGOs face legal crackdown in their host countries.
+  - Trust in political institutions and in charitable organizations matters substantially in shaping donor preferences.
+  - We find that potential donors with low social trust tend to be wary of negative host-country relationships and prefer to donate to INGOs that are friendly with their host governments, while potential donors with high social trust are more willing to stick with legally besieged INGOs.
+  - Donors that are the most trusting and involved may remain supportive when charities face government criticism and crackdown. The global crackdown on NGOs may also possibly sour NGOs' least trusting individual donors.
 editor_options: 
   chunk_output_type: console
 ---
@@ -162,7 +161,7 @@ We structure our analysis around broader themes in previous research on individu
 
 We explore the interaction between individual and organizational characteristics using a conjoint experiment conducted with a nationally representative sample in the U.S. Conjoint analysis allows us to elicit donor preferences without respondents explicitly stating their exact preferences. This kind of experiment is commonly used in marketing to reveal consumer preferences for products and has become increasingly popular in political science and public policy [@KnudsenJohannesson:2019]. Because we are interested in exploring the complexity behind the decision to donate, we apply conjoint methods to the study of nonprofits and philanthropy, where we can study the simultaneous effects of organizational characteristics and individual attributes on individuals' preferences to donate to an INGO. 
 
-In our experiment, we presented respondents with four randomly selected international nonprofit organizations with four randomly assigned features.[^appendix-survey] We used organizations that are associated with a range of contentious and noncontentious issues: Amnesty International, Greenpeace, Oxfam, and the International Committee of the Red Cross. Because of their strong name recognition, these organizations (and others like World Vision, the World Wildlife Fund, and Médecins Sans Frontières) are commonly used in experimental surveys on philanthropy [@FaulknerTruongRomaniuk:2015].
+In our experiment, we presented respondents with repeated sets of randomly generated international nonprofit organizations with randomly assigned features.[^appendix-survey] We used organizations that are associated with a range of contentious and noncontentious issues: Amnesty International, Greenpeace, Oxfam, and the International Committee of the Red Cross. Because of their strong name recognition, these organizations (and others like World Vision, the World Wildlife Fund, and Médecins Sans Frontières) are commonly used in experimental surveys on philanthropy [@FaulknerTruongRomaniuk:2015].
 
 \stgroup
 
@@ -266,7 +265,11 @@ We analyze the effect of different combinations of organizational features and i
 
 ## Simulated philanthropy market
 
-In this paper, we look at which kinds of donors are more or less likely to consider an NGO's issue area, funding sources, and relationships with host governments when deciding to donate. Disentangling the effect of every individual level-characteristic measured in the survey on every combination of organizational characteristics presented in the conjoint experiment is unwieldy and near impossible. Given the organizational attributes presented in our experiment, and the possible individual characteristics that respondents could select, there are billions of possible combinations and iterations of organizational and individual attributes—many of which rarely occur in the actual population of potential donors. To more fully explore the relationships between different organizational- and individual-level attributes, we turn to simulation methods that allow us to examine the impact of multiple covariates simultaneously. To simplify the possible combinations of individual characteristics, we generate 64 distinct personas with attributes that vary along different dimensions of demographics, politics and public affairs experience, and social attitudes (see Table \@ref(tab:persona-attributes)). We also generate 24 simulated organizations that vary by issue area, relationship with host government, and source of funding (see Table \@ref(tab:organization-attributes)).
+In this paper, we look at which kinds of donors are more or less likely to consider an NGO's issue area, funding sources, and relationships with host governments when deciding to donate. Disentangling the effect of every individual level-characteristic measured in the survey on every combination of organizational characteristics presented in the conjoint experiment is unwieldy and near impossible. For instance, we might posit that politically conservative, religiously active personas that have a history of charitable giving and high trust in nonprofits might be more likely to donate to disaster relief organizations facing government crackdown. But that is only one possible combination—given the organizational attributes presented in our experiment, and the possible individual characteristics that respondents could select, there are billions of possible iterations of organizational and individual attributes, many of which rarely occur in the actual population of potential donors.
+
+To more fully explore the relationships between different organizational- and individual-level attributes, we turn to simulation methods that allow us to examine the impact of multiple covariates simultaneously. Conjoint simulation offers useful analytic benefits. Since we are less concerned with the marginal effects of single donor characteristics and more interested in how constellations of individual and organizational attributes interact with each other, we can vary different combinations of donor and organization characteristics and hold other constant. This allows us to see the connections between donor trust and background and INGO organizational practices and find which kinds of donors are more or less likely to consider specific organizational attributes when deciding to donate, and which donor characteristics are associated with the propensity to donate.
+
+To simplify the possible combinations of individual characteristics, we generate 64 distinct personas with attributes that vary along different dimensions of demographics, politics and public affairs experience, and social attitudes, based on our earlier review of donor motivations (see Table \@ref(tab:persona-attributes)). We also generate 24 simulated organizations that vary by issue area, relationship with host government, and source of funding (see Table \@ref(tab:organization-attributes)).
 
 \stgroup
 
@@ -332,7 +335,7 @@ if (!is_docx) {
 
 \fingroup
 
-We then combine these different scenarios of donor and organization attributes with the coefficients from the hierarchical regression model to calculate each persona's probability of donating to specific combinations of organizational attributes. Any individual characteristics that we do not explicitly vary in Table \@ref(tab:persona-attributes) are held at their means or modal values from the survey sample. Table \@ref(tab:sim-output) provides an example of the simulation output, showing how two different personas are predicted to allocate donations to organizations with various characteristics. The proportion of donations from each persona sums to 100%, as every simulated persona is guaranteed to make a donation.
+We then combine these different configurations of donor and organization attributes with the coefficients from the hierarchical regression model to calculate each persona's probability of donating to specific combinations of organizational attributes. Any individual characteristics that we do not explicitly vary in Table \@ref(tab:persona-attributes) are held at their means or modal values from the survey sample. Table \@ref(tab:sim-output) provides an example of the simulation output, showing how two different personas are predicted to allocate donations to organizations with various characteristics. The proportion of donations from each persona sums to 100%, as every simulated persona is guaranteed to make a donation.
 
 \stgroup
 
@@ -395,7 +398,7 @@ if (!is_docx) {
 
 \fingroup
 
-Simulation methods offer useful analytic benefits. Instead of interpreting marginal coefficient effects from a regression model, we can explore multiple moving parts from the same model simultaneously to understand how individual characteristics interact with each other. This allows us to more fully explore our key research questions and see which kinds of donors are more or less likely to consider specific organizational attributes when deciding to donate, and which donor characteristics are associated with the propensity to donate. Importantly, each persona is an artificial construct. While some survey respondents might match an exact persona profile, many do not. This is standard in simulations as each combination of persona characteristics is plausible in the real world. These simulated findings are more abstract than the results from an ordinary survey sample, but the simulation results allow us to explore the interaction between donor preferences and organization characteristics, including whether they face legal restrictions abroad. The results ultimately show which combination of organizational features each persona is most likely to prefer when choosing to donate.
+Importantly, each persona is an artificial construct. While some survey respondents might match an exact persona profile, many do not. This is standard in simulations as each combination of persona characteristics is plausible in the real world. These simulated findings are more abstract than the results from an ordinary survey sample, but the simulation results allow us to explore the interaction between donor preferences and organization characteristics, including whether they face legal restrictions abroad. The results ultimately show which combination of organizational features each persona is most likely to prefer when choosing to donate.
 
 
 # Results
@@ -727,4 +730,4 @@ To be clear, research on international giving by individuals, especially in the 
     \end{aligned}
     $$
 
-    where $y$ = which alternative the respondent chooses to donate to, $X$ = design matrix of attribute levels (organizations, issue areas, organizational practices, funding sources, and government relations), $\beta$ = latent individual preferences for the attribute levels, $Z$ = matrix of individual-level covariates (demographics, political knowledge, attitudes towards charity, etc.), $\Gamma$ = matrix of coefficients mapping individual-level covariates onto the latent individual-level preferences, and $\varepsilon$ and $\xi$ = errors.
+    where $y$ = which alternative the respondent chooses to donate to, $X$ = design matrix of attribute levels (organizations, issue areas, organizational practices, funding sources, and government relations), $\beta$ = latent individual preferences for the attribute levels, $Z$ = matrix of individual-level covariates (demographics, political knowledge, attitudes towards charity, etc.), $\Gamma$ = matrix of coefficients mapping individual-level covariates onto the latent individual-level preferences, and $\varepsilon$ and $\xi$ = errors. See the appendix for more details.
