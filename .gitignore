@@ -24,8 +24,11 @@ manuscript/output/*.tex
 manuscript/output/figures/*
 manuscript/submissions/*
 
-# Original output
+# Large data files (these get downloaded automatically with 
+# targets::tar_make(c(survey_results_file, gamma_draws_file)))
 data/private_data/*
+data/raw_data/final_data.rds
+data/raw_data/posterior_draws/*.rds
 
 # Other folders
 admin/*
