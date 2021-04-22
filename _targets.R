@@ -166,8 +166,10 @@ list(
                bib_file),
              format = "file"),
   
+  # Always show a word count
   tar_target(word_count, count_words(html)),
   tar_force(show_word_count, print(word_count), TRUE),
   
+  # Knit the README
   tar_render(readme, here_rel("README.Rmd"))
 )

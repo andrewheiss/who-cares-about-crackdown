@@ -2,6 +2,7 @@
 analysis/_site/*
 analysis/survey/*.pdf
 analysis/survey/*.html
+README.html
 
 # Site output
 analysis/_site/*
