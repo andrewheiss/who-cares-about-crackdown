@@ -59,7 +59,7 @@ We use the [**renv** package](https://rstudio.github.io/renv/articles/renv.html)
 2. [Install R](https://cloud.r-project.org/) (and preferably [RStudio](https://www.rstudio.com/products/rstudio/download/#download)).
 3. Open `whocares.Rproj` to open an [RStudio Project](https://r4ds.had.co.nz/workflow-projects.html).
 4. Make sure you have a working installation of LaTeX:
-    - *Easy-and-recommended way*: Install the [**tinytex** package](https://yihui.org/tinytex/) by running `install.packages("tinytex")` in the R console, then run `tinytex::install_tinytex()`
+    - *Easy-and-recommended way*: Install the [**tinytex** package](https://yihui.org/tinytex/) by running `install.packages("tinytex")` in the R console, then running `tinytex::install_tinytex()`
     - *Easy-but-requires-huge-4+-GB-download way*: Download TeX Live ([macOS](http://www.tug.org/mactex/); [Windows](https://miktex.org/))
 5. If it's not installed already, R *should* try to install the **renv** package when you open the RStudio Project for the first time. If you don't see a message about package installation, install it yourself by running `install.packages("renv")` in the R console.
 6. Run `renv::restore()` in the R console to install all the required packages for this project.

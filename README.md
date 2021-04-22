@@ -89,7 +89,7 @@ the analysis, do the following:
 4.  Make sure you have a working installation of LaTeX:
     -   *Easy-and-recommended way*: Install the [**tinytex**
         package](https://yihui.org/tinytex/) by running
-        `install.packages("tinytex")` in the R console, then run
+        `install.packages("tinytex")` in the R console, then running
         `tinytex::install_tinytex()`
     -   *Easy-but-requires-huge-4+-GB-download way*: Download TeX Live
         ([macOS](http://www.tug.org/mactex/);
