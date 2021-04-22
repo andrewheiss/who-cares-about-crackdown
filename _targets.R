@@ -32,10 +32,12 @@ list(
              here_rel("data", "raw_data", "Market Simulator Version 01.xlsx"),
              format = "file"),
   tar_target(gamma_draws_file,
-             here_rel("data", "raw_data", "posterior_draws", "public_political_social_charity_demo.rds"),
+             get_from_osf(osf_url = "https://osf.io/msaz8/",
+                          out_dir = here_rel("data", "raw_data", "posterior_draws")),
              format = "file"),
   tar_target(survey_results_file,
-             here_rel("data", "raw_data", "final_data.rds"),
+             get_from_osf(osf_url = "https://osf.io/n2hwm/",
+                          out_dir = here_rel("data", "raw_data")),
              format = "file"),
   tar_target(giving_aggregate_file,
              here_rel("data", "raw_data", "data-FTjUv.csv")),
@@ -160,5 +162,7 @@ list(
              format = "file"),
   
   tar_target(word_count, count_words(html)),
-  tar_force(show_word_count, print(word_count), TRUE)
+  tar_force(show_word_count, print(word_count), TRUE),
+  
+  tar_knit(readme, here_rel("README.Rmd"))
 )

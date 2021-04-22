@@ -1,5 +1,15 @@
 library(fastDummies)
 library(readxl)
+library(osfr)
+
+get_from_osf <- function(osf_url, out_dir) {
+  get_osf <- osf_retrieve_file(osf_url) %>%
+    osf_download(path = out_dir,
+                 conflicts = "overwrite",
+                 progress = TRUE)
+  
+  return(get_osf$local_path)
+}
 
 process_excel_simulation <- function(simulator_path) {
   suppressMessages({
