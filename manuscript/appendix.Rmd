@@ -21,6 +21,8 @@ code-repo: "Access the code and full analysis notebook at <https://stats.andrewh
 reference-section-title: References
 toc: true
 appendix: true
+mainfont: Lora
+sansfont: IBM Plex Sans
 editor_options: 
   chunk_output_type: console
 ---
