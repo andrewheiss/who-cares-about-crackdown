@@ -23,7 +23,7 @@ toc: false
 reference-section-title: References
 bibliography: bibliography.bib
 title-page: true
-word-count: "8,061"
+word-count: "7,983"
 keywords: international NGOs, donor behavior, philanthropy, human rights, repression, international giving, donor choice
 thanks: >-
   The data that support the findings of this study, as well as the code to reproduce the findings, are openly available at <https://github.com/andrewheiss/who-cares-about-crackdown> and <https://osf.io/sm5ew/>. This experiment received approval by the human subjects research committees at Christopher Newport University (1436622-1), Brigham Young University (E19135), and Georgia State University (H19644). As part of a larger project, we preregistered hypotheses and our research design at the Open Science Framework, and our preregistration protocol is available at <https://osf.io/hsbyd/>. This study covers the second research question of our preregistered design.
@@ -656,14 +656,16 @@ sim_final %>%
   group_by(org_relationship, persona_trust, persona_ideology, persona_experience) %>% 
   summarize(avg_share = mean(share)) %>% 
   ggplot(aes(y = fct_rev(str_wrap_factor(org_relationship, 10)), 
-             x = avg_share, color = persona_trust)) +
+             x = avg_share, color = persona_trust, shape = persona_trust)) +
   geom_pointrange(size = 0.75, fatten = 1.5,
                   aes(xmin = 0, xmax = ..x..), position = position_dodge(width = 0.5)) + 
   scale_x_continuous(labels = percent_format(accuracy = 1), expand = expansion(add = c(0, 0.002))) +
   scale_color_manual(values = clrs_ngo_pairs[[3]], 
                      guide = guide_legend(reverse = TRUE,
                                           override.aes = list(size = 0.25,
-                                                              linetype = 0))) +
+                                                              linetype = 0,
+                                                              shape = c(20, 17)))) +
+  scale_shape_manual(values = c(17, 20), guide = FALSE) +
   labs(x = "Average share of donations", y = NULL, color = NULL) +
   facet_grid(rows = vars(persona_ideology), cols = vars(str_wrap(persona_experience, 100))) +
   theme_ngo() +

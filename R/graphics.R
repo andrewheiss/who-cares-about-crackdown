@@ -60,10 +60,10 @@ theme_ngo <- function(base_size = 9, base_family = "IBM Plex Sans Condensed") {
 # Okabe and Ito (2008) colorblind-safe qualitative palette: https://jfly.uni-koeln.de/color/
 # See also https://clauswilke.com/dataviz/color-pitfalls.html
 clrs_okabe_ito <- list(orange = "#E69F00",
-                       sky_blue = "#56B4E9",
+                       sky_blue = colorspace::lighten("#56B4E9", 0.25),
                        bluish_green = "#009E73",
                        yellow = "#F0E442",
-                       blue = "#0072B2",
+                       blue = colorspace::lighten("#0072B2", 0.25),
                        vermilion = "#D55E00",
                        reddish_purple = "#CC79A7",
                        black = "#000000")
