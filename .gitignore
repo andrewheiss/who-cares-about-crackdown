@@ -10,7 +10,6 @@ analysis/site_libs/*
 # knitr and caching stuff
 *_files/*
 *_cache/*
-lib/*.rds
 
 # Targets stuff
 _targets

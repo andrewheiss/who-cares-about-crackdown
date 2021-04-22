@@ -169,5 +169,5 @@ list(
   tar_target(word_count, count_words(html)),
   tar_force(show_word_count, print(word_count), TRUE),
   
-  tar_knit(readme, here_rel("README.Rmd"))
+  tar_render(readme, here_rel("README.Rmd"))
 )
