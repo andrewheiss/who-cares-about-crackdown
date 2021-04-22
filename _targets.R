@@ -63,6 +63,16 @@ list(
   # Render the analysis notebook
   tar_notebook_pages(),
   
+  # This is only here to trigger a re-build of the R Markdown website's
+  # supporting files in `_site`, which copies the files in `output` to
+  # `_site/output`. I unfortunately haven't found a way to make it so that the
+  # site building occurs independently of `rmarkdown::render()`, so this is the
+  # workaround: re-knit index.Rmd
+  tar_target(supporting_files, 
+             copy_notebook_supporting_files(here_rel("analysis", "index.Rmd"), 
+                                            main_manuscript, html, 
+                                            appendix, app_html)),
+  
   # tarchetypes::tar_render() automatically detects target dependencies in Rmd
   # files and knits them, but there's no easy way to pass a custom rendering
   # script like bookdown::html_document2(), so two things happen here:
