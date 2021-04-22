@@ -1,0 +1,266 @@
+profile: tabular-data-package
+name: NA
+fields:
+- name: id
+  type: integer
+- name: version
+  type: number
+- name: Q1.1
+  type: number
+- name: Q2.1
+  type: string
+  levels:
+  - Rarely
+  - Once a week
+  - At least once a day
+- name: Q2.2
+  type: string
+  levels:
+  - Always
+  - Sometimes
+  - Never
+- name: Q2.3_1
+  type: number
+- name: Q2.3_2
+  type: number
+- name: Q2.3_3
+  type: number
+- name: Q2.3_4
+  type: number
+- name: Q2.3_5
+  type: number
+- name: Q2.3_6
+  type: number
+- name: Q2.3_7
+  type: number
+- name: Q2.4
+  type: string
+  levels:
+  - Not often
+  - Often
+- name: Q2.5
+  type: string
+  levels:
+  - More than once a month, less than once a year
+  - At least once a month
+- name: Q2.6
+  type: string
+  levels:
+  - $1-$49
+  - $50-$99
+  - $100-$499
+  - $500-$999
+  - $1000-$4,999
+  - $5000-$9,999
+  - $10,000+
+- name: Q2.7
+  type: number
+- name: Q2.8
+  type: number
+- name: Q2.9
+  type: string
+  levels:
+  - 'Yes'
+  - 'No'
+- name: Q2.10
+  type: string
+  levels:
+  - Haven't volunteered in past 12 months
+  - Rarely
+  - More than once a month, less than once a year
+  - At least once a month
+- name: Q2.11
+  type: number
+- name: Q3.1
+  type: number
+- name: Q3.2
+  type: number
+- name: Q4.1
+  type: number
+- name: Q4.2
+  type: number
+- name: Q4.3
+  type: number
+- name: Q4.4
+  type: number
+- name: Q4.5
+  type: number
+- name: Q4.6
+  type: number
+- name: Q4.7
+  type: number
+- name: Q4.8
+  type: number
+- name: Q4.9
+  type: number
+- name: Q4.10
+  type: number
+- name: Q4.11
+  type: number
+- name: Q4.12
+  type: number
+- name: Q5.1
+  type: string
+  levels:
+  - 'Yes'
+  - 'No'
+- name: Q5.2
+  type: number
+- name: Q5.3_1
+  type: number
+- name: Q5.3_2
+  type: number
+- name: Q5.3_3
+  type: number
+- name: Q5.3_4
+  type: number
+- name: Q5.3_5
+  type: number
+- name: Q5.3_6
+  type: number
+- name: Q5.3_7
+  type: number
+- name: Q5.3_8
+  type: number
+- name: Q5.3_9
+  type: number
+- name: Q5.3_10
+  type: number
+- name: Q5.4
+  type: string
+  levels:
+  - Not involved
+  - Involved
+- name: Q5.5
+  type: string
+  levels:
+  - Not involved
+  - Involved
+- name: Q5.6
+  type: number
+- name: Q5.7
+  type: string
+  levels:
+  - 'Yes'
+  - 'No'
+- name: Q5.8
+  type: string
+  levels:
+  - Not sure
+  - Rarely
+  - At least once a month
+- name: Q5.9
+  type: string
+  levels:
+  - Not important
+  - Important
+- name: Q5.10
+  type: number
+- name: Q5.10_TEXT
+  type: string
+- name: Q5.11
+  type: number
+- name: Q5.12
+  type: string
+  levels:
+  - Male
+  - Female
+  - Transgender
+  - Prefer not to say
+  - Other
+- name: Q5.12_TEXT
+  type: string
+- name: Q5.13
+  type: string
+  levels:
+  - Married
+  - Widowed
+  - Divorced
+  - Separated
+  - Never married
+- name: Q5.14
+  type: string
+  levels:
+  - Less than high school
+  - High school graduate
+  - Some college
+  - 2 year degree
+  - 4 year degree
+  - Graduate or professional degree
+  - Doctorate
+- name: Q5.15
+  type: string
+  levels:
+  - Less than median
+  - More than median
+- name: Q5.16_1
+  type: number
+- name: Q5.16_2
+  type: number
+- name: Q5.16_3
+  type: number
+- name: Q5.16_4
+  type: number
+- name: Q5.16_5
+  type: number
+- name: Q5.16_6
+  type: number
+- name: Q5.16_6_TEXT
+  type: string
+- name: Q5.17
+  type: string
+  levels:
+  - Less than median
+  - More than median
+- name: Q5.18
+  type: string
+- name: Q2.7_f
+  type: string
+  levels:
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+- name: Q2.8_f
+  type: string
+  levels:
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+- name: Q5.2_f
+  type: string
+  levels:
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+- name: Q5.6_f
+  type: string
+  levels:
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+- name: Q5.11_f
+  type: string
+  levels:
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'

@@ -55,6 +55,11 @@ list(
   tar_target(market_shares, create_predicted_market_shares(gammas, personas, orgs)),
   tar_target(sim_final, create_simulation(market_shares, personas, orgs)),
   tar_target(survey_results, read_rds(survey_results_file)),
+  tar_target(survey_csvy, 
+             save_csvy(survey_results,
+                       here_rel("data", "derived_data", "survey_results.csv"),
+                       here_rel("data", "derived_data", "survey_results.yaml")),
+             format = "file"),
   tar_target(participant_summary, create_sample_summary(survey_results)),
   tar_target(giving_aggregate, {
     read_csv(giving_aggregate_file, col_types = cols()) %>%

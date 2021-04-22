@@ -1,6 +1,7 @@
 library(fastDummies)
 library(readxl)
 library(osfr)
+library(csvy)
 
 get_from_osf <- function(osf_url, out_dir) {
   get_osf <- osf_retrieve_file(osf_url) %>%
@@ -9,6 +10,11 @@ get_from_osf <- function(osf_url, out_dir) {
                  progress = TRUE)
   
   return(get_osf$local_path)
+}
+
+save_csvy <- function(x, out_csv, out_yaml) {
+  write_csvy(x, file = out_csv, metadata = out_yaml, na = "NA")
+  return(out_csv)
 }
 
 process_excel_simulation <- function(simulator_path) {

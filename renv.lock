@@ -250,6 +250,13 @@
       "Repository": "CRAN",
       "Hash": "345d571cc120a54c91ac952c6da4392e"
     },
+    "csvy": {
+      "Package": "csvy",
+      "Version": "0.3.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "a0e2e146757b4ff2d94485c270f2cb3b"
+    },
     "curl": {
       "Package": "curl",
       "Version": "4.3",
