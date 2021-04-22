@@ -14,9 +14,9 @@ author:
   affiliation: Georgia State University
   url: https://www.andrewheiss.com/
   email: aheiss@gsu.edu
-date: "April 18, 2021"
+date: "April 22, 2021"
 title-page: false
-published: Working paper.
+# published: Working paper.
 code-repo: "Access the code and full analysis notebook at <https://stats.andrewheiss.com/who-cares-about-crackdowns/>"
 reference-section-title: References
 toc: true
@@ -24,8 +24,6 @@ appendix: true
 editor_options: 
   chunk_output_type: console
 ---
-
-<!-- supplement.md is generated from supplement.Rmd. Only edit the .Rmd file, *not* the .md file. -->
 
 ```{r setup, include=FALSE}
 # Figure out output format
