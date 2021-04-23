@@ -63,7 +63,7 @@ is online here:
 
 > Suparna Chaudhry, Marc Dotson, and Andrew Heiss. 2021. “Who Cares
 > About Crackdowns? Exploring the Role of Trust in Individual
-> Philanthropy”". Online at <https://doi.org/10.17605/OSF.IO/SM5EW>
+> Philanthropy”. Online at <https://doi.org/10.17605/OSF.IO/SM5EW>
 
 ## How to download and replicate
 

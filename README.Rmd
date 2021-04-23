@@ -45,7 +45,7 @@ The phenomenon of closing civic space has adversely impacted the operations of I
 
 This repository contains the data and code for our paper. Our preprint is online here:
 
-> `r Authors`. `r Year`. "`r Title`"". Online at <https://doi.org/10.17605/OSF.IO/SM5EW>
+> `r Authors`. `r Year`. "`r Title`". Online at <https://doi.org/10.17605/OSF.IO/SM5EW>
 
 ## How to download and replicate
 
