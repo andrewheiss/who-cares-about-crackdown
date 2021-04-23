@@ -14,7 +14,7 @@ author:
   affiliation: Georgia State University
   url: https://www.andrewheiss.com/
   email: aheiss@gsu.edu
-date: "April 22, 2021"
+date: "April 23, 2021"
 published: "Under review at *Global Policy*"
 code-repo: "Access the code and full analysis notebook at <https://stats.andrewheiss.com/who-cares-about-crackdowns/>"
 abstract: >-
