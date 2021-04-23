@@ -79,11 +79,23 @@ package](https://docs.ropensci.org/targets/) to manage all file
 dependencies and run the analysis. To reproduce the findings and re-run
 the analysis, do the following:
 
-1.  Download and install these two fonts:
+1.  Download and install these fonts:
     -   [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans)
+    -   [IBM Plex Sans
+        Condensed](https://fonts.google.com/specimen/IBM+Plex+Sans+Condensed)
     -   [Lora](https://fonts.google.com/specimen/Lora)
+    -   [Linux Libertine
+        O](https://www.cufonfonts.com/font/linux-libertine-o) (also
+        [here](https://sourceforge.net/projects/linuxlibertine/))
+    -   [Libertinus Math](https://github.com/alerque/libertinus)
+    -   [Source Sans
+        Pro](https://fonts.google.com/specimen/Source+Sans+Pro)
+    -   [InconsolataGo](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/InconsolataGo)
 2.  [Install R](https://cloud.r-project.org/) (and preferably
     [RStudio](https://www.rstudio.com/products/rstudio/download/#download)).
+    -   If you’re using macOS, [install XQuartz
+        too](https://www.xquartz.org/), so that you have access to the
+        Cairo graphics library
 3.  Open `whocares.Rproj` to open an [RStudio
     Project](https://r4ds.had.co.nz/workflow-projects.html).
 4.  Make sure you have a working installation of LaTeX:
