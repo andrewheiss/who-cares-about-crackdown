@@ -24,9 +24,9 @@ Year <- "2021"
 
 ---
 
-[![OSF DOI](https://img.shields.io/badge/OSF-10.17605%2FOSF.IO%2FSM5EW-blue)](https://doi.org/10.17605/OSF.IO/SM5EW) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4064840.svg)](https://doi.org/10.5281/zenodo.4064840)
+[![Global Policy DOI](https://img.shields.io/badge/Global%20Policy%20DOI-10.1111%2F1758--5899.12984-brightgreen)](https://doi.org/10.1111/1758-5899.12984) [![OSF DOI](https://img.shields.io/badge/OSF-10.17605%2FOSF.IO%2FSM5EW-blue)](https://doi.org/10.17605/OSF.IO/SM5EW) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4064840.svg)](https://doi.org/10.5281/zenodo.4064840)
 
-> `r Authors`. `r Year`. ["`r Title`,"](https://doi.org/10.17605/OSF.IO/SM5EW) 
+> `r Authors`. `r Year`. ["`r Title`,"](https://doi.org/10.17605/OSF.IO/SM5EW) *Global Policy* (forthcoming), doi:[10.1111/1758-5899.12984](https://doi.org/10.1111/1758-5899.12984)
 
 **All this project's materials are free and open:**
 
@@ -46,6 +46,10 @@ The phenomenon of closing civic space has adversely impacted INGO funding. We ar
 This repository contains the data and code for our paper. Our preprint is online here:
 
 > `r Authors`. `r Year`. "`r Title`". Online at <https://doi.org/10.17605/OSF.IO/SM5EW>
+
+The paper is published at *Global Policy*: 
+
+> `r Authors`. `r Year`. ["`r Title`,"](https://doi.org/10.17605/OSF.IO/SM5EW) *Global Policy* (forthcoming), doi:[10.1111/1758-5899.12984](https://doi.org/10.1111/1758-5899.12984)
 
 ## How to download and replicate
 
