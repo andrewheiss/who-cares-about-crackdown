@@ -21,8 +21,8 @@ DOI](https://img.shields.io/badge/OSF-10.17605%2FOSF.IO%2FSM5EW-blue)](https://d
 > Suparna Chaudhry, Marc Dotson, and Andrew Heiss. 2021. [“Who Cares
 > About Crackdowns? Exploring the Role of Trust in Individual
 > Philanthropy,”](https://doi.org/10.17605/OSF.IO/SM5EW) *Global Policy*
-> (forthcoming),
-> <doi:%5B10.1111/1758-5899.12984>\](<https://doi.org/10.1111/1758-5899.12984>)
+> (forthcoming), doi:
+> [`10.1111/1758-5899.12984`](https://doi.org/10.1111/1758-5899.12984)
 
 **All this project’s materials are free and open:**
 
@@ -72,8 +72,8 @@ The paper is published at *Global Policy*:
 > Suparna Chaudhry, Marc Dotson, and Andrew Heiss. 2021. [“Who Cares
 > About Crackdowns? Exploring the Role of Trust in Individual
 > Philanthropy,”](https://doi.org/10.17605/OSF.IO/SM5EW) *Global Policy*
-> (forthcoming),
-> <doi:%5B10.1111/1758-5899.12984>\](<https://doi.org/10.1111/1758-5899.12984>)
+> (forthcoming), doi:
+> [`10.1111/1758-5899.12984`](https://doi.org/10.1111/1758-5899.12984)
 
 ## How to download and replicate
 
